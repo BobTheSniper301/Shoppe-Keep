@@ -8,7 +8,7 @@ using UnityEngine;
 
 public class PlayerScript : MonoBehaviour
 {
-
+    CharacterController characterController;
 
     public Camera playerCamera;
     public float walkSpeed = 6f;
@@ -24,7 +24,6 @@ public class PlayerScript : MonoBehaviour
 
     public bool canMove = true;
 
-    CharacterController characterController;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
