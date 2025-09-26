@@ -15,9 +15,7 @@ public class ItemSlotScript : MonoBehaviour, IDropHandler
         }
         else if (transform.childCount == 1)
         {
-            Debug.Log(gameObject.name);
             ItemScript slottedItem = gameObject.GetComponentInChildren<ItemScript>();
-            Debug.Log(slottedItem);
             ItemScript item = eventData.pointerDrag.GetComponent<ItemScript>();
             slottedItem.transform.SetParent(item.parentAfterDrag);
             item.parentAfterDrag = transform;

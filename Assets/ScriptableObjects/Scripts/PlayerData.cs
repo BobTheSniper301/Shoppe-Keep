@@ -1,0 +1,9 @@
+using UnityEngine;
+
+[CreateAssetMenu]
+public class PlayerData : ScriptableObject
+{
+    public float health;
+    public float mana;
+    public Vector3 playerPos;
+}

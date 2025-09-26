@@ -6,9 +6,11 @@ using UnityEngine.EventSystems;
 public class ItemScript : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
 
+    public ItemData itemData;
+
     public Image image;
 
-    //[HideInInspector] public Transform parentBeforeDrag;
+
 
     [HideInInspector] public Transform parentAfterDrag;
 

@@ -1,20 +1,22 @@
-// https://www.youtube.com/watch?v=qQLvcS9FxnY
 using System;
 using Unity.Mathematics;
 using UnityEngine;
 
-
+// Will create one if we don't have one
 [RequireComponent(typeof(CharacterController))]
 
 public class PlayerScript : MonoBehaviour
 {
     CharacterController characterController;
 
+    public PlayerData playerData;
+
+    #region movement + camera vars
     public Camera playerCamera;
-    public float walkSpeed = 6f;
-    public float runSpeed = 8f;
-    public float jumpPower = 5f;
-    public float gravity = 10f;
+    private float walkSpeed = 6f;
+    private float runSpeed = 8f;
+    private float jumpPower = 5f;
+    private float gravity = 10f;
 
     [SerializeField] float lookSpeed  = 10f;
     [SerializeField] float lookXLimit = 89f;
@@ -23,7 +25,7 @@ public class PlayerScript : MonoBehaviour
     float rotationX = 0;
 
     public bool canMove = true;
-
+    #endregion
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -32,7 +34,6 @@ public class PlayerScript : MonoBehaviour
 
         characterController = GetComponent<CharacterController>();
         Cursor.lockState = CursorLockMode.Locked;
-        // Cursor.visible = false;
 
 
     }
@@ -86,8 +87,8 @@ public class PlayerScript : MonoBehaviour
 
         #endregion
 
-        
 
 
+        playerData.playerPos = transform.position;
     }
 }
