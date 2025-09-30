@@ -4,9 +4,11 @@ using UnityEngine;
 public class ItemData : ScriptableObject
 {
     public bool placeable = true;
+    [Range(1,8)]public int itemNum;
+
+
 
     public ItemType type;
-
     public enum ItemType
     {
         Tool,
