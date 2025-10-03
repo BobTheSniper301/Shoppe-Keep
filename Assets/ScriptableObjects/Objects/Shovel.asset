@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Shovel
   m_EditorClassIdentifier: 
   placeable: 0
-  itemNum: 3
+  itemNum: 4
   type: 0

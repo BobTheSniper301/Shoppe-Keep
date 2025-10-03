@@ -25,31 +25,18 @@ public class UIManager : MonoBehaviour
             x++;
         }
 
-
-        // Checks each thing in items array, if it's an item it checks the items slot number and if it doesn't match it removes it
-        int y = 1;
-        while (y < items.Length)
-        {
-            if (items[y] is ItemScript)
-            {
-                if (items[y].itemData.itemNum != y)
-                {
-                    items[y - 1] = null;
-                }
-            }
-            y++;
-        }
-
         // Prints all items within the items list
         int z = 0;
         while (z < items.Length)
         {
-            //Debug.Log(items[z]);
+            Debug.Log(items[z]);
             z++;
         }
-    }    
+    }
 
-    void Start()
+
+
+    private void Start()
     {
 
     }
