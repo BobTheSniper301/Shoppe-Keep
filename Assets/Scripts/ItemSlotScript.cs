@@ -8,6 +8,7 @@ public class ItemSlotScript : MonoBehaviour, IDropHandler
 
     public ItemScript item;
     public ItemScript slottedItem;
+    public UIManager uiManager;
 
     public void OnDrop(PointerEventData eventData)
     { 
@@ -27,12 +28,19 @@ public class ItemSlotScript : MonoBehaviour, IDropHandler
 
             item.OnEndDrag(eventData);
         }
-        
+        Debug.Log("hi");
+        // Prints all items within the items list
+        //int z = 0;
+        //while (z < items.Length)
+        //{
+        //    Debug.Log(items[z]);
+        //    z++;
+        //}
     }
 
     private void Start()
     {
-        
+        uiManager = GetComponentInParent<UIManager>();
     }
 
 }
