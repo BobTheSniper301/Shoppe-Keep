@@ -974,11 +974,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c3ad255607bcc74e8376351990f7977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inMenu: 0
-  inOverviewMenu: 0
-  menues: {fileID: 880175633}
-  overviewMenu: {fileID: 1616716811}
-  playerScript: {fileID: 1014425061}
 --- !u!4 &656190223
 Transform:
   m_ObjectHideFlags: 0
@@ -2259,6 +2254,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6e388d0b8f6eaa418ef3851d3e7eb10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inMenu: 0
+  inOverviewMenu: 0
+  menues: {fileID: 880175633}
+  overviewMenu: {fileID: 1616716811}
+  playerScript: {fileID: 1014425061}
   items:
   - {fileID: 0}
   - {fileID: 0}
