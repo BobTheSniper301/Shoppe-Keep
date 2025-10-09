@@ -2259,6 +2259,7 @@ MonoBehaviour:
   menues: {fileID: 880175633}
   overviewMenu: {fileID: 1616716811}
   playerScript: {fileID: 1014425061}
+  saveJson: {fileID: 0}
   items:
   - {fileID: 0}
   - {fileID: 0}
@@ -2277,7 +2278,7 @@ MonoBehaviour:
   - {fileID: 1881758409}
   - {fileID: 2116791825}
   - {fileID: 2091386543}
-  saveJson: {fileID: 0}
+  hotbarNums: 0100000002000000030000000400000005000000060000000700000008000000
 --- !u!114 &1226013086
 MonoBehaviour:
   m_ObjectHideFlags: 0

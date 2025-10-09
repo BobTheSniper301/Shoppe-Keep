@@ -5,14 +5,24 @@ using UnityEngine.UI;
 // This scripts runs on the Inventory slot that the item is being moved to
 public class ItemSlotScript : MonoBehaviour, IDropHandler
 {
-    public int slotNum;
-
-    [HideInInspector]  public bool selected;
-
-    [HideInInspector] public ItemScript item;
-    [HideInInspector] public ItemScript slottedItem;
+    // Object grab stuff
     public UIManager uiManager;
 
+    //[HideInInspector] ScriptableObject scriptItemInSlot;
+
+
+    // Random ones
+    public int slotNum;
+
+    public bool selected;
+
+
+    // Item stuff
+    [HideInInspector] public ItemScript item;
+    [HideInInspector] public ItemScript slottedItem;
+    
+
+    // Color vars
     Color selectionColor;
     public Image slotImage;
 
@@ -37,11 +47,22 @@ public class ItemSlotScript : MonoBehaviour, IDropHandler
         uiManager.getItems();
     }
 
+    public void Selected()
+    {
+        Debug.Log("Selected");
+        selected = true;
+        ItemScript childItem = GetComponentInChildren<ItemScript>();
+        ItemData scriptItemInSlot = childItem.GetComponent<ItemScript>().itemData;
+        scriptItemInSlot.itemToDisplay.SetActive(true);
+
+        ColorUtility.TryParseHtmlString("#84FFDF", out selectionColor);
+        GetComponent<Image>().color = selectionColor;
+
+    }
+
+
     private void Start()
     {
         uiManager = GetComponentInParent<UIManager>();
-        GetComponent<Image>();
-        ColorUtility.TryParseHtmlString("#84FFDF", out selectionColor);
     }
-
 }

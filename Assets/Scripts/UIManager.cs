@@ -8,22 +8,24 @@ public class UIManager : MonoBehaviour
     [HideInInspector] public bool inMenu = false;
     [HideInInspector] public bool inOverviewMenu = false;
 
+    // In scene pull stuff
     public GameObject menues;
     public GameObject overviewMenu;
-
-
     public PlayerScript playerScript;
+    public SaveJson saveJson;
 
+    // Vars for items
     public ItemScript[] items;
     public ItemSlotScript[] itemSlots;
-    public SaveJson saveJson;
+
+    // Hotbar stuff
+    public int[] hotbarNums;
 
 
     public void getItems()
     {
         // Gets a list of all item slots
         int x = 0;
-        //itemSlots = GetComponentsInChildren<ItemSlotScript>();
 
         clearItems();
 
@@ -54,7 +56,7 @@ public class UIManager : MonoBehaviour
     public void Save()
     {
         getItems();
-        GetComponent<SaveJson>().SaveInventoryData();
+        saveJson.SaveInventoryData();
 
 
     }
@@ -84,7 +86,7 @@ public class UIManager : MonoBehaviour
 
     void OverviewMenu()
     {
-        if (!inOverviewMenu && Input.GetKeyDown(KeyCode.Tab))
+        if (!inOverviewMenu && Input.GetKeyDown("tab"))
         {
             inOverviewMenu = true;
             MenuControl(overviewMenu);
@@ -109,8 +111,44 @@ public class UIManager : MonoBehaviour
     }
 
 
+
+
+
+    void SelectHotbar()
+    {
+        if (!inMenu)
+        {
+            foreach (int i in hotbarNums)
+            {
+                if (Input.GetKeyDown((i).ToString()))
+                {
+                    Debug.Log("i " + i);
+                    itemSlots[i - 1].Selected();
+                    Debug.Log("item.selected");
+                }
+            }
+                
+        }
+            
+    }
+
+
+    private void Start()
+    {
+        #region Setup Variables
+        saveJson = GetComponent<SaveJson>();
+
+        #endregion
+        
+
+
+    }
+
+
     void Update()
     {
         CheckMenu();
+
+        SelectHotbar();
     }
 }
