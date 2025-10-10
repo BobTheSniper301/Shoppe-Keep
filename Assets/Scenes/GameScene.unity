@@ -1313,7 +1313,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c3ad255607bcc74e8376351990f7977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  heldObjects: []
+  heldObjects:
+  - {fileID: 0}
 --- !u!4 &656190223
 Transform:
   m_ObjectHideFlags: 0
