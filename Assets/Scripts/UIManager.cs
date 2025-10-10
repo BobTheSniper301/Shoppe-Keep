@@ -15,8 +15,8 @@ public class UIManager : MonoBehaviour
     public SaveJson saveJson;
 
     // Vars for items
-    public ItemScript[] items;
-    public ItemSlotScript[] itemSlots;
+    [HideInInspector] public ItemScript[] items;
+    [HideInInspector] public ItemSlotScript[] itemSlots;
 
     // Hotbar stuff
     public int[] hotbarNums;
@@ -40,6 +40,12 @@ public class UIManager : MonoBehaviour
             Debug.Log(string.Join(", ", items[x]));
             x++;
         }
+    }
+
+
+    void getItemSlots()
+    {
+        itemSlots = GetComponentsInChildren<ItemSlotScript>();
     }
 
 
@@ -122,9 +128,9 @@ public class UIManager : MonoBehaviour
             {
                 if (Input.GetKeyDown((i).ToString()))
                 {
-                    Debug.Log("i " + i);
+                    //Debug.Log("i " + i);
                     itemSlots[i - 1].Selected();
-                    Debug.Log("item.selected");
+                    //Debug.Log("item.selected");
                 }
             }
                 
@@ -139,8 +145,8 @@ public class UIManager : MonoBehaviour
         saveJson = GetComponent<SaveJson>();
 
         #endregion
-        
 
+        getItemSlots();
 
     }
 
@@ -150,5 +156,7 @@ public class UIManager : MonoBehaviour
         CheckMenu();
 
         SelectHotbar();
+
+        
     }
 }

@@ -7,30 +7,37 @@ public class ItemSlotScript : MonoBehaviour, IDropHandler
 {
     // Object grab stuff
     public UIManager uiManager;
+    public GameControllerScript gameController;
 
     //[HideInInspector] ScriptableObject scriptItemInSlot;
 
 
     // Random ones
-    public int slotNum;
 
-    public bool selected;
 
 
     // Item stuff
     [HideInInspector] public ItemScript item;
     [HideInInspector] public ItemScript slottedItem;
-    
+
+
 
     // Color vars
     Color selectionColor;
     public Image slotImage;
 
 
+    // Self stuff
+    public int slotNum;
+
+    public bool selected;
+
+
+
     public void OnDrop(PointerEventData eventData)
     { 
         ItemScript item = eventData.pointerDrag.GetComponent<ItemScript>();
-        ItemScript slottedItem = gameObject.GetComponentInChildren<ItemScript>();
+        updateSlottedItem();
 
         if (transform.childCount == 0)
         {
@@ -47,13 +54,30 @@ public class ItemSlotScript : MonoBehaviour, IDropHandler
         uiManager.getItems();
     }
 
+    void updateSlottedItem()
+    {
+        ItemScript slottedItem = gameObject.GetComponentInChildren<ItemScript>();
+    }
+
+
     public void Selected()
     {
         Debug.Log("Selected");
+
+        foreach (Transform i in gameController.heldObjects)
+        {
+            Debug.Log("hi"); 
+            Debug.Log("i name " + i.name);
+            Debug.Log("slotitem name " + slottedItem.name);
+            if (i.name == slottedItem.name)
+            {
+                Debug.Log("name is true");
+                i.gameObject.SetActive(true);
+            }
+        }
+
         selected = true;
-        ItemScript childItem = GetComponentInChildren<ItemScript>();
-        ItemData scriptItemInSlot = childItem.GetComponent<ItemScript>().itemData;
-        scriptItemInSlot.itemToDisplay.SetActive(true);
+        
 
         ColorUtility.TryParseHtmlString("#84FFDF", out selectionColor);
         GetComponent<Image>().color = selectionColor;
@@ -64,5 +88,6 @@ public class ItemSlotScript : MonoBehaviour, IDropHandler
     private void Start()
     {
         uiManager = GetComponentInParent<UIManager>();
+        updateSlottedItem();
     }
 }

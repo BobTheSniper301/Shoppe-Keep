@@ -113,3 +113,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ae12eec9a95f04429f9dab3fafc860c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uiManager: {fileID: 0}
+  gameController: {fileID: 0}
+  item: {fileID: 0}
+  slottedItem: {fileID: 0}
+  slotImage: {fileID: 0}
+  slotNum: 1
+  selected: 0
