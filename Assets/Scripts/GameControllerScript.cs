@@ -8,13 +8,16 @@ public class GameControllerScript : MonoBehaviour
     public Transform[] heldObjects;
     private void Start()
     {
-        //heldObjects = GameObject.FindGameObjectsWithTag("HeldItem");
 
-        Transform[] tempHeldObjects = GameObject.Find("Player/HeldItems").GetComponentsInChildren<Transform>(includeInactive:true);
+        // Get items from list, starting at a specific value
+        // Gets our held items
+        // Remember to update array in inspector when adding a new item
+        Transform[] tempHeldObjects = GameObject.Find("Player/Main Camera/HeldItems").GetComponentsInChildren<Transform>(includeInactive:true);
         System.Array.ConstrainedCopy(tempHeldObjects, 1, heldObjects, 0, tempHeldObjects.Length - 1);
-        foreach( Transform t in heldObjects)
-        {
-            Debug.Log(t.gameObject.name);
-        }
+        
+        // foreach( Transform t in heldObjects)
+        // {
+        // Debug.Log(t.gameObject.name);
+        // }
     }
 }

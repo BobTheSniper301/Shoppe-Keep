@@ -9,8 +9,6 @@ public class ItemSlotScript : MonoBehaviour, IDropHandler
     public UIManager uiManager;
     public GameControllerScript gameController;
 
-    //[HideInInspector] ScriptableObject scriptItemInSlot;
-
 
     // Random ones
 
@@ -30,13 +28,14 @@ public class ItemSlotScript : MonoBehaviour, IDropHandler
     // Self stuff
     public int slotNum;
 
-    public bool selected;
+    [HideInInspector] public bool lastSelected;
 
+    [HideInInspector] public bool toggled;
 
 
     public void OnDrop(PointerEventData eventData)
-    { 
-        ItemScript item = eventData.pointerDrag.GetComponent<ItemScript>();
+    {
+        item = eventData.pointerDrag.GetComponent<ItemScript>();
         updateSlottedItem();
 
         if (transform.childCount == 0)
@@ -44,7 +43,7 @@ public class ItemSlotScript : MonoBehaviour, IDropHandler
             item.parentAfterDrag = transform;
         }
         else if (transform.childCount == 1)
-        {   
+        {
             // Reparents
             slottedItem.transform.SetParent(item.parentAfterDrag);
             item.parentAfterDrag = transform;
@@ -54,30 +53,49 @@ public class ItemSlotScript : MonoBehaviour, IDropHandler
         uiManager.getItems();
     }
 
-    void updateSlottedItem()
+    public void updateSlottedItem()
     {
-        ItemScript slottedItem = gameObject.GetComponentInChildren<ItemScript>();
+        slottedItem = gameObject.GetComponentInChildren<ItemScript>();
+    }
+
+    void ShowItem()
+    {
+        foreach (Transform i in gameController.heldObjects)
+        {
+            // Debug.Log("hi"); 
+            // Debug.Log("i name " + i.name);
+            // Debug.Log("slotitem name: " + slottedItem.name);
+            // Debug.Log("i.name: " + i.name);
+            if (i.name == slottedItem.name)
+            {
+                // Debug.Log("name is true");
+                i.gameObject.SetActive(true);
+            }
+        }
+    }
+
+
+    void HideItem()
+    {
+        foreach (Transform i in gameController.heldObjects)
+        {
+            if (i.name == slottedItem.name)
+            {
+                // Debug.Log("name is true");
+                i.gameObject.SetActive(false);
+            }
+        }
     }
 
 
     public void Selected()
     {
-        Debug.Log("Selected");
-
-        foreach (Transform i in gameController.heldObjects)
+        if (slottedItem)
         {
-            Debug.Log("hi"); 
-            Debug.Log("i name " + i.name);
-            Debug.Log("slotitem name " + slottedItem.name);
-            if (i.name == slottedItem.name)
-            {
-                Debug.Log("name is true");
-                i.gameObject.SetActive(true);
-            }
+            ShowItem();
         }
 
-        selected = true;
-        
+        lastSelected = true;
 
         ColorUtility.TryParseHtmlString("#84FFDF", out selectionColor);
         GetComponent<Image>().color = selectionColor;
@@ -85,9 +103,37 @@ public class ItemSlotScript : MonoBehaviour, IDropHandler
     }
 
 
+    public void Deselected()
+    {
+        if (slottedItem)
+        {
+            HideItem();
+        }
+
+        lastSelected = false;
+
+        GetComponent<Image>().color = Color.white;
+    }
+
+
+    public void ToggleSelect()
+    {
+        if (lastSelected)
+        {
+            Deselected();
+            lastSelected = false;
+            toggled = true;
+        }
+        else
+        {
+            toggled = false;
+        }
+        
+    }
+
+
     private void Start()
     {
         uiManager = GetComponentInParent<UIManager>();
-        updateSlottedItem();
     }
 }
