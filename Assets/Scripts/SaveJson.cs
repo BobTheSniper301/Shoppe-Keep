@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class SaveJson : MonoBehaviour
 {
-    //public UIManager uiManager;
     private InventoryData _InventoryData = new InventoryData();
     [HideInInspector] string item;
 
@@ -30,6 +29,7 @@ public class SaveJson : MonoBehaviour
     }
 
 }
+
 public class InventoryData
 {
     public ItemScript[] _items;

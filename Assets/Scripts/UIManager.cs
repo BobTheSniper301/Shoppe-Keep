@@ -153,7 +153,7 @@ public class UIManager : MonoBehaviour
     #endregion
 
 
-public void Save()
+    public void Save()
     {
         #region Inventory Save
         getItems();

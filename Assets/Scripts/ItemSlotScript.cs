@@ -62,13 +62,8 @@ public class ItemSlotScript : MonoBehaviour, IDropHandler
     {
         foreach (Transform i in gameController.heldObjects)
         {
-            // Debug.Log("hi"); 
-            // Debug.Log("i name " + i.name);
-            // Debug.Log("slotitem name: " + slottedItem.name);
-            // Debug.Log("i.name: " + i.name);
             if (i.name == slottedItem.name)
             {
-                // Debug.Log("name is true");
                 i.gameObject.SetActive(true);
             }
         }
@@ -81,7 +76,6 @@ public class ItemSlotScript : MonoBehaviour, IDropHandler
         {
             if (i.name == slottedItem.name)
             {
-                // Debug.Log("name is true");
                 i.gameObject.SetActive(false);
             }
         }
