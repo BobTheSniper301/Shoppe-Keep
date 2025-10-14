@@ -12,6 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81630d9ada4b7b64fa9f98e11652a881, type: 3}
   m_Name: Pickaxe
   m_EditorClassIdentifier: 
-  placeable: 1
-  itemNum: 1
+  placeable: 0
   type: 0

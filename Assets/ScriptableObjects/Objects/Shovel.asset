@@ -12,7 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81630d9ada4b7b64fa9f98e11652a881, type: 3}
   m_Name: Shovel
   m_EditorClassIdentifier: 
-  placeable: 0
-  itemNum: 4
-  itemToDisplay: {fileID: 7559464090754371131, guid: 35c40798190cb4c41a3da7bb852b6790, type: 3}
+  placeable: 1
   type: 0

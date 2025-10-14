@@ -7,6 +7,7 @@ using UnityEngine;
 
 public class PlayerScript : MonoBehaviour
 {
+    
     CharacterController characterController;
 
     public PlayerData playerData;
@@ -26,6 +27,7 @@ public class PlayerScript : MonoBehaviour
 
     public bool canMove = true;
     #endregion
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

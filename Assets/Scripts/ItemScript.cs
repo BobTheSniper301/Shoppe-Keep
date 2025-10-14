@@ -10,6 +10,9 @@ public class ItemScript : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 
     public Image image;
 
+    GameObject player;
+
+    UiManager uiManager;
 
     [HideInInspector] public Transform parentAfterDrag;
 
@@ -31,4 +34,28 @@ public class ItemScript : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
         transform.SetParent(parentAfterDrag);
         image.raycastTarget = true;
     }
+
+
+    void OnTriggerStay(Collider other)
+    {
+        transform.position = Vector3.Lerp(transform.position, player.transform.position, 0.01f);
+        Debug.Log("MOVE");
+    }
+
+
+    void Start()
+    {
+        player = GameObject.FindWithTag("Player");
+        uiManager = GameObject.FindWithTag("UiManager").GetComponent<UiManager>();
+    }
+
+    void Update()
+    {
+        // Reaches the player
+        if (Vector3.Distance(transform.position, player.transform.position) <= 1.2f)
+        {
+            uiManager.PickUpItem(this.gameObject);
+        }
+    }
+
 }

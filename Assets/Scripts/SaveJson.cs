@@ -10,7 +10,7 @@ public class SaveJson : MonoBehaviour
         // Clears file.
         ClearJsonFile(Application.persistentDataPath + "/InventoryData.json");
         
-        _InventoryData._items = GetComponent<UIManager>().items;
+        _InventoryData._items = GetComponent<UiManager>().items;
         item = JsonUtility.ToJson(_InventoryData);
         System.IO.File.WriteAllText(Application.persistentDataPath + "/InventoryData.json", item);
         Debug.Log(item);
@@ -18,7 +18,7 @@ public class SaveJson : MonoBehaviour
 
     // public void LoadInventoryData()
     // {
-    //     GetComponent<UIManager>().items = JsonUtility.FromJson<ItemScript[]>(item);
+    //     GetComponent<UiManager>().items = JsonUtility.FromJson<ItemScript[]>(item);
     // }
 
     

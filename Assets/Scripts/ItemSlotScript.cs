@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class ItemSlotScript : MonoBehaviour, IDropHandler
 {
     // Object grab stuff
-    public UIManager uiManager;
+    public UiManager uiManager;
     public GameControllerScript gameController;
 
 
@@ -89,6 +89,8 @@ public class ItemSlotScript : MonoBehaviour, IDropHandler
             ShowItem();
         }
 
+        uiManager.selectedItem = GetComponentInChildren<ItemScript>().gameObject;
+
         lastSelected = true;
 
         ColorUtility.TryParseHtmlString("#84FFDF", out selectionColor);
@@ -128,6 +130,6 @@ public class ItemSlotScript : MonoBehaviour, IDropHandler
 
     private void Start()
     {
-        uiManager = GetComponentInParent<UIManager>();
+        uiManager = GetComponentInParent<UiManager>();
     }
 }

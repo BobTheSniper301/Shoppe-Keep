@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-public class UIManager : MonoBehaviour
+public class UiManager : MonoBehaviour
 {
     [HideInInspector] public bool inMenu = false;
     [HideInInspector] public bool inOverviewMenu = false;
@@ -18,6 +18,8 @@ public class UIManager : MonoBehaviour
     [HideInInspector] public ItemScript[] items;
     [HideInInspector] public ItemSlotScript[] itemSlots;
     [HideInInspector] public int lastItemSlotNum;
+    [HideInInspector] public GameObject itemPickedUp;
+    [HideInInspector] public GameObject selectedItem;
 
     // Hotbar stuff
     public int[] hotbarNums;
@@ -92,10 +94,36 @@ public class UIManager : MonoBehaviour
 
                 }
             }
-                
+
         }
-            
+
     }
+    
+    
+    public void PickUpItem(GameObject itemFromGround)
+    {
+        foreach (ItemSlotScript i in itemSlots)
+        {
+            if (i.GetComponentInChildren<ItemScript>() == null)
+            {
+                itemFromGround.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+                itemFromGround.transform.SetParent(i.transform);
+                getItems();
+                break;
+            }
+        }
+    }
+
+
+    void DropItem()
+    {
+        selectedItem.transform.SetParent(null);
+        DeselectAll();
+        selectedItem.transform.position = new Vector3(playerScript.gameObject.transform.position.x, playerScript.gameObject.transform.position.y, playerScript.gameObject.transform.position.z+5);
+        selectedItem.transform.localScale = new Vector3(10, 10, 10);
+
+    }
+
     #endregion
 
 
@@ -187,6 +215,7 @@ public class UIManager : MonoBehaviour
         getItemSlots();
 
         // Load();
+        getItems(); // Place holder for load for now
     }
 
 
@@ -196,6 +225,9 @@ public class UIManager : MonoBehaviour
 
         SelectHotbar();
 
-        
+        if (Input.GetKeyDown("g"))
+        {
+            DropItem();   
+        }
     }
 }
