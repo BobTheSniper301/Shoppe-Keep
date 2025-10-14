@@ -76,8 +76,8 @@ public class PlayerScript : MonoBehaviour
 
         #endregion
 
-            #region Handles Rotation
-            characterController.Move(moveDirection * Time.deltaTime);
+        #region Handles Rotation
+        characterController.Move(moveDirection * Time.deltaTime);
 
         if (canMove)
         {

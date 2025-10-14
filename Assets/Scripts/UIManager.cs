@@ -12,7 +12,8 @@ public class UiManager : MonoBehaviour
     public GameObject menues;
     public GameObject overviewMenu;
     public PlayerScript playerScript;
-    public SaveJson saveJson;
+    [HideInInspector] public SaveJson saveJson;
+    public Camera camera;
 
     // Vars for items
     [HideInInspector] public ItemScript[] items;
@@ -117,16 +118,25 @@ public class UiManager : MonoBehaviour
 
     void DropItem()
     {
-        selectedItem.transform.SetParent(null);
-        DeselectAll();
-        selectedItem.transform.position = new Vector3(playerScript.gameObject.transform.position.x, playerScript.gameObject.transform.position.y, playerScript.gameObject.transform.position.z+5);
-        selectedItem.transform.localScale = new Vector3(10, 10, 10);
+        if (selectedItem)
+        {
+            
+            transform.rotation = camera.transform.rotation;
+            selectedItem.transform.SetParent(null);
+            selectedItem.transform.position = playerScript.gameObject.transform.position;
+            selectedItem.transform.Translate(transform.forward * 5);
+            Debug.Log(transform.forward);
+            //selectedItem.transform.position = new Vector3(playerScript.gameObject.transform.position.x, playerScript.gameObject.transform.position.y, playerScript.gameObject.transform.position.z + 5);
+            selectedItem.transform.localScale = new Vector3(10, 10, 10);
+        }
+            DeselectAll();
 
     }
 
     #endregion
 
 
+    
     #region Menus 
 
     // Controls what menus open and which ones are closed. Will wipe all menus if a null value is passed
@@ -207,10 +217,7 @@ public class UiManager : MonoBehaviour
 
     private void Start()
     {
-        #region Setup Variables
         saveJson = GetComponent<SaveJson>();
-
-        #endregion
 
         getItemSlots();
 

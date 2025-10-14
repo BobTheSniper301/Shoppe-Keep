@@ -89,7 +89,14 @@ public class ItemSlotScript : MonoBehaviour, IDropHandler
             ShowItem();
         }
 
-        uiManager.selectedItem = GetComponentInChildren<ItemScript>().gameObject;
+        if (transform.childCount > 0)
+        {
+            uiManager.selectedItem = GetComponentInChildren<ItemScript>().gameObject;
+        }
+        else
+        {
+            uiManager.selectedItem = null;
+        }
 
         lastSelected = true;
 
