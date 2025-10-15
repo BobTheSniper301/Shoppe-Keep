@@ -1080,9 +1080,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 564858492745151279, guid: 78cebbaa49adb604a9e72732269e7b56, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2836263566289904777, guid: 78cebbaa49adb604a9e72732269e7b56, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3286405101478262559, guid: 78cebbaa49adb604a9e72732269e7b56, type: 3}
       propertyPath: m_CullTransparentMesh
@@ -1098,7 +1102,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5097223605701358171, guid: 78cebbaa49adb604a9e72732269e7b56, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5210816964236446138, guid: 78cebbaa49adb604a9e72732269e7b56, type: 3}
       propertyPath: m_Enabled
