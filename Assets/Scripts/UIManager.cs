@@ -109,6 +109,7 @@ public class UiManager : MonoBehaviour
             {
                 itemFromGround.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
                 itemFromGround.transform.SetParent(i.transform);
+                itemFromGround.transform.localRotation = new Quaternion(0, 0, 0, 0);
                 getItems();
                 break;
             }
@@ -121,16 +122,20 @@ public class UiManager : MonoBehaviour
         if (selectedItem)
         {
             
-            transform.rotation = camera.transform.rotation;
+            selectedItem.transform.rotation = camera.transform.rotation;
+            selectedItem.transform.eulerAngles = new Vector3(0, selectedItem.transform.rotation.eulerAngles.y, selectedItem.transform.rotation.eulerAngles.z);
+
+            //Debug.Log(camera.transform.rotation);
             selectedItem.transform.SetParent(null);
             selectedItem.transform.position = playerScript.gameObject.transform.position;
             selectedItem.transform.Translate(transform.forward * 5);
-            Debug.Log(transform.forward);
+            //Debug.Log(transform.forward);
             //selectedItem.transform.position = new Vector3(playerScript.gameObject.transform.position.x, playerScript.gameObject.transform.position.y, playerScript.gameObject.transform.position.z + 5);
             selectedItem.transform.localScale = new Vector3(10, 10, 10);
+            
         }
             DeselectAll();
-
+            getItems();
     }
 
     #endregion
