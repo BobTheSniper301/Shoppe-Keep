@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 
 public class UiManager : MonoBehaviour
@@ -103,18 +104,35 @@ public class UiManager : MonoBehaviour
     
     public void PickUpItem(GameObject itemFromGround)
     {
-        foreach (ItemSlotScript i in itemSlots)
+        if (itemFromGround.GetComponent<ItemScript>().itemData.itemType == ItemData.ItemType.Stackable)
         {
-            if (i.GetComponentInChildren<ItemScript>() == null)
+            foreach (ItemScript i in items)
             {
-                itemFromGround.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
-                itemFromGround.transform.SetParent(i.transform);
-                itemFromGround.transform.localRotation = new Quaternion(0, 0, 0, 0);
-                getItems();
-                break;
+                if (itemFromGround.name == i.name)
+                {
+                    Destroy(itemFromGround);
+                    int itemAmountNum = int.Parse(i.transform.parent.GetComponentInChildren<Text>().text.ToString());
+                    itemAmountNum++;
+                    i.transform.parent.GetComponentInChildren<Text>().text = itemAmountNum.ToString();
+                }
             }
         }
+        else
+        {
+            foreach (ItemSlotScript i in itemSlots)
+            {
+                if (i.GetComponentInChildren<ItemScript>() == null)
+                {
+                    itemFromGround.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+                    itemFromGround.transform.SetParent(i.transform);
+                    itemFromGround.transform.localRotation = new Quaternion(0, 0, 0, 0);
+                    break;
+                }
+            }
+        }
+        getItems();
     }
+
 
 
     void DropItem()
@@ -125,12 +143,12 @@ public class UiManager : MonoBehaviour
             selectedItem.transform.rotation = camera.transform.rotation;
             selectedItem.transform.eulerAngles = new Vector3(0, selectedItem.transform.rotation.eulerAngles.y, selectedItem.transform.rotation.eulerAngles.z);
 
-            //Debug.Log(camera.transform.rotation);
             selectedItem.transform.SetParent(null);
+
             selectedItem.transform.position = playerScript.gameObject.transform.position;
             selectedItem.transform.Translate(transform.forward * 5);
+            
             //Debug.Log(transform.forward);
-            //selectedItem.transform.position = new Vector3(playerScript.gameObject.transform.position.x, playerScript.gameObject.transform.position.y, playerScript.gameObject.transform.position.z + 5);
             selectedItem.transform.localScale = new Vector3(10, 10, 10);
             
         }

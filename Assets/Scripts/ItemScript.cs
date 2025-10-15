@@ -36,16 +36,17 @@ public class ItemScript : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
     }
 
 
-    void OnTriggerStay(Collider other)
-    {
-        transform.position = Vector3.Lerp(transform.position, player.transform.position, 0.01f);
-        Debug.Log("MOVE");
-        // Reaches the player
-        if (Vector3.Distance(transform.position, player.transform.position) <= 1.2f)
-        {
-            uiManager.PickUpItem(this.gameObject);
-        }
-    }
+    //void OnTriggerStay(Collider other)
+    //{
+    //    // atempt to set up as an async function
+    //    transform.position = Vector3.Lerp(transform.position, player.transform.position, 0.01f);
+    //    Debug.Log("MOVE");
+    //    // Reaches the player
+    //    if (Vector3.Distance(transform.position, player.transform.position) <= 1.2f)
+    //    {
+    //        uiManager.PickUpItem(this.gameObject);
+    //    }
+    //}
 
 
     void Start()

@@ -6,7 +6,7 @@ public class ItemData : ScriptableObject
     public bool placeable = true;
 
 
-    public ItemType type;
+    public ItemType itemType;
     public enum ItemType
     {
         Tool,
