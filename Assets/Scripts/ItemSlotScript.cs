@@ -36,7 +36,7 @@ public class ItemSlotScript : MonoBehaviour, IDropHandler
     public void OnDrop(PointerEventData eventData)
     {
         item = eventData.pointerDrag.GetComponent<ItemScript>();
-        updateSlottedItem();
+        UpdateItemSlot();
 
         if (transform.childCount == 0)
         {
@@ -53,10 +53,14 @@ public class ItemSlotScript : MonoBehaviour, IDropHandler
         uiManager.getItems();
     }
 
-    public void updateSlottedItem()
+
+    public void UpdateItemSlot()
     {
         slottedItem = gameObject.GetComponentInChildren<ItemScript>();
+        if (slottedItem && slottedItem.itemData.itemType == ItemData.ItemType.Stackable && GetComponentInChildren<Text>().text.Length == 0)
+            gameObject.GetComponentInChildren<Text>().text = "1";
     }
+
 
     void ShowItem()
     {
@@ -89,7 +93,7 @@ public class ItemSlotScript : MonoBehaviour, IDropHandler
             ShowItem();
         }
 
-        if (transform.childCount > 0)
+        if (transform.childCount > 1)
         {
             uiManager.selectedItem = GetComponentInChildren<ItemScript>().gameObject;
         }

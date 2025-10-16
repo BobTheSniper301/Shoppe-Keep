@@ -17,8 +17,11 @@ public class UiManager : MonoBehaviour
     public Camera camera;
 
     // Vars for items
+    //Set in inspector first
     [HideInInspector] public ItemScript[] items;
+    [HideInInspector] public Text[] stackableNums;
     [HideInInspector] public ItemSlotScript[] itemSlots;
+    
     [HideInInspector] public int lastItemSlotNum;
     [HideInInspector] public GameObject itemPickedUp;
     [HideInInspector] public GameObject selectedItem;
@@ -39,15 +42,21 @@ public class UiManager : MonoBehaviour
         // Check each of the items slots to see if they have an item in them
         foreach (ItemSlotScript i in itemSlots)
         {
-            i.updateSlottedItem();
+            i.UpdateItemSlot();
             //If it does have an item, it stores it into the items list at the proper index
             if (i.GetComponentInChildren<ItemScript>())
             {
                 items[x] = i.GetComponentInChildren<ItemScript>();
             }
+            if (i.GetComponentInChildren<Text>())
+            {
+                stackableNums[x] = i.GetComponentInChildren<Text>();
+            }
+
             // Debug.Log(string.Join(", ", items[x]));
             x++;
         }
+        
     }
 
     // Gets a list of all item slots
@@ -108,12 +117,13 @@ public class UiManager : MonoBehaviour
         {
             foreach (ItemScript i in items)
             {
-                if (itemFromGround.name == i.name)
+                if (itemFromGround.name == i.gameObject.name)
                 {
                     Destroy(itemFromGround);
                     int itemAmountNum = int.Parse(i.transform.parent.GetComponentInChildren<Text>().text.ToString());
                     itemAmountNum++;
                     i.transform.parent.GetComponentInChildren<Text>().text = itemAmountNum.ToString();
+                    break;
                 }
             }
         }
@@ -126,6 +136,7 @@ public class UiManager : MonoBehaviour
                     itemFromGround.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
                     itemFromGround.transform.SetParent(i.transform);
                     itemFromGround.transform.localRotation = new Quaternion(0, 0, 0, 0);
+                    //Debug.Log("name false");
                     break;
                 }
             }
@@ -225,17 +236,17 @@ public class UiManager : MonoBehaviour
     }
 
 
-    // public void Load()
-    // {
-    //     #region Inventory Load
-    //     Debug.Log("load");
-    //     saveJson.LoadInventoryData();
+     public void Load()
+    {
+        #region Inventory Load
+        Debug.Log("load");
+        saveJson.LoadInventoryData();
 
-    //     getItems();
+        getItems();
 
-    //     #endregion
+        #endregion
 
-    // }
+    }
 
 
     private void Start()
@@ -244,8 +255,8 @@ public class UiManager : MonoBehaviour
 
         getItemSlots();
 
-        // Load();
-        getItems(); // Place holder for load for now
+        Load();
+        //getItems(); // Place holder for load for now
     }
 
 
