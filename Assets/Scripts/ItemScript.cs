@@ -14,12 +14,12 @@ public class ItemScript : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 
     UiManager uiManager;
 
-    [HideInInspector] public Transform parentAfterDrag;
+    [HideInInspector] public Transform parentBeforeDrag;
 
     public void OnBeginDrag(PointerEventData eventData)
     {
         image.raycastTarget = false;
-        parentAfterDrag = transform.parent;
+        parentBeforeDrag = transform.parent;
         transform.SetParent(transform.root);
         transform.SetAsLastSibling();
     }
@@ -31,7 +31,7 @@ public class ItemScript : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        transform.SetParent(parentAfterDrag);
+        transform.SetParent(parentBeforeDrag);
         image.raycastTarget = true;
     }
 
@@ -43,6 +43,7 @@ public class ItemScript : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
         // Reaches the player
         if (Vector3.Distance(transform.position, player.transform.position) <= 1.2f)
         {
+            Debug.Log("pickup");
             uiManager.PickUpItem(this.gameObject);
         }
     }

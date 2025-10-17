@@ -21,11 +21,10 @@ public class SaveJson : MonoBehaviour
 
     public void LoadInventoryData()
     {
-        string asdf = File.ReadAllText(item);
-        InventoryData loadData = JsonUtility.FromJson<InventoryData>(asdf);
-        Debug.Log(loadData._items.Length);
-        GetComponent<UiManager>().items = loadData._items;  
-        Debug.Log(GetComponent<UiManager>().items.Length);
+        string filePath = File.ReadAllText(Application.persistentDataPath + "/InventoryData.json");
+        InventoryData loadData = JsonUtility.FromJson<InventoryData>(filePath);
+        GetComponent<UiManager>().items = loadData._items;
+        GetComponent<UiManager>().stackableNums = loadData._stackableNums;
     }
 
 
@@ -40,5 +39,5 @@ public class SaveJson : MonoBehaviour
 public class InventoryData
 {
     public ItemScript[] _items;
-    public Text[] _stackableNums;
+    public string[] _stackableNums;
 }

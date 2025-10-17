@@ -19,7 +19,7 @@ public class UiManager : MonoBehaviour
     // Vars for items
     //Set in inspector first
     [HideInInspector] public ItemScript[] items;
-    [HideInInspector] public Text[] stackableNums;
+    [HideInInspector] public string[] stackableNums;
     [HideInInspector] public ItemSlotScript[] itemSlots;
     
     [HideInInspector] public int lastItemSlotNum;
@@ -28,6 +28,9 @@ public class UiManager : MonoBehaviour
 
     // Hotbar stuff
     public int[] hotbarNums;
+
+    //PREFABS
+    [SerializeField] GameObject shovelPrefab;
 
 
     #region Items
@@ -50,7 +53,8 @@ public class UiManager : MonoBehaviour
             }
             if (i.GetComponentInChildren<Text>())
             {
-                stackableNums[x] = i.GetComponentInChildren<Text>();
+
+                stackableNums[x] = i.GetComponentInChildren<Text>().text;
             }
 
             // Debug.Log(string.Join(", ", items[x]));
@@ -117,7 +121,7 @@ public class UiManager : MonoBehaviour
         {
             foreach (ItemScript i in items)
             {
-                if (itemFromGround.name == i.gameObject.name)
+                if (i is ItemScript && itemFromGround.name == i.gameObject.name)
                 {
                     Destroy(itemFromGround);
                     int itemAmountNum = int.Parse(i.transform.parent.GetComponentInChildren<Text>().text.ToString());
@@ -136,7 +140,7 @@ public class UiManager : MonoBehaviour
                     itemFromGround.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
                     itemFromGround.transform.SetParent(i.transform);
                     itemFromGround.transform.localRotation = new Quaternion(0, 0, 0, 0);
-                    //Debug.Log("name false");
+
                     break;
                 }
             }
@@ -231,6 +235,11 @@ public class UiManager : MonoBehaviour
         getItems();
         saveJson.SaveInventoryData();
 
+        //for (int i = 0; i < items.Length; i++)
+        //{
+        //    Debug.Log(items[i]);
+        //}
+
         #endregion
 
     }
@@ -241,6 +250,19 @@ public class UiManager : MonoBehaviour
         #region Inventory Load
         Debug.Log("load");
         saveJson.LoadInventoryData();
+        int i = 0;
+        while (i < items.Length)
+        {
+            if (items[i] is ItemScript)
+            {
+                items[i].gameObject.transform.SetParent(itemSlots[i].gameObject.transform);
+            }
+            if (stackableNums[i] != "")
+            {
+                itemSlots[i].GetComponentInChildren<Text>().text = stackableNums[i];
+            }
+            i++;
+        }
 
         getItems();
 
@@ -257,6 +279,9 @@ public class UiManager : MonoBehaviour
 
         Load();
         //getItems(); // Place holder for load for now
+
+        //Move later
+        Instantiate(shovelPrefab, GameObject.Find("Player").transform);
     }
 
 

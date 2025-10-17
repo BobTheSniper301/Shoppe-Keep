@@ -38,15 +38,21 @@ public class ItemSlotScript : MonoBehaviour, IDropHandler
         item = eventData.pointerDrag.GetComponent<ItemScript>();
         UpdateItemSlot();
 
-        if (transform.childCount == 0)
+        if (transform.childCount == 1)
         {
-            item.parentAfterDrag = transform;
+            GetComponentInChildren<Text>().text = item.parentBeforeDrag.GetComponentInChildren<Text>().text;
+            item.parentBeforeDrag = transform;
         }
-        else if (transform.childCount == 1)
+        else if (transform.childCount == 2)
         {
+            // Update stackable item amount
+            string slottedItemAmount = slottedItem.transform.parent.GetComponentInChildren<Text>().text;
+            string itemAmount = item.parentBeforeDrag.GetComponentInChildren<Text>().text;
+            item.parentBeforeDrag.GetComponentInChildren<Text>().text = slottedItemAmount;
+            slottedItem.transform.parent.GetComponentInChildren<Text>().text = itemAmount;
             // Reparents
-            slottedItem.transform.SetParent(item.parentAfterDrag);
-            item.parentAfterDrag = transform;
+            slottedItem.transform.SetParent(item.parentBeforeDrag);
+            item.parentBeforeDrag = transform;
         }
         item.OnEndDrag(eventData);
         // Updates the Items list with the new parents
@@ -59,6 +65,8 @@ public class ItemSlotScript : MonoBehaviour, IDropHandler
         slottedItem = gameObject.GetComponentInChildren<ItemScript>();
         if (slottedItem && slottedItem.itemData.itemType == ItemData.ItemType.Stackable && GetComponentInChildren<Text>().text.Length == 0)
             gameObject.GetComponentInChildren<Text>().text = "1";
+        else if ((!slottedItem || slottedItem.itemData.itemType != ItemData.ItemType.Stackable))
+            gameObject.GetComponentInChildren<Text>().text = "";
     }
 
 
