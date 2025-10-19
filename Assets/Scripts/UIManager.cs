@@ -14,20 +14,19 @@ public class UiManager : MonoBehaviour
     public GameObject overviewMenu;
     public PlayerScript playerScript;
     [HideInInspector] public SaveJson saveJson;
-    public Camera camera;
+    public new Camera camera;
 
     // Vars for items
-    //Set in inspector first
+
+        //Set in inspector first
+    public ItemData[] itemsData;
     [HideInInspector] public ItemScript[] items;
     [HideInInspector] public string[] stackableNums;
     [HideInInspector] public ItemSlotScript[] itemSlots;
-    
+    [HideInInspector] public int[] hotbarNums;
     [HideInInspector] public int lastItemSlotNum;
     [HideInInspector] public GameObject itemPickedUp;
     [HideInInspector] public GameObject selectedItem;
-
-    // Hotbar stuff
-    public int[] hotbarNums;
 
     //PREFABS
     [SerializeField] GameObject shovelPrefab;
@@ -50,10 +49,10 @@ public class UiManager : MonoBehaviour
             if (i.GetComponentInChildren<ItemScript>())
             {
                 items[x] = i.GetComponentInChildren<ItemScript>();
+                itemsData[x] = items[x].itemData;
             }
             if (i.GetComponentInChildren<Text>())
             {
-
                 stackableNums[x] = i.GetComponentInChildren<Text>().text;
             }
 
@@ -277,11 +276,10 @@ public class UiManager : MonoBehaviour
 
         getItemSlots();
 
-        Load();
-        //getItems(); // Place holder for load for now
+        // Load();
 
-        //Move later
-        Instantiate(shovelPrefab, GameObject.Find("Player").transform);
+        // Move later
+        // Instantiate(shovelPrefab, GameObject.Find("Player").transform);
     }
 
 
