@@ -64,12 +64,12 @@ public class SaveJson : MonoBehaviour
         ClearJsonFile(Application.persistentDataPath + "/InventoryData.json");
 
         // Debug.Log(_InventoryData);
-        Debug.Log(_InventoryData.inventoryItemDatas);
+        // Debug.Log(_InventoryData.inventoryItemDatas);
 
         if (_InventoryData.inventoryItemDatas == null)
         {
             _InventoryData.inventoryItemDatas = new List<InventoryItemData>(8);
-            InventoryItemData emptyObj = new InventoryItemData("null", "null");
+            InventoryItemData emptyObj = new InventoryItemData("null", "null", false);
             for (int i = 0; i < uiManager.items.Length; i++)
             {
                  _InventoryData.inventoryItemDatas.Add(emptyObj);
@@ -87,22 +87,22 @@ public class SaveJson : MonoBehaviour
         {
             // Debug.Log("update with info");
             // Debug.Log("i: " + i);
-            Debug.Log("before: " + _InventoryData.inventoryItemDatas[3]._itemType);
+            // Debug.Log("before: " + _InventoryData.inventoryItemDatas[3]._itemType);
             if (uiManager.itemsData[i] != null)
             {
                 // Debug.Log("hi");
-                Debug.Log("itemdata at i: " + uiManager.itemsData[i]);
-                Debug.Log(" i: " + i);
-                InventoryItemData item = new InventoryItemData(uiManager.itemsData[i].itemName, uiManager.itemsData[i].itemType.ToString());
+                // Debug.Log("itemdata at i: " + uiManager.itemsData[i]);
+                // Debug.Log(" i: " + i);
+                InventoryItemData item = new InventoryItemData(uiManager.itemsData[i].itemName, uiManager.itemsData[i].itemType.ToString(), uiManager.itemsData[i].placeable);
                 _InventoryData.inventoryItemDatas[i] = item;
                 // _InventoryData.inventoryItemDatas[i]._name = uiManager.itemsData[i].name;
                 // _InventoryData.inventoryItemDatas[i]._itemType = uiManager.itemsData[i].itemType.ToString();
             }
             else
                 break;
-            Debug.Log("after: " + _InventoryData.inventoryItemDatas[3]._itemType);
+            // Debug.Log("after: " + _InventoryData.inventoryItemDatas[3]._itemType);
         }
-        Debug.Log("did not leave");
+        // Debug.Log("did not leave");
         // Debug.Log("at 0: " + _InventoryData.inventoryItemDatas[0]);
         // Debug.Log("name at 0: " + _InventoryData.inventoryItemDatas[0]._name);
 
@@ -112,7 +112,7 @@ public class SaveJson : MonoBehaviour
         System.IO.File.WriteAllText(Application.persistentDataPath + "/InventoryData.json", item);
         // Console.WriteLine(item);
 
-        Debug.Log("item: " + item);
+        // Debug.Log("item: " + item);
     }
 
 
@@ -128,8 +128,7 @@ public class SaveJson : MonoBehaviour
             {
                 uiManager.itemsData[i] = ScriptableObject.CreateInstance<ItemData>();
             }
-            uiManager.itemsData[i].itemName = loadData.inventoryItemDatas[i]._name;
-           object empty;
+            object empty;
             if (!Enum.TryParse(typeof(ItemData.ItemType), loadData.inventoryItemDatas[i]._itemType, out empty))
             {
                 uiManager.itemsData[i].itemType = ItemData.ItemType.EMPTY;
@@ -138,7 +137,11 @@ public class SaveJson : MonoBehaviour
             {
                 uiManager.itemsData[i].itemType = (ItemData.ItemType)Enum.Parse(typeof(ItemData.ItemType), loadData.inventoryItemDatas[i]._itemType);
             }
-            Debug.Log(uiManager.itemsData[i]);
+            uiManager.itemsData[i].itemName = loadData.inventoryItemDatas[i]._name;
+            uiManager.itemsData[i].placeable = loadData.inventoryItemDatas[i]._placeable;
+
+            // uiManager.itemsData[i].itemType = (ItemData.ItemType)Enum.Parse(typeof(ItemData.ItemType), loadData.inventoryItemDatas[i]._itemType);
+            // Debug.Log(uiManager.itemsData[i]);
 
         }
 
@@ -153,11 +156,13 @@ public class InventoryItemData
 {
     public string _name;
     public string _itemType;
+    public bool _placeable;
 
-    public InventoryItemData(string name, string itemType)
+    public InventoryItemData(string name, string itemType, bool placeable)
     {
         _name = name;
         _itemType = itemType;
+        _placeable = placeable;
     }
 
     // public InventoryItemData(string name, Enum itemType, Image image, Sprite sprite)

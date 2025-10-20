@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using System.Runtime.CompilerServices;
 
 
 public class UiManager : MonoBehaviour
@@ -247,7 +248,7 @@ public class UiManager : MonoBehaviour
      public void Load()
     {
         #region Inventory Load
-        Debug.Log("load");
+        // Debug.Log("load");
         saveJson.LoadInventoryData();
         int i = 0;
         while (i < items.Length)
@@ -265,6 +266,25 @@ public class UiManager : MonoBehaviour
 
         // Instantiate(item, GameObject.Find("Player").transform);
 
+        for (int j = 0; j < itemsData.Length; j++)
+        {
+            // Debug.Log("I ran");
+            // Debug.Log(itemsData[j].itemName);
+            if (itemsData[j].itemName != "null")
+            {
+                // Debug.Log("if statement");
+                // Debug.Log(itemsData[j]);
+                // Debug.Log(item);
+                // Debug.Log("item script: " + item.GetComponent<ItemScript>());
+                // Debug.Log("item data: " + item.GetComponent<ItemScript>().itemData);
+
+                GameObject newItem = Instantiate(item, itemSlots[j].transform);
+                newItem.GetComponent<ItemScript>().itemData = itemsData[j];
+                newItem.GetComponent<ItemScript>().itemData.name = itemsData[j].itemName;
+                newItem.name = itemsData[j].itemName;
+                Debug.Log(newItem.name);
+            }
+        }
 
         getItems();
 

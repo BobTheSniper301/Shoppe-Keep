@@ -5,7 +5,7 @@ using UnityEngine.UI;
 [CreateAssetMenu]
 public class ItemData : ScriptableObject
 {
-    public bool placeable = true;
+    public bool placeable = false;
     public string itemName = "null";
 
     public ItemType itemType;

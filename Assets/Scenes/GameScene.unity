@@ -1953,7 +1953,7 @@ MonoBehaviour:
   lastItemSlotNum: 0
   itemPickedUp: {fileID: 0}
   selectedItem: {fileID: 0}
-  shovelPrefab: {fileID: 8386220439716674854, guid: 78cebbaa49adb604a9e72732269e7b56, type: 3}
+  item: {fileID: 4699033617661492032, guid: 18890f3f1865d7c41ac3f5f6cda25803, type: 3}
 --- !u!114 &1226013086
 MonoBehaviour:
   m_ObjectHideFlags: 0
