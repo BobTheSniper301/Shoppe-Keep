@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: Pickaxe
   m_EditorClassIdentifier: 
   placeable: 0
-  type: 0
+  name: Pickaxe
+  itemType: 1

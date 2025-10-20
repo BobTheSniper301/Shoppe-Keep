@@ -12,6 +12,7 @@ public class SaveJson : MonoBehaviour
 {
     private InventoryData _InventoryData = new InventoryData();
     [HideInInspector] string item;
+    public UiManager uiManager;
 
     // Function to call to clear any json file if given the path.
     public static void ClearJsonFile(string filepath)
@@ -24,8 +25,8 @@ public class SaveJson : MonoBehaviour
     //         // Clears file.
     //         ClearJsonFile(Application.persistentDataPath + "/InventoryData.json");
 
-    //         _InventoryData.inventoryItemDatas = GetComponent<UiManager>().itemsData;
-    //         _InventoryData._stackableNums = GetComponent<UiManager>().stackableNums;
+    //         _InventoryData.inventoryItemDatas = uiManager.itemsData;
+    //         _InventoryData._stackableNums = uiManager.stackableNums;
     //         item = JsonUtility.ToJson(_InventoryData);
     //         System.IO.File.WriteAllText(Application.persistentDataPath + "/InventoryData.json", item);
     //         Debug.Log(item);
@@ -36,8 +37,8 @@ public class SaveJson : MonoBehaviour
     //     {
     //         string filePath = File.ReadAllText(Application.persistentDataPath + "/InventoryData.json");
     //         InventoryData loadData = JsonUtility.FromJson<InventoryData>(filePath);
-    //         GetComponent<UiManager>().itemsData = loadData.inventoryItemDatas;
-    //         GetComponent<UiManager>().stackableNums = loadData._stackableNums;
+    //         uiManager.itemsData = loadData.inventoryItemDatas;
+    //         uiManager.stackableNums = loadData._stackableNums;
     //     }
 
     // public void SaveInventoryData(int[][] something)
@@ -69,7 +70,7 @@ public class SaveJson : MonoBehaviour
         {
             _InventoryData.inventoryItemDatas = new List<InventoryItemData>(8);
             InventoryItemData emptyObj = new InventoryItemData("null", "null");
-            for (int i = 0; i < GetComponent<UiManager>().items.Length; i++)
+            for (int i = 0; i < uiManager.items.Length; i++)
             {
                  _InventoryData.inventoryItemDatas.Add(emptyObj);
             }
@@ -79,7 +80,7 @@ public class SaveJson : MonoBehaviour
         // Debug.Log("Count: " + _InventoryData.inventoryItemDatas.Count);
         // Debug.Log("at 0: " + _InventoryData.inventoryItemDatas[0]);
         // Debug.Log("name at 0: " + _InventoryData.inventoryItemDatas[0]._name);
-        // Debug.Log("itemData at 1, name: " + GetComponent<UiManager>().itemsData[1].name);
+        // Debug.Log("itemData at 1, name: " + uiManager.itemsData[1].name);
 
         // Updates each item with the right information
         for (int i = 0; i < _InventoryData.inventoryItemDatas.Count; i++)
@@ -87,15 +88,15 @@ public class SaveJson : MonoBehaviour
             // Debug.Log("update with info");
             // Debug.Log("i: " + i);
             Debug.Log("before: " + _InventoryData.inventoryItemDatas[3]._itemType);
-            if (GetComponent<UiManager>().itemsData[i] != null)
+            if (uiManager.itemsData[i] != null)
             {
                 // Debug.Log("hi");
-                Debug.Log("itemdata at i: " + GetComponent<UiManager>().itemsData[i]);
+                Debug.Log("itemdata at i: " + uiManager.itemsData[i]);
                 Debug.Log(" i: " + i);
-                InventoryItemData item = new InventoryItemData(GetComponent<UiManager>().itemsData[i].name, GetComponent<UiManager>().itemsData[i].itemType.ToString());
+                InventoryItemData item = new InventoryItemData(uiManager.itemsData[i].itemName, uiManager.itemsData[i].itemType.ToString());
                 _InventoryData.inventoryItemDatas[i] = item;
-                // _InventoryData.inventoryItemDatas[i]._name = GetComponent<UiManager>().itemsData[i].name;
-                // _InventoryData.inventoryItemDatas[i]._itemType = GetComponent<UiManager>().itemsData[i].itemType.ToString();
+                // _InventoryData.inventoryItemDatas[i]._name = uiManager.itemsData[i].name;
+                // _InventoryData.inventoryItemDatas[i]._itemType = uiManager.itemsData[i].itemType.ToString();
             }
             else
                 break;
@@ -105,7 +106,7 @@ public class SaveJson : MonoBehaviour
         // Debug.Log("at 0: " + _InventoryData.inventoryItemDatas[0]);
         // Debug.Log("name at 0: " + _InventoryData.inventoryItemDatas[0]._name);
 
-        _InventoryData._stackableNums = GetComponent<UiManager>().stackableNums;
+        _InventoryData._stackableNums = uiManager.stackableNums;
 
         item = JsonUtility.ToJson(_InventoryData);
         System.IO.File.WriteAllText(Application.persistentDataPath + "/InventoryData.json", item);
@@ -116,23 +117,35 @@ public class SaveJson : MonoBehaviour
 
 
     // REMEMBER TO START THE PLAYER WITH AN EMPTY SAVE FILE AT LEAST
-        public void LoadInventoryData()
-        {
-            string file = File.ReadAllText(Application.persistentDataPath + "/InventoryData.json");
-            InventoryData loadData = JsonUtility.FromJson<InventoryData>(file);
+    public void LoadInventoryData()
+    {
+        string file = File.ReadAllText(Application.persistentDataPath + "/InventoryData.json");
+        InventoryData loadData = JsonUtility.FromJson<InventoryData>(file);
 
-            for (int i = 0; i < GetComponent<UiManager>().itemsData.Length; i++)
+        for (int i = 0; i < uiManager.itemsData.Length; i++)
         {
-            GetComponent<UiManager>().itemsData[i].name = loadData.inventoryItemDatas[i]._name;
-            GetComponent<UiManager>().itemsData[i].itemType = (ItemData.ItemType)Enum.Parse(typeof(ItemData.ItemType), loadData.inventoryItemDatas[i]._itemType);
-            Debug.Log(GetComponent<UiManager>().itemsData[i]);
-            
+            if (uiManager.itemsData[i] == null)
+            {
+                uiManager.itemsData[i] = ScriptableObject.CreateInstance<ItemData>();
+            }
+            uiManager.itemsData[i].itemName = loadData.inventoryItemDatas[i]._name;
+           object empty;
+            if (!Enum.TryParse(typeof(ItemData.ItemType), loadData.inventoryItemDatas[i]._itemType, out empty))
+            {
+                uiManager.itemsData[i].itemType = ItemData.ItemType.EMPTY;
+            }
+            else
+            {
+                uiManager.itemsData[i].itemType = (ItemData.ItemType)Enum.Parse(typeof(ItemData.ItemType), loadData.inventoryItemDatas[i]._itemType);
+            }
+            Debug.Log(uiManager.itemsData[i]);
+
         }
-            
-            
-            // GetComponent<UiManager>().itemsData = loadData.inventoryItemDatas;
-            // GetComponent<UiManager>().stackableNums = loadData._stackableNums;
-        }
+
+
+        // uiManager.itemsData = loadData.inventoryItemDatas;
+        // uiManager.stackableNums = loadData._stackableNums;
+    }
 }
 
 [System.Serializable]

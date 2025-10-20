@@ -29,7 +29,7 @@ public class UiManager : MonoBehaviour
     [HideInInspector] public GameObject selectedItem;
 
     //PREFABS
-    [SerializeField] GameObject shovelPrefab;
+    [SerializeField] GameObject item;
 
 
     #region Items
@@ -262,6 +262,9 @@ public class UiManager : MonoBehaviour
             }
             i++;
         }
+
+        // Instantiate(item, GameObject.Find("Player").transform);
+
 
         getItems();
 

@@ -6,13 +6,19 @@ using UnityEngine.UI;
 public class ItemData : ScriptableObject
 {
     public bool placeable = true;
-    public string name;
+    public string itemName = "null";
 
     public ItemType itemType;
     public enum ItemType
     {
+        EMPTY,
         TOOL,
         ARMOR,
         STACKABLE
     }
+
+    // public void CreateItemData(bool placeable, string name, string ItemType)
+    // {
+        
+    // }
 }
