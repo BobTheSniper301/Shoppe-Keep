@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.CompilerServices;
+using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,7 +12,6 @@ public class SaveJson : MonoBehaviour
 {
     private InventoryData _InventoryData = new InventoryData();
     [HideInInspector] string item;
-
 
     // Function to call to clear any json file if given the path.
     public static void ClearJsonFile(string filepath)
@@ -66,7 +68,7 @@ public class SaveJson : MonoBehaviour
         if (_InventoryData.inventoryItemDatas == null)
         {
             _InventoryData.inventoryItemDatas = new List<InventoryItemData>(8);
-            InventoryItemData emptyObj = new InventoryItemData("null", 0);
+            InventoryItemData emptyObj = new InventoryItemData("null", "null");
             for (int i = 0; i < GetComponent<UiManager>().items.Length; i++)
             {
                  _InventoryData.inventoryItemDatas.Add(emptyObj);
@@ -84,16 +86,22 @@ public class SaveJson : MonoBehaviour
         {
             // Debug.Log("update with info");
             // Debug.Log("i: " + i);
-            
+            Debug.Log("before: " + _InventoryData.inventoryItemDatas[3]._itemType);
             if (GetComponent<UiManager>().itemsData[i] != null)
             {
                 // Debug.Log("hi");
-                // Debug.Log(GetComponent<UiManager>().itemsData[i].name);
-                _InventoryData.inventoryItemDatas[i]._name = GetComponent<UiManager>().itemsData[i].name;
-                _InventoryData.inventoryItemDatas[i]._itemType = (int)GetComponent<UiManager>().itemsData[i].itemType;
+                Debug.Log("itemdata at i: " + GetComponent<UiManager>().itemsData[i]);
+                Debug.Log(" i: " + i);
+                InventoryItemData item = new InventoryItemData(GetComponent<UiManager>().itemsData[i].name, GetComponent<UiManager>().itemsData[i].itemType.ToString());
+                _InventoryData.inventoryItemDatas[i] = item;
+                // _InventoryData.inventoryItemDatas[i]._name = GetComponent<UiManager>().itemsData[i].name;
+                // _InventoryData.inventoryItemDatas[i]._itemType = GetComponent<UiManager>().itemsData[i].itemType.ToString();
             }
+            else
+                break;
+            Debug.Log("after: " + _InventoryData.inventoryItemDatas[3]._itemType);
         }
-
+        Debug.Log("did not leave");
         // Debug.Log("at 0: " + _InventoryData.inventoryItemDatas[0]);
         // Debug.Log("name at 0: " + _InventoryData.inventoryItemDatas[0]._name);
 
@@ -107,19 +115,33 @@ public class SaveJson : MonoBehaviour
     }
 
 
-    public void LoadInventoryData()
-    {
+    // REMEMBER TO START THE PLAYER WITH AN EMPTY SAVE FILE AT LEAST
+        public void LoadInventoryData()
+        {
+            string file = File.ReadAllText(Application.persistentDataPath + "/InventoryData.json");
+            InventoryData loadData = JsonUtility.FromJson<InventoryData>(file);
 
-    }
+            for (int i = 0; i < GetComponent<UiManager>().itemsData.Length; i++)
+        {
+            GetComponent<UiManager>().itemsData[i].name = loadData.inventoryItemDatas[i]._name;
+            GetComponent<UiManager>().itemsData[i].itemType = (ItemData.ItemType)Enum.Parse(typeof(ItemData.ItemType), loadData.inventoryItemDatas[i]._itemType);
+            Debug.Log(GetComponent<UiManager>().itemsData[i]);
+            
+        }
+            
+            
+            // GetComponent<UiManager>().itemsData = loadData.inventoryItemDatas;
+            // GetComponent<UiManager>().stackableNums = loadData._stackableNums;
+        }
 }
 
 [System.Serializable]
 public class InventoryItemData
 {
     public string _name;
-    public int _itemType;
+    public string _itemType;
 
-    public InventoryItemData(string name, int itemType)
+    public InventoryItemData(string name, string itemType)
     {
         _name = name;
         _itemType = itemType;

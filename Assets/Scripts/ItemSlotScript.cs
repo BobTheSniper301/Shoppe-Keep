@@ -63,9 +63,9 @@ public class ItemSlotScript : MonoBehaviour, IDropHandler
     public void UpdateItemSlot()
     {
         slottedItem = gameObject.GetComponentInChildren<ItemScript>();
-        if (slottedItem && slottedItem.itemData.itemType == ItemData.ItemType.Stackable && GetComponentInChildren<Text>().text.Length == 0)
+        if (slottedItem && slottedItem.itemData.itemType == ItemData.ItemType.STACKABLE && GetComponentInChildren<Text>().text.Length == 0)
             gameObject.GetComponentInChildren<Text>().text = "1";
-        else if ((!slottedItem || slottedItem.itemData.itemType != ItemData.ItemType.Stackable))
+        else if ((!slottedItem || slottedItem.itemData.itemType != ItemData.ItemType.STACKABLE))
             gameObject.GetComponentInChildren<Text>().text = "";
     }
 

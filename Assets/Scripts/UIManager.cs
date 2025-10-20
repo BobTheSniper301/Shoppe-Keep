@@ -116,7 +116,7 @@ public class UiManager : MonoBehaviour
     
     public void PickUpItem(GameObject itemFromGround)
     {
-        if (itemFromGround.GetComponent<ItemScript>().itemData.itemType == ItemData.ItemType.Stackable)
+        if (itemFromGround.GetComponent<ItemScript>().itemData.itemType == ItemData.ItemType.STACKABLE)
         {
             foreach (ItemScript i in items)
             {

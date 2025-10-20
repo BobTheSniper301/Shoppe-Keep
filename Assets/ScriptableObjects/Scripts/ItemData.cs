@@ -6,13 +6,13 @@ using UnityEngine.UI;
 public class ItemData : ScriptableObject
 {
     public bool placeable = true;
+    public string name;
 
     public ItemType itemType;
     public enum ItemType
     {
-        Empty,
-        Tool,
-        Armor,
-        Stackable
+        TOOL,
+        ARMOR,
+        STACKABLE
     }
 }
