@@ -1913,6 +1913,7 @@ MonoBehaviour:
   playerScript: {fileID: 1014425061}
   saveJson: {fileID: 0}
   camera: {fileID: 1218840763}
+  sprite: {fileID: 0}
   itemsData:
   - {fileID: 0}
   - {fileID: 0}

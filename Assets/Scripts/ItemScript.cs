@@ -8,7 +8,7 @@ public class ItemScript : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 
     public ItemData itemData;
 
-    public Image image;
+    [HideInInspector] public Image image;
 
     GameObject player;
 

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using System.Runtime.CompilerServices;
+using System.IO;
 
 
 public class UiManager : MonoBehaviour
@@ -16,6 +17,7 @@ public class UiManager : MonoBehaviour
     public PlayerScript playerScript;
     [HideInInspector] public SaveJson saveJson;
     public new Camera camera;
+    public Sprite sprite;
 
     // Vars for items
 
@@ -229,6 +231,24 @@ public class UiManager : MonoBehaviour
     #endregion
 
 
+    // public static Texture2D LoadPNG(string filePath)
+    // {
+
+    //     Texture2D tex = null;
+    //     byte[] fileData;
+
+    //     if (File.Exists(filePath))
+    //     {
+    //         fileData = File.ReadAllBytes(filePath);
+    //         tex = new Texture2D(2, 2);
+    //         tex.LoadImage(fileData); //..this will auto-resize the texture dimensions.
+    //     }
+    //     return tex;
+
+        
+    // }
+
+
     public void Save()
     {
         #region Inventory Save
@@ -282,7 +302,9 @@ public class UiManager : MonoBehaviour
                 newItem.GetComponent<ItemScript>().itemData = itemsData[j];
                 newItem.GetComponent<ItemScript>().itemData.name = itemsData[j].itemName;
                 newItem.name = itemsData[j].itemName;
-                Debug.Log(newItem.name);
+                // newItem.GetComponent<Image>().sprite = Sprite.Create(LoadPNG(Application.dataPath + "/ItemImages/" + newItem.name));
+                // newItem.GetComponent<Image>().sprite = Resources.Load<Sprite>(Application.dataPath + "/ItemImages/" + newItem.name);
+                newItem.GetComponent<Image>().sprite = Resources.Load<Sprite>("ItemImages/" + newItem.name);
             }
         }
 
@@ -300,9 +322,6 @@ public class UiManager : MonoBehaviour
         getItemSlots();
 
         // Load();
-
-        // Move later
-        // Instantiate(shovelPrefab, GameObject.Find("Player").transform);
     }
 
 
