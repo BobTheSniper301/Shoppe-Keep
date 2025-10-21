@@ -20,41 +20,6 @@ public class SaveJson : MonoBehaviour
         System.IO.File.WriteAllText(filepath, string.Empty);
     }
 
-    //     public void SaveInventoryData()
-    //     {
-    //         // Clears file.
-    //         ClearJsonFile(Application.persistentDataPath + "/InventoryData.json");
-
-    //         _InventoryData.inventoryItemDatas = uiManager.itemsData;
-    //         _InventoryData._stackableNums = uiManager.stackableNums;
-    //         item = JsonUtility.ToJson(_InventoryData);
-    //         System.IO.File.WriteAllText(Application.persistentDataPath + "/InventoryData.json", item);
-    //         Debug.Log(item);
-    //     }
-
-    // // REMEMBER TO START THE PLAYER WITH AN EMPTY SAVE FILE AT LEAST
-    //     public void LoadInventoryData()
-    //     {
-    //         string filePath = File.ReadAllText(Application.persistentDataPath + "/InventoryData.json");
-    //         InventoryData loadData = JsonUtility.FromJson<InventoryData>(filePath);
-    //         uiManager.itemsData = loadData.inventoryItemDatas;
-    //         uiManager.stackableNums = loadData._stackableNums;
-    //     }
-
-    // public void SaveInventoryData(int[][] something)
-    // {
-    //     ClearJsonFile(Application.persistentDataPath + "/InventoryData.json");
-
-    //     InventoryData wrapper = new InventoryData();
-    //     wrapper.inventoryItemDatas = new List<InventoryItemData>();
-
-    //     int i = 0;
-    //     while (i < something.Length)
-    //     {
-    //         InventoryItemData innerWrapper = new InventoryItemData();
-    //         innerWrapper.name
-    //     }
-    // }
 
     public void SaveInventoryData()
     {
@@ -62,9 +27,6 @@ public class SaveJson : MonoBehaviour
 
         // Clears file.
         ClearJsonFile(Application.persistentDataPath + "/InventoryData.json");
-
-        // Debug.Log(_InventoryData);
-        // Debug.Log(_InventoryData.inventoryItemDatas);
 
         if (_InventoryData.inventoryItemDatas == null)
         {
@@ -76,43 +38,24 @@ public class SaveJson : MonoBehaviour
             }
         }
 
-        // Debug.Log(_InventoryData.inventoryItemDatas);
-        // Debug.Log("Count: " + _InventoryData.inventoryItemDatas.Count);
-        // Debug.Log("at 0: " + _InventoryData.inventoryItemDatas[0]);
-        // Debug.Log("name at 0: " + _InventoryData.inventoryItemDatas[0]._name);
-        // Debug.Log("itemData at 1, name: " + uiManager.itemsData[1].name);
 
         // Updates each item with the right information
         for (int i = 0; i < _InventoryData.inventoryItemDatas.Count; i++)
         {
-            // Debug.Log("update with info");
-            // Debug.Log("i: " + i);
-            // Debug.Log("before: " + _InventoryData.inventoryItemDatas[3]._itemType);
             if (uiManager.itemsData[i] != null)
             {
-                // Debug.Log("hi");
-                // Debug.Log("itemdata at i: " + uiManager.itemsData[i]);
-                // Debug.Log(" i: " + i);
                 InventoryItemData item = new InventoryItemData(uiManager.itemsData[i].itemName, uiManager.itemsData[i].itemType.ToString(), uiManager.itemsData[i].placeable);
                 _InventoryData.inventoryItemDatas[i] = item;
-                // _InventoryData.inventoryItemDatas[i]._name = uiManager.itemsData[i].name;
-                // _InventoryData.inventoryItemDatas[i]._itemType = uiManager.itemsData[i].itemType.ToString();
             }
             else
                 break;
-            // Debug.Log("after: " + _InventoryData.inventoryItemDatas[3]._itemType);
         }
-        // Debug.Log("did not leave");
-        // Debug.Log("at 0: " + _InventoryData.inventoryItemDatas[0]);
-        // Debug.Log("name at 0: " + _InventoryData.inventoryItemDatas[0]._name);
+
 
         _InventoryData._stackableNums = uiManager.stackableNums;
 
         item = JsonUtility.ToJson(_InventoryData);
         System.IO.File.WriteAllText(Application.persistentDataPath + "/InventoryData.json", item);
-        // Console.WriteLine(item);
-
-        // Debug.Log("item: " + item);
     }
 
 
@@ -140,14 +83,8 @@ public class SaveJson : MonoBehaviour
             uiManager.itemsData[i].itemName = loadData.inventoryItemDatas[i]._name;
             uiManager.itemsData[i].placeable = loadData.inventoryItemDatas[i]._placeable;
 
-            // uiManager.itemsData[i].itemType = (ItemData.ItemType)Enum.Parse(typeof(ItemData.ItemType), loadData.inventoryItemDatas[i]._itemType);
-            // Debug.Log(uiManager.itemsData[i]);
-
         }
 
-
-        // uiManager.itemsData = loadData.inventoryItemDatas;
-        // uiManager.stackableNums = loadData._stackableNums;
     }
 }
 
@@ -164,14 +101,6 @@ public class InventoryItemData
         _itemType = itemType;
         _placeable = placeable;
     }
-
-    // public InventoryItemData(string name, Enum itemType, Image image, Sprite sprite)
-    // {
-    //     _name = name;
-    //     _itemType = itemType;
-    //     _image = image;
-    //     _sprite = sprite;
-    // }
 
 }
 

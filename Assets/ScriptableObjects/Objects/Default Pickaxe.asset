@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 81630d9ada4b7b64fa9f98e11652a881, type: 3}
-  m_Name: Shovel
+  m_Name: Default Pickaxe
   m_EditorClassIdentifier: 
-  placeable: 1
-  itemName: Shovel
-  itemType: 3
+  placeable: 0
+  itemName: Pickaxe
+  itemType: 1
