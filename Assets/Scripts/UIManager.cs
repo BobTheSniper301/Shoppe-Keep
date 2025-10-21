@@ -304,7 +304,7 @@ public class UiManager : MonoBehaviour
 
             inOverviewMenu = false;
             MenuControl(null);
-            
+
         }
 
     }
@@ -342,7 +342,7 @@ public class UiManager : MonoBehaviour
     }
 
 
-     public void Load()
+    public void Load()
     {
         #region Inventory Load
 
