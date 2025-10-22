@@ -55,28 +55,28 @@ public class UiManager : MonoBehaviour
     public void getItems()
     {
         Debug.Log("getItems");
-        int i = 0;
 
         clearItems();
 
+        int i = 0;
         // Check each of the items slots to see if they have an item in them
-        foreach (ItemSlotScript j in itemSlots)
+        foreach (ItemSlotScript slot in itemSlots)
         {
 
-            j.UpdateItemSlot();
+            slot.UpdateItemSlot();
 
             //If it does have an item, it stores it into the items list at the proper index
-            if (j.GetComponentInChildren<ItemScript>())
+            if (slot.GetComponentInChildren<ItemScript>())
             {
 
-                items[i] = j.GetComponentInChildren<ItemScript>();
+                items[i] = slot.GetComponentInChildren<ItemScript>();
                 itemsData[i] = items[i].itemData;
 
             }
-            if (j.GetComponentInChildren<Text>())
+            if (slot.GetComponentInChildren<Text>())
             {
 
-                stackableNums[i] = j.GetComponentInChildren<Text>().text;
+                stackableNums[i] = slot.GetComponentInChildren<Text>().text;
 
             }
 
@@ -162,10 +162,7 @@ public class UiManager : MonoBehaviour
             {
                 itemsData[i] = ScriptableObject.CreateInstance<ItemData>();
             }
-            if (items[i] is ItemScript)
-            {
-                items[i] = null;
-            }
+            
             if (stackableNums[i] != "")
             {
                 itemSlots[i].GetComponentInChildren<Text>().text = "";
@@ -175,6 +172,8 @@ public class UiManager : MonoBehaviour
                 Destroy(itemSlots[i].GetComponentInChildren<ItemScript>().gameObject);
                 Debug.Log("destroy");
             }
+            items[i] = null;
+
             i++;
         }
     }
@@ -348,7 +347,8 @@ public class UiManager : MonoBehaviour
     {
         #region Inventory Load
 
-        //ClearInventory();
+        ClearInventory();
+        //getItems();
 
         //saveJson.LoadInventoryData();
 
@@ -405,7 +405,7 @@ public class UiManager : MonoBehaviour
 
         getItemSlots();
 
-        // Load();
+        //Load();
 
     }
 
