@@ -51,7 +51,9 @@ public class ItemScript : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 
     void Start()
     {
+
         player = GameObject.FindWithTag("Player");
         uiManager = GameObject.FindWithTag("UiManager").GetComponent<UiManager>();
+
     }
 }

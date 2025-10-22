@@ -34,7 +34,7 @@ public class SaveJson : MonoBehaviour
             InventoryItemData emptyObj = new InventoryItemData("null", "null", false);
             for (int i = 0; i < uiManager.items.Length; i++)
             {
-                 _InventoryData.inventoryItemDatas.Add(emptyObj);
+                _InventoryData.inventoryItemDatas.Add(emptyObj);
             }
         }
 
