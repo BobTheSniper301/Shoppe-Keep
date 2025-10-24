@@ -336,48 +336,49 @@ public class UiManager : MonoBehaviour
     {
         #region Inventory Load
 
-        ClearInventory();
+        //ClearInventory();
+
+        //saveJson.LoadInventoryData();
+
+        //int i = 0;
+        //while (i < items.Length)
+        //{
+
+        //    if (items[i] is ItemScript)
+        //    {
+
+        //        items[i].gameObject.transform.SetParent(itemSlots[i].gameObject.transform);
+
+        //    }
+
+        //    if (stackableNums[i] != "")
+        //    {
+
+        //        itemSlots[i].GetComponentInChildren<Text>().text = stackableNums[i];
+
+        //    }
+
+        //    i++;
+        //}
+
+        //for (int j = 0; j < itemsData.Length; j++)
+        //{
+
+        //    if (itemsData[j].itemName != "null")
+        //    {
+
+        //        GameObject newItem = Instantiate(item, itemSlots[j].transform);
+        //        newItem.GetComponent<ItemScript>().itemData = itemsData[j];
+        //        newItem.GetComponent<ItemScript>().itemData.name = itemsData[j].itemName;
+        //        newItem.name = itemsData[j].itemName;
+        //        newItem.GetComponent<Image>().sprite = Resources.Load<Sprite>("ItemImages/" + newItem.name);
+        //        items[j] = newItem.GetComponent<ItemScript>();
+        //        Debug.Log(newItem.name);
+        //    }
+
+        //}
+
         //getItems();
-
-        saveJson.LoadInventoryData();
-
-        int i = 0;
-        while (i < items.Length)
-        {
-
-            if (items[i] is ItemScript)
-            {
-
-                items[i].gameObject.transform.SetParent(itemSlots[i].gameObject.transform);
-
-            }
-
-            if (stackableNums[i] != "")
-            {
-
-                itemSlots[i].GetComponentInChildren<Text>().text = stackableNums[i];
-
-            }
-
-            i++;
-        }
-
-        for (int j = 0; j < itemsData.Length; j++)
-        {
-
-            if (itemsData[j].itemName != "null")
-            {
-
-                GameObject newItem = Instantiate(item, itemSlots[j].transform);
-                newItem.GetComponent<ItemScript>().itemData = itemsData[j];
-                newItem.GetComponent<ItemScript>().itemData.name = itemsData[j].itemName;
-                newItem.name = itemsData[j].itemName;
-                newItem.GetComponent<Image>().sprite = Resources.Load<Sprite>("ItemImages/" + newItem.name);
-            }
-
-        }
-
-        getItems();
 
 
         #endregion
