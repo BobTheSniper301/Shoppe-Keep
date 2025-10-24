@@ -153,24 +153,16 @@ public class UiManager : MonoBehaviour
         int i = 0;
         while (i < items.Length)
         {
+            itemsData[i] = ScriptableObject.CreateInstance<ItemData>();
+            itemSlots[i].GetComponentInChildren<Text>().text = "";
+            items[i] = null;
 
-            
-            if (itemsData[i] is ItemData)
-            {
-                itemsData[i] = ScriptableObject.CreateInstance<ItemData>();
-            }
-            
-            if (stackableNums[i] != "")
-            {
-                itemSlots[i].GetComponentInChildren<Text>().text = "";
-            }
             if (itemSlots[i].GetComponentInChildren<ItemScript>() != null)
             {
                 Destroy(itemSlots[i].GetComponentInChildren<ItemScript>().gameObject);
                 Debug.Log("destroy");
             }
             items[i] = null;
-
             i++;
         }
     }
@@ -381,12 +373,12 @@ public class UiManager : MonoBehaviour
                 newItem.GetComponent<ItemScript>().itemData.name = itemsData[j].itemName;
                 newItem.name = itemsData[j].itemName;
                 newItem.GetComponent<Image>().sprite = Resources.Load<Sprite>("ItemImages/" + newItem.name);
-
             }
 
         }
 
         getItems();
+
 
         #endregion
 
