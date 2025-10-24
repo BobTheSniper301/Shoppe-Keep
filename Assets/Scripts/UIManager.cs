@@ -348,47 +348,49 @@ public class UiManager : MonoBehaviour
     {
         #region Inventory Load
 
-        ClearInventory();
+        //ClearInventory();
 
-        saveJson.LoadInventoryData();
+        //saveJson.LoadInventoryData();
 
-        int i = 0;
-        while (i < items.Length)
-        {
+        //int i = 0;
+        //while (i < items.Length)
+        //{
 
-            if (items[i] is ItemScript)
-            {
+        //    if (items[i] is ItemScript)
+        //    {
 
-                items[i].gameObject.transform.SetParent(itemSlots[i].gameObject.transform);
+        //        items[i].gameObject.transform.SetParent(itemSlots[i].gameObject.transform);
 
-            }
+        //    }
 
-            if (stackableNums[i] != "")
-            {
+        //    if (stackableNums[i] != "")
+        //    {
 
-                itemSlots[i].GetComponentInChildren<Text>().text = stackableNums[i];
+        //        itemSlots[i].GetComponentInChildren<Text>().text = stackableNums[i];
 
-            }
+        //    }
 
-            i++;
-        }
+        //    i++;
+        //}
 
-        for (int j = 0; j < itemsData.Length; j++)
-        {
+        //for (int j = 0; j < itemsData.Length; j++)
+        //{
 
-            if (itemsData[j].itemName != "null")
-            {
+        //    if (itemsData[j].itemName != "null")
+        //    {
 
-                GameObject newItem = Instantiate(item, itemSlots[j].transform);
-                newItem.GetComponent<ItemScript>().itemData = itemsData[j];
-                newItem.GetComponent<ItemScript>().itemData.name = itemsData[j].itemName;
-                newItem.name = itemsData[j].itemName;
-                newItem.GetComponent<Image>().sprite = Resources.Load<Sprite>("ItemImages/" + newItem.name);
-            }
+        //        GameObject newItem = Instantiate(item, itemSlots[j].transform);
+        //        newItem.GetComponent<ItemScript>().itemData = itemsData[j];
+        //        newItem.GetComponent<ItemScript>().itemData.name = itemsData[j].itemName;
+        //        newItem.name = itemsData[j].itemName;
+        //        newItem.GetComponent<Image>().sprite = Resources.Load<Sprite>("ItemImages/" + newItem.name);
+        //        items[j] = newItem.GetComponent<ItemScript>();
+        //        Debug.Log(newItem.name);
+        //    }
 
-        }
+        //}
 
-        getItems();
+        //getItems();
 
 
         #endregion

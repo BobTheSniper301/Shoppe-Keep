@@ -1162,7 +1162,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &880175634
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1801,7 +1801,6 @@ GameObject:
   - component: {fileID: 1226013082}
   - component: {fileID: 1226013081}
   - component: {fileID: 1226013085}
-  - component: {fileID: 1226013086}
   m_Layer: 5
   m_Name: UI
   m_TagString: UiManager
@@ -1953,19 +1952,6 @@ MonoBehaviour:
   selectedItem: {fileID: 0}
   lastItemSlotNum: 0
   item: {fileID: 4699033617661492032, guid: 18890f3f1865d7c41ac3f5f6cda25803, type: 3}
---- !u!114 &1226013086
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1226013080}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b6e293b02ed03074dbfd3338f9a06658, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  uiManager: {fileID: 1226013085}
 --- !u!1 &1293124300
 GameObject:
   m_ObjectHideFlags: 0
@@ -2195,7 +2181,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1616716812
 RectTransform:
   m_ObjectHideFlags: 0
