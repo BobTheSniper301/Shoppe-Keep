@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.IO;
 using Unity.VisualScripting;
 using System;
+using UnityEditorInternal.Profiling.Memory.Experimental;
 
 
 public class UiManager : MonoBehaviour
@@ -34,8 +35,6 @@ public class UiManager : MonoBehaviour
 
     public ItemScript[] items;
 
-    [HideInInspector] public string[] stackableNums;
-
     [HideInInspector] public int[] hotbarNums;
 
     [HideInInspector] public ItemSlotScript[] itemSlots;
@@ -52,9 +51,9 @@ public class UiManager : MonoBehaviour
 
     #region Items
     // Gets a list of all items
-    public void getItems()
+    public void GetItems()
     {
-        Debug.Log("getItems");
+        // Debug.Log("getItems");
 
         clearItems();
 
@@ -65,18 +64,12 @@ public class UiManager : MonoBehaviour
 
             slot.UpdateItemSlot();
 
-            //If it does have an item, it stores it into the items list at the proper index
+            // If it does have an item, it stores it into the items list at the proper index
             if (slot.GetComponentInChildren<ItemScript>())
             {
 
                 items[i] = slot.GetComponentInChildren<ItemScript>();
                 itemsData[i] = items[i].itemData;
-
-            }
-            if (slot.GetComponentInChildren<Text>())
-            {
-
-                stackableNums[i] = slot.GetComponentInChildren<Text>().text;
 
             }
 
@@ -87,7 +80,7 @@ public class UiManager : MonoBehaviour
     }
 
     // Gets a list of all item slots
-    void getItemSlots()
+    void GetItemSlots()
     {
 
         itemSlots = GetComponentsInChildren<ItemSlotScript>();
@@ -103,7 +96,7 @@ public class UiManager : MonoBehaviour
         {
 
             items[i] = null;
-
+            itemsData[i] = null;
         }
     }
 
@@ -153,28 +146,19 @@ public class UiManager : MonoBehaviour
         int i = 0;
         while (i < items.Length)
         {
-            itemsData[i] = ScriptableObject.CreateInstance<ItemData>();
-            itemSlots[i].GetComponentInChildren<Text>().text = "";
-            items[i] = null;
 
-            
-            if (itemsData[i] is ItemData)
-            {
-                itemsData[i] = ScriptableObject.CreateInstance<ItemData>();
-            }
-            
-            if (stackableNums[i] != "")
-            {
-                itemSlots[i].GetComponentInChildren<Text>().text = "";
-            }
+            // itemsData[i] = ScriptableObject.CreateInstance<ItemData>();
+            // itemSlots[i].GetComponentInChildren<Text>().text = "";
+            // items[i] = null;
+            items[i] = null;
+            itemsData[i] = null;
+            itemSlots[i].GetComponentInChildren<Text>().text = "";
             if (itemSlots[i].GetComponentInChildren<ItemScript>() != null)
             {
                 Destroy(itemSlots[i].GetComponentInChildren<ItemScript>().gameObject);
-                Debug.Log("destroy");
             }
-            items[i] = null;
-
             i++;
+
         }
     }
 
@@ -206,9 +190,7 @@ public class UiManager : MonoBehaviour
             {
 
                 Destroy(itemFromGround);
-                int itemAmountNum = int.Parse(i.transform.parent.GetComponentInChildren<Text>().text.ToString());
-                itemAmountNum++;
-                i.transform.parent.GetComponentInChildren<Text>().text = itemAmountNum.ToString();
+                i.itemData.count += itemFromGround.GetComponent<ItemScript>().itemData.count;
                 didStack = true;
                 break;
             }
@@ -226,13 +208,15 @@ public class UiManager : MonoBehaviour
         {
 
             AddStackableItem(itemFromGround);
+
         }
         else
         {
 
             AddItem(itemFromGround);
+        
         }
-        getItems();
+        GetItems();
     }
 
 
@@ -254,7 +238,7 @@ public class UiManager : MonoBehaviour
             
         }
             DeselectAll();
-            getItems();
+            GetItems();
     }
 
     #endregion
@@ -330,7 +314,7 @@ public class UiManager : MonoBehaviour
     public void Save()
     {
         #region Inventory Save
-        getItems();
+        GetItems();
         saveJson.SaveInventoryData();
 
         //for (int i = 0; i < items.Length; i++)
@@ -348,50 +332,42 @@ public class UiManager : MonoBehaviour
         #region Inventory Load
 
         ClearInventory();
-        //getItems();
 
-        //saveJson.LoadInventoryData();
+        saveJson.LoadInventoryData();
 
-        //int i = 0;
-        //while (i < items.Length)
-        //{
+        int i = 0;
+        while (i < items.Length)
+        {
 
-        //    if (items[i] is ItemScript)
-        //    {
+            if (items[i] is ItemScript)
+            {
 
-        //        items[i].gameObject.transform.SetParent(itemSlots[i].gameObject.transform);
+                items[i].gameObject.transform.SetParent(itemSlots[i].gameObject.transform);
 
-        //    }
+            }
 
-        //    if (stackableNums[i] != "")
-        //    {
+            i++;
+        }
 
-        //        itemSlots[i].GetComponentInChildren<Text>().text = stackableNums[i];
+        for (int j = 0; j < itemsData.Length; j++)
+        {
 
-        //    }
+            if (itemsData[j].itemName != "null")
+            {
 
-        //    i++;
-        //}
+                GameObject newItem = Instantiate(item, itemSlots[j].transform);
+                newItem.GetComponent<ItemScript>().itemData = itemsData[j];
+                newItem.GetComponent<ItemScript>().itemData.name = itemsData[j].itemName;
+                newItem.name = itemsData[j].itemName;
+                newItem.GetComponent<Image>().sprite = Resources.Load<Sprite>("ItemImages/" + newItem.name);
+                newItem.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("ItemImages/" + newItem.name);
+                items[j] = newItem.GetComponent<ItemScript>();
+                // Debug.Log(newItem.name);
+            }
 
-        //for (int j = 0; j < itemsData.Length; j++)
-        //{
+        }
 
-        //    if (itemsData[j].itemName != "null")
-        //    {
-
-        //        GameObject newItem = Instantiate(item, itemSlots[j].transform);
-        //        newItem.GetComponent<ItemScript>().itemData = itemsData[j];
-        //        newItem.GetComponent<ItemScript>().itemData.name = itemsData[j].itemName;
-        //        newItem.name = itemsData[j].itemName;
-        //        newItem.GetComponent<Image>().sprite = Resources.Load<Sprite>("ItemImages/" + newItem.name);
-        //        items[j] = newItem.GetComponent<ItemScript>();
-        //        Debug.Log(newItem.name);
-        //    }
-
-        //}
-
-        //getItems();
-
+        Invoke("GetItems", 0.001f);
 
         #endregion
 
@@ -403,8 +379,9 @@ public class UiManager : MonoBehaviour
 
         saveJson = GetComponent<SaveJson>();
 
-        getItemSlots();
+        GetItemSlots();
 
+        GetItems();
         //Load();
 
     }

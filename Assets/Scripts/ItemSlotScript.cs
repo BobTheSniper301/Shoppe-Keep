@@ -40,33 +40,33 @@ public class ItemSlotScript : MonoBehaviour, IDropHandler
 
         if (transform.childCount == 1)
         {
-            GetComponentInChildren<Text>().text = item.parentBeforeDrag.GetComponentInChildren<Text>().text;
+            GetComponentInChildren<Text>().text = item.itemData.count.ToString();
             item.parentBeforeDrag = transform;
         }
         else if (transform.childCount == 2)
         {
             // Update stackable item amount
-            //string slottedItemAmount = slottedItem.transform.parent.GetComponentInChildren<Text>().text;
-            //string itemAmount = item.parentBeforeDrag.GetComponentInChildren<Text>().text;
-            //item.parentBeforeDrag.GetComponentInChildren<Text>().text = slottedItemAmount;
-            //slottedItem.transform.parent.GetComponentInChildren<Text>().text = itemAmount;
+            int slottedItemAmount = slottedItem.itemData.count;
+            int itemAmount = item.itemData.count;
+            item.parentBeforeDrag.GetComponentInChildren<Text>().text = slottedItemAmount.ToString();
+            slottedItem.transform.parent.GetComponentInChildren<Text>().text = itemAmount.ToString();
             // Reparents
             slottedItem.transform.SetParent(item.parentBeforeDrag);
             item.parentBeforeDrag = transform;
         }
         item.OnEndDrag(eventData);
         // Updates the Items list with the new parents
-        uiManager.getItems();
+        uiManager.GetItems();
     }
 
 
     public void UpdateItemSlot()
     {
         slottedItem = gameObject.GetComponentInChildren<ItemScript>();
-        //if (slottedItem && slottedItem.itemData.itemType == ItemData.ItemType.STACKABLE && GetComponentInChildren<Text>().text.Length == 0)
-        //    gameObject.GetComponentInChildren<Text>().text = "1";
-        //else if ((!slottedItem || slottedItem.itemData.itemType != ItemData.ItemType.STACKABLE))
-        //    gameObject.GetComponentInChildren<Text>().text = "";
+        if (slottedItem && slottedItem.itemData.itemType == ItemData.ItemType.STACKABLE)
+            gameObject.GetComponentInChildren<Text>().text = slottedItem.itemData.count.ToString();
+        else if ((!slottedItem || slottedItem.itemData.itemType != ItemData.ItemType.STACKABLE))
+           gameObject.GetComponentInChildren<Text>().text = "";
     }
 
 

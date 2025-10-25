@@ -43,7 +43,6 @@ public class ItemScript : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
         // Reaches the player
         if (Vector3.Distance(transform.position, player.transform.position) <= 1.2f)
         {
-            // Debug.Log("pickup");
             uiManager.PickUpItem(this.gameObject);
         }
     }
