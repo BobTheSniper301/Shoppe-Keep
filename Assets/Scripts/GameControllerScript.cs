@@ -4,14 +4,18 @@ using UnityEngine.UI;
 
 public class GameControllerScript : MonoBehaviour
 {
+    [HideInInspector] GameObject container;
+
+
     public Transform[] heldObjects;
-    private void Start()
+    
+    void Start()
     {
 
-        // Get items from list, starting at a specific value
         // Gets our held items
-        // Remember to update array in inspector when adding a new item
-        Transform[] tempHeldObjects = GameObject.Find("Player/Main Camera/HeldItems").GetComponentsInChildren<Transform>(includeInactive:true);
+            // Remember to update array in inspector when adding a new item
+        Transform[] tempHeldObjects = GameObject.Find("Player/Player Camera/HeldItems").GetComponentsInChildren<Transform>(includeInactive:true);
+            // Get items from list, starting at a specific value
         System.Array.ConstrainedCopy(tempHeldObjects, 1, heldObjects, 0, tempHeldObjects.Length - 1);
     }
 }

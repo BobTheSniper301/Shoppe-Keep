@@ -7,33 +7,36 @@ using System.IO;
 using Unity.VisualScripting;
 using System;
 using UnityEditorInternal.Profiling.Memory.Experimental;
+using UnityEditor;
+using System.ComponentModel;
 
 
 public class UiManager : MonoBehaviour
 {
-    // Menus
-    [HideInInspector] public bool inMenu = false;
-    [HideInInspector] public bool inOverviewMenu = false;
 
 
     // In scene pull stuff
-    public GameObject menues;
-    
-    public GameObject overviewMenu;
-    
     public PlayerScript playerScript;
     
     public new Camera camera;
-    
+
     [HideInInspector] public SaveJson saveJson;
 
 
+    // Menu stuff
+    [HideInInspector] public bool itemCanPlace = false;
+    [HideInInspector] public bool inMenu = false;
+    // Set in inspector first
+    [SerializeField] GameObject menu;
+    [SerializeField] GameObject overviewMenu;
+    public GameObject containerText;
+
+
     // Vars for items
-
     //Set in inspector first
-    public ItemData[] itemsData;
+    [HideInInspector] public ItemData[] itemsData;
 
-    public ItemScript[] items;
+    [HideInInspector] public ItemScript[] items;
 
     [HideInInspector] public int[] hotbarNums;
 
@@ -44,6 +47,8 @@ public class UiManager : MonoBehaviour
     [HideInInspector] public GameObject selectedItem;
 
     [HideInInspector] public int lastItemSlotNum;
+
+    
 
     //PREFABS
     [SerializeField] GameObject item;
@@ -73,7 +78,7 @@ public class UiManager : MonoBehaviour
 
             }
 
-            // Debug.Log(string.ioin(", ", items[x]));
+            // Debug.Log(string.Join(", ", items[x]));
             i++;
         }
         
@@ -225,7 +230,7 @@ public class UiManager : MonoBehaviour
     {
         if (selectedItem)
         {
-            
+
             selectedItem.transform.rotation = camera.transform.rotation;
             selectedItem.transform.eulerAngles = new Vector3(0, selectedItem.transform.rotation.eulerAngles.y, selectedItem.transform.rotation.eulerAngles.z);
 
@@ -233,27 +238,28 @@ public class UiManager : MonoBehaviour
 
             selectedItem.transform.position = playerScript.gameObject.transform.position;
             selectedItem.transform.Translate(transform.forward * 5);
-            
+
             selectedItem.transform.localScale = new Vector3(10, 10, 10);
-            
+
         }
-            DeselectAll();
-            GetItems();
+        DeselectAll();
+        GetItems();
     }
 
     #endregion
 
 
-    
+
     #region Menus 
+    
 
     // Controls what menus open and which ones are closed. Will wipe all menus if a null value is passed
-    void MenuControl(GameObject keepMenu)
+    void MenuOpen(GameObject keepMenu)
     {
 
-        // All other menus to close
-        overviewMenu.gameObject.SetActive(false);
-
+        // All menus close
+        overviewMenu.SetActive(false);
+        containerText.SetActive(false);
 
         if (keepMenu != null)
         {
@@ -266,10 +272,24 @@ public class UiManager : MonoBehaviour
         {
 
             inMenu = false;
-            menues.gameObject.SetActive(false);
+            menu.SetActive(false);
             playerScript.canMove = true;
             Cursor.lockState = CursorLockMode.Locked;
 
+        }
+    }
+
+    void ContainerText()
+    {
+        if (itemCanPlace)
+        {
+            containerText.SetActive(true);
+            Debug.Log("set active");
+        }
+        else if (containerText.activeSelf && ! itemCanPlace)
+        {
+            Debug.Log("else if");
+            containerText.SetActive(false);
         }
     }
 
@@ -277,18 +297,16 @@ public class UiManager : MonoBehaviour
     void OverviewMenu()
     {
 
-        if (!inOverviewMenu && Input.GetKeyDown("tab"))
+        if (Input.GetKeyDown("tab") && ! overviewMenu.activeSelf)
         {
-
-            inOverviewMenu = true;
-            MenuControl(overviewMenu);
+            
+            MenuOpen(overviewMenu);
 
         }
-        else if (inOverviewMenu && Input.GetKeyDown(KeyCode.Tab))
+        else if (overviewMenu.activeSelf && Input.GetKeyDown(KeyCode.Tab))
         {
 
-            inOverviewMenu = false;
-            MenuControl(null);
+            MenuOpen(null);
 
         }
 
@@ -298,10 +316,11 @@ public class UiManager : MonoBehaviour
     void CheckMenu()
     {
         OverviewMenu();
+        ContainerText();
 
         if (inMenu)
         {
-            menues.gameObject.SetActive(true);
+            menu.gameObject.SetActive(true);
             playerScript.canMove = false;
             Cursor.lockState = CursorLockMode.None;
         }
@@ -374,14 +393,20 @@ public class UiManager : MonoBehaviour
     }
 
 
-    private void Start()
+    void Awake()
     {
 
         saveJson = GetComponent<SaveJson>();
+        
+    }
 
+
+    void Start()
+    {
         GetItemSlots();
 
         GetItems();
+
         //Load();
 
     }

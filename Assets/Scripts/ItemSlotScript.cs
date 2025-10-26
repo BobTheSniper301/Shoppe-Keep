@@ -146,9 +146,10 @@ public class ItemSlotScript : MonoBehaviour, IDropHandler
         
     }
 
-
-    private void Start()
+    void Awake()
     {
+
         uiManager = GetComponentInParent<UiManager>();
+        
     }
 }

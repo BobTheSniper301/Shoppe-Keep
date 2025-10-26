@@ -17,9 +17,4 @@ public class ItemData : ScriptableObject
         ARMOR,
         STACKABLE
     }
-
-    // public void CreateItemData(bool placeable, string name, string ItemType)
-    // {
-        
-    // }
 }

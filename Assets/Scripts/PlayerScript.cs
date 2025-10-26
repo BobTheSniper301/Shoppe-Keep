@@ -1,5 +1,6 @@
 using System;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
 
 // Will create one if we don't have one
@@ -7,10 +8,23 @@ using UnityEngine;
 
 public class PlayerScript : MonoBehaviour
 {
-    
+    // Scene pull stuff
+    public UiManager uiManager;
+
+    public GameControllerScript gameControllerScript;
+
+    // Player stuff
     CharacterController characterController;
 
     public PlayerData playerData;
+
+
+    // Raycast Player Look
+    LayerMask playerLookMask;
+
+    RaycastHit hit;
+
+    [SerializeField] float PlayerLook;
 
     #region movement + camera vars
     public Camera playerCamera;
@@ -29,14 +43,22 @@ public class PlayerScript : MonoBehaviour
     #endregion
 
 
+    void Awake()
+    {
+
+        characterController = GetComponent<CharacterController>();
+
+        playerLookMask = LayerMask.GetMask("PlayerLook");
+        
+
+    }
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
 
-
-        characterController = GetComponent<CharacterController>();
         Cursor.lockState = CursorLockMode.Locked;
-
 
     }
 
@@ -44,7 +66,6 @@ public class PlayerScript : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-
 
         #region Handles Movement
         Vector3 forward = transform.TransformDirection(Vector3.forward);
@@ -90,7 +111,20 @@ public class PlayerScript : MonoBehaviour
         #endregion
 
 
+        if (Physics.Raycast(transform.position, GetComponentInChildren<Camera>().gameObject.transform.forward, out hit, PlayerLook, playerLookMask) && ! uiManager.inMenu)
+        {
+            Debug.Log(hit.collider.gameObject.name);
+            Debug.Log("looking at object");
+            uiManager.itemCanPlace = true;
+            Debug.Log(uiManager.itemCanPlace);
+        }
+        else
+        {
+            uiManager.itemCanPlace = false;
+            Debug.Log(uiManager.itemCanPlace);
+        }
 
-        playerData.playerPos = transform.position;
+
+            playerData.playerPos = transform.position;
     }
 }
