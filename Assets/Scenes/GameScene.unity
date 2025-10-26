@@ -695,7 +695,7 @@ PrefabInstance:
       objectReference: {fileID: 1226013085}
     - target: {fileID: 609704017519179376, guid: 34c0c64e134957d439575e9795c058f2, type: 3}
       propertyPath: PlayerLook
-      value: 3.5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 609704017519179376, guid: 34c0c64e134957d439575e9795c058f2, type: 3}
       propertyPath: playerLook
@@ -1345,7 +1345,6 @@ RectTransform:
   m_Children:
   - {fileID: 1976154023}
   - {fileID: 1616716812}
-  - {fileID: 1333090117}
   m_Father: {fileID: 1226013084}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -1782,6 +1781,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1888951009}
+  - {fileID: 1333090117}
   - {fileID: 880175634}
   - {fileID: 957877694}
   m_Father: {fileID: 0}
@@ -1806,8 +1806,8 @@ MonoBehaviour:
   playerScript: {fileID: 1014425061}
   camera: {fileID: 1218840763}
   saveJson: {fileID: 0}
+  itemCanPlace: 0
   inMenu: 0
-  inOverviewMenu: 0
   menu: {fileID: 880175633}
   overviewMenu: {fileID: 1616716811}
   containerText: {fileID: 1333090116}
@@ -1948,7 +1948,7 @@ GameObject:
   - component: {fileID: 1333090118}
   m_Layer: 5
   m_Name: Container Text
-  m_TagString: Menu
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1965,12 +1965,12 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 880175634}
+  m_Father: {fileID: 1226013084}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: 0, y: -30}
+  m_SizeDelta: {x: 200, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1333090118
 MonoBehaviour:
@@ -1985,7 +1985,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Text
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1994,18 +1994,18 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 14
+    m_FontSize: 18
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 10
+    m_MinSize: 0
     m_MaxSize: 40
     m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 1
-    m_HorizontalOverflow: 0
+    m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Press F to place your item.
+  m_Text: Press F to place your item
 --- !u!222 &1333090119
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2160,7 +2160,7 @@ GameObject:
   - component: {fileID: 1616716813}
   m_Layer: 5
   m_Name: OverviewMenu
-  m_TagString: Menu
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2278,7 +2278,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2, y: 1.4, z: 2.1260898}
+  m_Size: {x: 2.7, y: 1.4, z: 2.1260898}
   m_Center: {x: 0, y: -0.3, z: 0}
 --- !u!23 &1690273386
 MeshRenderer:
