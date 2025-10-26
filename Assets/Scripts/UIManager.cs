@@ -9,6 +9,7 @@ using System;
 using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEditor;
 using System.ComponentModel;
+using Unity.Mathematics;
 
 
 public class UiManager : MonoBehaviour
@@ -44,7 +45,7 @@ public class UiManager : MonoBehaviour
 
     [HideInInspector] public GameObject itemPickedUp;
 
-    [HideInInspector] public GameObject selectedItem;
+    public GameObject selectedItem;
 
     [HideInInspector] public int lastItemSlotNum;
 
@@ -114,7 +115,7 @@ public class UiManager : MonoBehaviour
         {
             i.Deselected();
         }
-
+        selectedItem = null;
     }
 
 
@@ -169,15 +170,15 @@ public class UiManager : MonoBehaviour
 
 
 
-    public void AddItem(GameObject itemFromGround)
+    public void AddItem(GameObject itemToAdd)
     {
         foreach (ItemSlotScript i in itemSlots)
         {
             if (i.GetComponentInChildren<ItemScript>() == null)
             {
-                itemFromGround.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
-                itemFromGround.transform.SetParent(i.transform);
-                itemFromGround.transform.localRotation = new Quaternion(0, 0, 0, 0);
+                itemToAdd.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+                itemToAdd.transform.SetParent(i.transform);
+                itemToAdd.transform.localRotation = new Quaternion(0, 0, 0, 0);
 
                 break;
             }
@@ -185,45 +186,44 @@ public class UiManager : MonoBehaviour
     }
 
 
-    public void AddStackableItem(GameObject itemFromGround)
+    public void AddStackableItem(GameObject itemToAdd)
     {
         bool didStack = false;
         foreach (ItemScript i in items)
         {
 
-            if (i is ItemScript && itemFromGround.name == i.gameObject.name)
+            if (i is ItemScript && itemToAdd.name == i.gameObject.name)
             {
 
-                Destroy(itemFromGround);
-                i.itemData.count += itemFromGround.GetComponent<ItemScript>().itemData.count;
+                Destroy(itemToAdd);
+                i.itemData.count += itemToAdd.GetComponent<ItemScript>().itemData.count;
                 didStack = true;
                 break;
             }
         }
         if (didStack == false)
         {
-            AddItem(itemFromGround);
+            AddItem(itemToAdd);
         }
     }
 
 
-    public void PickUpItem(GameObject itemFromGround)
+    public void PickUpItem(GameObject itemToAdd)
     {
-        if (itemFromGround.GetComponent<ItemScript>().itemData.itemType == ItemData.ItemType.STACKABLE)
+        if (itemToAdd.GetComponent<ItemScript>().itemData.itemType == ItemData.ItemType.STACKABLE)
         {
 
-            AddStackableItem(itemFromGround);
+            AddStackableItem(itemToAdd);
 
         }
         else
         {
 
-            AddItem(itemFromGround);
+            AddItem(itemToAdd);
         
         }
         GetItems();
     }
-
 
 
     void DropItem()
@@ -241,17 +241,58 @@ public class UiManager : MonoBehaviour
 
             selectedItem.transform.localScale = new Vector3(10, 10, 10);
 
+            selectedItem.GetComponent<SphereCollider>().enabled = true;
         }
         DeselectAll();
         GetItems();
     }
+
+
+    public void AddItemToContainer()
+    {
+        if (selectedItem != null)
+        {
+            selectedItem.transform.SetParent(playerScript.containerHit.transform.parent);
+            selectedItem.transform.position = playerScript.containerHit.transform.parent.position;
+            selectedItem.transform.rotation = playerScript.containerHit.transform.parent.rotation;
+            selectedItem.transform.localScale = new Vector3(5, 5, 5);
+            selectedItem.GetComponent<SphereCollider>().enabled = false;
+        }
+    }
+
+
+    public void ItemInteract()
+    {
+        Debug.Log("place");
+        ItemScript itemInContainer = playerScript.containerHit.transform.parent.GetComponentInChildren<ItemScript>();
+        if (itemInContainer != null)
+        {
+            Debug.Log("item in container");
+            AddItemToContainer();
+            DeselectAll();
+            GetItems();
+            PickUpItem(itemInContainer.gameObject);
+        }
+        else
+        {
+            Debug.Log("no Item in container");
+            if (selectedItem != null)
+            {
+                // Debug.Log(playerScript.containerHit.transform.parent.name);
+                AddItemToContainer();
+            }
+        }
+        DeselectAll();
+        GetItems();
+    }
+
 
     #endregion
 
 
 
     #region Menus 
-    
+
 
     // Controls what menus open and which ones are closed. Will wipe all menus if a null value is passed
     void MenuOpen(GameObject keepMenu)
@@ -284,11 +325,11 @@ public class UiManager : MonoBehaviour
         if (itemCanPlace)
         {
             containerText.SetActive(true);
-            Debug.Log("set active");
+            // Debug.Log("set active");
         }
         else if (containerText.activeSelf && ! itemCanPlace)
         {
-            Debug.Log("else if");
+            // Debug.Log("else if");
             containerText.SetActive(false);
         }
     }
@@ -426,8 +467,13 @@ public class UiManager : MonoBehaviour
         if (Input.GetKeyDown("g"))
         {
 
-            DropItem();   
+            DropItem();
 
+        }
+        
+        if (itemCanPlace && Input.GetKeyDown("f"))
+        {
+            ItemInteract();
         }
     }
 }

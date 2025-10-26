@@ -22,7 +22,7 @@ public class PlayerScript : MonoBehaviour
     // Raycast Player Look
     LayerMask playerLookMask;
 
-    RaycastHit hit;
+    public RaycastHit containerHit;
 
     [SerializeField] float PlayerLook;
 
@@ -111,17 +111,17 @@ public class PlayerScript : MonoBehaviour
         #endregion
 
 
-        if (Physics.Raycast(transform.position, GetComponentInChildren<Camera>().gameObject.transform.forward, out hit, PlayerLook, playerLookMask) && ! uiManager.inMenu)
+        if (Physics.Raycast(transform.position, GetComponentInChildren<Camera>().gameObject.transform.forward, out containerHit, PlayerLook, playerLookMask) && ! uiManager.inMenu)
         {
-            Debug.Log(hit.collider.gameObject.name);
-            Debug.Log("looking at object");
+            // Debug.Log(hit.collider.gameObject.name);
+            // Debug.Log("looking at object");
             uiManager.itemCanPlace = true;
-            Debug.Log(uiManager.itemCanPlace);
+            // Debug.Log(uiManager.itemCanPlace);
         }
         else
         {
             uiManager.itemCanPlace = false;
-            Debug.Log(uiManager.itemCanPlace);
+            // Debug.Log(uiManager.itemCanPlace);
         }
 
 

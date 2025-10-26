@@ -2835,6 +2835,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: b4bc81fae2a4faf46a6a101f47e43f37, type: 3}
+    - target: {fileID: 4716420412049387480, guid: 07c966e01c7478246a2727a9d3135c4d, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4955017473313866128, guid: 07c966e01c7478246a2727a9d3135c4d, type: 3}
       propertyPath: m_Name
       value: Pickaxe
@@ -3179,6 +3183,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: b4bc81fae2a4faf46a6a101f47e43f37, type: 3}
+    - target: {fileID: 4716420412049387480, guid: 07c966e01c7478246a2727a9d3135c4d, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4955017473313866128, guid: 07c966e01c7478246a2727a9d3135c4d, type: 3}
       propertyPath: m_Name
       value: Pickaxe
@@ -3339,6 +3347,18 @@ PrefabInstance:
     - target: {fileID: 3717986035769937653, guid: 1936c3fb9ec050848981b21aaae18882, type: 3}
       propertyPath: m_Name
       value: Pedastal
+      objectReference: {fileID: 0}
+    - target: {fileID: 4401838163270309026, guid: 1936c3fb9ec050848981b21aaae18882, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4401838163270309026, guid: 1936c3fb9ec050848981b21aaae18882, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4401838163270309026, guid: 1936c3fb9ec050848981b21aaae18882, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
