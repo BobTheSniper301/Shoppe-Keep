@@ -10,6 +10,7 @@ using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEditor;
 using System.ComponentModel;
 using Unity.Mathematics;
+using UnityEngine.SceneManagement;
 
 
 public class UiManager : MonoBehaviour
@@ -30,7 +31,9 @@ public class UiManager : MonoBehaviour
     // Set in inspector first
     [SerializeField] GameObject menu;
     [SerializeField] GameObject overviewMenu;
-    public GameObject containerText;
+    [SerializeField] GameObject containerText;
+    [SerializeField] GameObject settingsMenu;
+
 
 
     // Vars for items
@@ -301,7 +304,9 @@ public class UiManager : MonoBehaviour
         // All menus close
         overviewMenu.SetActive(false);
         containerText.SetActive(false);
+        settingsMenu.SetActive(false);
 
+        // Controls the in menu variable and freeing the player when leaving a menu
         if (keepMenu != null)
         {
 
@@ -327,7 +332,7 @@ public class UiManager : MonoBehaviour
             containerText.SetActive(true);
             // Debug.Log("set active");
         }
-        else if (containerText.activeSelf && ! itemCanPlace)
+        else if (containerText.activeSelf && !itemCanPlace)
         {
             // Debug.Log("else if");
             containerText.SetActive(false);
@@ -338,9 +343,9 @@ public class UiManager : MonoBehaviour
     void OverviewMenu()
     {
 
-        if (Input.GetKeyDown("tab") && ! overviewMenu.activeSelf)
+        if (Input.GetKeyDown("tab") && !overviewMenu.activeSelf)
         {
-            
+
             MenuOpen(overviewMenu);
 
         }
@@ -353,7 +358,25 @@ public class UiManager : MonoBehaviour
 
     }
 
-    // Checks if the play is in a menu, if so, the player can no longer do anything, locks mouse, opens menus
+    public void QuitToDesktop()
+    {
+        Save();
+        Application.Quit();
+    }
+    public void QuitToMainMenu()
+    {
+        Save();
+        SceneManager.LoadScene("Start");
+    }
+
+
+    public void SettingsMenu()
+    {
+        MenuOpen(settingsMenu);
+    }
+
+
+    // Checks if the player is in a menu, if so, the player can no longer do anything, locks mouse, opens menus
     void CheckMenu()
     {
         OverviewMenu();
@@ -364,6 +387,10 @@ public class UiManager : MonoBehaviour
             menu.gameObject.SetActive(true);
             playerScript.canMove = false;
             Cursor.lockState = CursorLockMode.None;
+        }
+        if (inMenu && Input.GetKeyDown("escape"))
+        {
+            MenuOpen(null);
         }
     }
 
@@ -434,6 +461,8 @@ public class UiManager : MonoBehaviour
     }
 
 
+    #region Function Calls
+
     void Awake()
     {
 
@@ -461,7 +490,7 @@ public class UiManager : MonoBehaviour
         {
 
             SelectHotbar();
-        
+
         }
 
         if (Input.GetKeyDown("g"))
@@ -470,10 +499,12 @@ public class UiManager : MonoBehaviour
             DropItem();
 
         }
-        
+
         if (itemCanPlace && Input.GetKeyDown("f"))
         {
             ItemInteract();
         }
     }
+    
+    #endregion
 }
