@@ -8,6 +8,7 @@ using UnityEngine;
 
 public class PlayerScript : MonoBehaviour
 {
+    
     // Scene pull stuff
     public UiManager uiManager;
 
@@ -26,22 +27,43 @@ public class PlayerScript : MonoBehaviour
 
     [SerializeField] float PlayerLook;
 
-    #region movement + camera vars
+
+    // Movement + camera vars
     public Camera playerCamera;
     private float walkSpeed = 6f;
     private float runSpeed = 8f;
     private float jumpPower = 5f;
     private float gravity = 10f;
 
-    [SerializeField] float lookSpeed  = 10f;
+    [SerializeField] float lookSpeed = 10f;
     [SerializeField] float lookXLimit = 89f;
 
     Vector3 moveDirection = Vector3.zero;
     float rotationX = 0;
 
     public bool canMove = true;
-    #endregion
+    
 
+    // Checks if looking at an item container
+    void ItemContainerCheck()
+    {
+        if (Physics.Raycast(transform.position, GetComponentInChildren<Camera>().gameObject.transform.forward, out containerHit, PlayerLook, playerLookMask) && !uiManager.inMenu)
+        {
+
+            uiManager.itemCanPlace = true;
+
+        }
+        else
+        {
+
+            uiManager.itemCanPlace = false;
+
+        }
+
+    }
+
+
+    #region Function Calls
 
     void Awake()
     {
@@ -49,7 +71,6 @@ public class PlayerScript : MonoBehaviour
         characterController = GetComponent<CharacterController>();
 
         playerLookMask = LayerMask.GetMask("PlayerLook");
-        
 
     }
 
@@ -80,6 +101,7 @@ public class PlayerScript : MonoBehaviour
 
         #endregion
 
+
         #region Handles Jumping
         if (Input.GetButton("Jump") && canMove && characterController.isGrounded)
         {
@@ -97,6 +119,7 @@ public class PlayerScript : MonoBehaviour
 
         #endregion
 
+
         #region Handles Rotation
         characterController.Move(moveDirection * Time.deltaTime);
 
@@ -111,20 +134,14 @@ public class PlayerScript : MonoBehaviour
         #endregion
 
 
-        if (Physics.Raycast(transform.position, GetComponentInChildren<Camera>().gameObject.transform.forward, out containerHit, PlayerLook, playerLookMask) && ! uiManager.inMenu)
-        {
-            // Debug.Log(hit.collider.gameObject.name);
-            // Debug.Log("looking at object");
-            uiManager.itemCanPlace = true;
-            // Debug.Log(uiManager.itemCanPlace);
-        }
-        else
-        {
-            uiManager.itemCanPlace = false;
-            // Debug.Log(uiManager.itemCanPlace);
-        }
+        ItemContainerCheck();
 
 
-            playerData.playerPos = transform.position;
+
+
+        playerData.playerPos = transform.position;
     }
+
+    #endregion
+
 }

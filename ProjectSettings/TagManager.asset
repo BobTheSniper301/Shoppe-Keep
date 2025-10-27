@@ -6,7 +6,6 @@ TagManager:
   tags:
   - HeldItem
   - UiManager
-  - ItemContainer
   layers:
   - Default
   - TransparentFX
