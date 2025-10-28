@@ -7,6 +7,7 @@ public class ItemData : ScriptableObject
 {
     public bool placeable = false;
     public string itemName = "null";
+    public int count = 1;
 
     public ItemType itemType;
     public enum ItemType
@@ -16,9 +17,4 @@ public class ItemData : ScriptableObject
         ARMOR,
         STACKABLE
     }
-
-    // public void CreateItemData(bool placeable, string name, string ItemType)
-    // {
-        
-    // }
 }

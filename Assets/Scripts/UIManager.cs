@@ -6,35 +6,39 @@ using System.Runtime.CompilerServices;
 using System.IO;
 using Unity.VisualScripting;
 using System;
+using UnityEditorInternal.Profiling.Memory.Experimental;
+using UnityEditor;
+using System.ComponentModel;
+using Unity.Mathematics;
+using UnityEngine.SceneManagement;
 
 
 public class UiManager : MonoBehaviour
 {
-    // Menus
-    [HideInInspector] public bool inMenu = false;
-    [HideInInspector] public bool inOverviewMenu = false;
-
 
     // In scene pull stuff
-    public GameObject menues;
-    
-    public GameObject overviewMenu;
-    
     public PlayerScript playerScript;
     
     public new Camera camera;
-    
+
     [HideInInspector] public SaveJson saveJson;
 
 
+    // Menu stuff
+    [HideInInspector] public bool itemCanPlace = false;
+    [HideInInspector] public bool inMenu = false;
+    // Set in inspector first
+    [SerializeField] GameObject menu;
+    [SerializeField] GameObject overviewMenu;
+    [SerializeField] GameObject containerText;
+    [SerializeField] GameObject settingsMenu;
+
+
     // Vars for items
+    // Set in inspector first
+    [HideInInspector] public ItemData[] itemsData;
 
-    //Set in inspector first
-    public ItemData[] itemsData;
-
-    public ItemScript[] items;
-
-    [HideInInspector] public string[] stackableNums;
+    [HideInInspector] public ItemScript[] items;
 
     [HideInInspector] public int[] hotbarNums;
 
@@ -42,19 +46,19 @@ public class UiManager : MonoBehaviour
 
     [HideInInspector] public GameObject itemPickedUp;
 
-    [HideInInspector] public GameObject selectedItem;
+    public GameObject selectedItem;
 
     [HideInInspector] public int lastItemSlotNum;
 
-    //PREFABS
+
+    // PREFABS
     [SerializeField] GameObject item;
 
 
     #region Items
     // Gets a list of all items
-    public void getItems()
+    public void GetItems()
     {
-        Debug.Log("getItems");
 
         clearItems();
 
@@ -63,9 +67,10 @@ public class UiManager : MonoBehaviour
         foreach (ItemSlotScript slot in itemSlots)
         {
 
+            // Ensures itemslots show correct text for (non)stackable items
             slot.UpdateItemSlot();
 
-            //If it does have an item, it stores it into the items list at the proper index
+            // If the itemslot does have an item, it stores it into the items list at the proper index
             if (slot.GetComponentInChildren<ItemScript>())
             {
 
@@ -73,21 +78,15 @@ public class UiManager : MonoBehaviour
                 itemsData[i] = items[i].itemData;
 
             }
-            if (slot.GetComponentInChildren<Text>())
-            {
 
-                stackableNums[i] = slot.GetComponentInChildren<Text>().text;
-
-            }
-
-            // Debug.Log(string.ioin(", ", items[x]));
             i++;
         }
         
     }
 
+
     // Gets a list of all item slots
-    void getItemSlots()
+    void GetItemSlots()
     {
 
         itemSlots = GetComponentsInChildren<ItemSlotScript>();
@@ -103,12 +102,12 @@ public class UiManager : MonoBehaviour
         {
 
             items[i] = null;
-
+            itemsData[i] = null;
         }
     }
 
 
-    // To deselect any/all itemslots
+    // To deselect all itemslots
     void DeselectAll()
     {
 
@@ -116,7 +115,7 @@ public class UiManager : MonoBehaviour
         {
             i.Deselected();
         }
-
+        selectedItem = null;
     }
 
 
@@ -124,60 +123,58 @@ public class UiManager : MonoBehaviour
     void SelectHotbar()
     {
 
-        foreach (int i in hotbarNums)
-        {
-
-            if (Input.GetKeyDown((i).ToString()))
-            {
-
-                itemSlots[i - 1].ToggleSelect();
-
-                DeselectAll();
-
-                if (!itemSlots[i - 1].toggled)
+        for (int i = 0; i < items.Length; i++)
+            if (Input.GetKeyDown((i + 1).ToString()))
                 {
+                    // For select/deselect same slot
+                    itemSlots[i].ToggleSelect();
 
-                    itemSlots[i - 1].Selected();
+                    DeselectAll();
+
+                    if (!itemSlots[i].toggled)
+                    {
+
+                        itemSlots[i].Selected();
+
+                    }
 
                 }
-
-            }
-
-        }
 
     }
 
 
+    // Clears all current item related data - items[], itemsData[], etc - and destroys all items in slots
     public void ClearInventory()
     {
         int i = 0;
         while (i < items.Length)
         {
-            itemsData[i] = ScriptableObject.CreateInstance<ItemData>();
-            itemSlots[i].GetComponentInChildren<Text>().text = "";
-            items[i] = null;
 
+            items[i] = null;
+            itemsData[i] = null;
+            itemSlots[i].GetComponentInChildren<Text>().text = "";
             if (itemSlots[i].GetComponentInChildren<ItemScript>() != null)
             {
+
                 Destroy(itemSlots[i].GetComponentInChildren<ItemScript>().gameObject);
-                Debug.Log("destroy");
+
             }
-            items[i] = null;
             i++;
+
         }
     }
 
 
-
-    public void AddItem(GameObject itemFromGround)
+    // Adds a nonStackable item to the inventory in the first open slot (Adjusts transform values)
+    public void AddItem(GameObject itemToAdd)
     {
         foreach (ItemSlotScript i in itemSlots)
         {
             if (i.GetComponentInChildren<ItemScript>() == null)
             {
-                itemFromGround.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
-                itemFromGround.transform.SetParent(i.transform);
-                itemFromGround.transform.localRotation = new Quaternion(0, 0, 0, 0);
+                itemToAdd.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+                itemToAdd.transform.SetParent(i.transform);
+                itemToAdd.transform.localRotation = new Quaternion(0, 0, 0, 0);
 
                 break;
             }
@@ -185,52 +182,55 @@ public class UiManager : MonoBehaviour
     }
 
 
-    public void AddStackableItem(GameObject itemFromGround)
+    // Adds a Stackable item to the inventory, will add to the count of the same stackable item if it's in the inventory
+    // If a stackable item of the same name is not in, it will treat it as a normal item and add it into the first open slot
+    public void AddStackableItem(GameObject itemToAdd)
     {
         bool didStack = false;
         foreach (ItemScript i in items)
         {
 
-            if (i is ItemScript && itemFromGround.name == i.gameObject.name)
+            if (i is ItemScript && itemToAdd.name == i.gameObject.name)
             {
 
-                Destroy(itemFromGround);
-                int itemAmountNum = int.Parse(i.transform.parent.GetComponentInChildren<Text>().text.ToString());
-                itemAmountNum++;
-                i.transform.parent.GetComponentInChildren<Text>().text = itemAmountNum.ToString();
+                Destroy(itemToAdd);
+                i.itemData.count += itemToAdd.GetComponent<ItemScript>().itemData.count;
                 didStack = true;
                 break;
             }
         }
         if (didStack == false)
         {
-            AddItem(itemFromGround);
+            AddItem(itemToAdd);
         }
     }
 
 
-    public void PickUpItem(GameObject itemFromGround)
+    // Called when an item is picked up; will do AddStackableItem() or AddItem() depending on type
+    public void PickUpItem(GameObject itemToAdd)
     {
-        if (itemFromGround.GetComponent<ItemScript>().itemData.itemType == ItemData.ItemType.STACKABLE)
+        if (itemToAdd.GetComponent<ItemScript>().itemData.itemType == ItemData.ItemType.STACKABLE)
         {
 
-            AddStackableItem(itemFromGround);
+            AddStackableItem(itemToAdd);
+
         }
         else
         {
 
-            AddItem(itemFromGround);
+            AddItem(itemToAdd);
+
         }
-        getItems();
+        GetItems();
     }
 
 
-
+    // Drops the selected item, goes forward from camera rotation, and adjusts transform values
     void DropItem()
     {
         if (selectedItem)
         {
-            
+
             selectedItem.transform.rotation = camera.transform.rotation;
             selectedItem.transform.eulerAngles = new Vector3(0, selectedItem.transform.rotation.eulerAngles.y, selectedItem.transform.rotation.eulerAngles.z);
 
@@ -238,28 +238,67 @@ public class UiManager : MonoBehaviour
 
             selectedItem.transform.position = playerScript.gameObject.transform.position;
             selectedItem.transform.Translate(transform.forward * 5);
-            
+
             selectedItem.transform.localScale = new Vector3(10, 10, 10);
-            
+
+            selectedItem.GetComponent<SphereCollider>().enabled = true;
         }
-            DeselectAll();
-            getItems();
+        DeselectAll();
+        GetItems();
     }
+
+
+    // Takes the selected item, moves it to the container, and adjusts transform values
+    public void AddItemToContainer()
+    {
+        if (selectedItem != null)
+        {
+            selectedItem.transform.SetParent(playerScript.containerHit.transform.parent);
+            selectedItem.transform.position = playerScript.containerHit.transform.parent.position;
+            selectedItem.transform.rotation = playerScript.containerHit.transform.parent.rotation;
+            selectedItem.transform.localScale = new Vector3(5, 5, 5);
+            selectedItem.GetComponent<SphereCollider>().enabled = false;
+        }
+    }
+
+
+    // For item placing; does proper item placing depending upon if theres an item in the container or not
+    public void ItemInteract()
+    {
+        ItemScript itemInContainer = playerScript.containerHit.transform.parent.GetComponentInChildren<ItemScript>();
+        if (itemInContainer != null)
+        {
+            Debug.Log("item in container");
+            AddItemToContainer();
+            DeselectAll();
+            GetItems();
+            PickUpItem(itemInContainer.gameObject);
+        }
+        else
+        {
+            AddItemToContainer();
+        }
+        DeselectAll();
+        GetItems();
+    }
+
 
     #endregion
 
 
-    
     #region Menus 
 
-    // Controls what menus open and which ones are closed. Will wipe all menus if a null value is passed
-    void MenuControl(GameObject keepMenu)
+
+    // Opens the given menu, and closes the rest. Will wipe all menus if a null value is passed
+    void MenuOpen(GameObject keepMenu)
     {
 
-        // All other menus to close
-        overviewMenu.gameObject.SetActive(false);
+        // All menus close
+        overviewMenu.SetActive(false);
+        containerText.SetActive(false);
+        settingsMenu.SetActive(false);
 
-
+        // Controls the in menu variable and freeing the player when leaving a menu
         if (keepMenu != null)
         {
 
@@ -271,61 +310,102 @@ public class UiManager : MonoBehaviour
         {
 
             inMenu = false;
-            menues.gameObject.SetActive(false);
+            menu.SetActive(false);
             playerScript.canMove = true;
             Cursor.lockState = CursorLockMode.Locked;
 
         }
     }
 
+    // Manages Container Text
+    void ContainerText()
+    {
+        if (itemCanPlace)
+        {
+            containerText.SetActive(true);
+            // Debug.Log("set active");
+        }
+        else if (containerText.activeSelf && !itemCanPlace)
+        {
+            // Debug.Log("else if");
+            containerText.SetActive(false);
+        }
+    }
 
+    // Manages Overview Menu
     void OverviewMenu()
     {
 
-        if (!inOverviewMenu && Input.GetKeyDown("tab"))
+        if (Input.GetKeyDown("tab") && !overviewMenu.activeSelf)
         {
 
-            inOverviewMenu = true;
-            MenuControl(overviewMenu);
+            MenuOpen(overviewMenu);
 
         }
-        else if (inOverviewMenu && Input.GetKeyDown(KeyCode.Tab))
+        else if (overviewMenu.activeSelf && Input.GetKeyDown(KeyCode.Tab))
         {
 
-            inOverviewMenu = false;
-            MenuControl(null);
+            MenuOpen(null);
 
         }
 
     }
 
-    // Checks if the play is in a menu, if so, the player can no longer do anything, locks mouse, opens menus
+    // Manages Settings Menu
+    public void SettingsMenu()
+    {
+        MenuOpen(settingsMenu);
+    }
+
+
+    public void QuitToDesktop()
+    {
+        Save();
+        Application.Quit();
+    }
+
+
+    public void QuitToMainMenu()
+    {
+        Save();
+        SceneManager.LoadScene("Start");
+    }
+
+
+
+
+
+    // Checks if the player is in a menu, if so, the player can no longer do anything, locks mouse, opens menus
     void CheckMenu()
     {
         OverviewMenu();
+        ContainerText();
 
         if (inMenu)
         {
-            menues.gameObject.SetActive(true);
+            menu.gameObject.SetActive(true);
             playerScript.canMove = false;
             Cursor.lockState = CursorLockMode.None;
+        }
+        if (inMenu && Input.GetKeyDown("escape"))
+        {
+            MenuOpen(null);
         }
     }
 
     #endregion
 
 
+    #region Save + Load
 
     public void Save()
     {
+        // Updates items list then saves the data of the list and each item's data
         #region Inventory Save
-        getItems();
-        saveJson.SaveInventoryData();
 
-        //for (int i = 0; i < items.Length; i++)
-        //{
-        //    Debug.Log(items[i]);
-        //}
+        GetItems();
+
+        saveJson.SaveInventoryData();
 
         #endregion
 
@@ -334,65 +414,59 @@ public class UiManager : MonoBehaviour
 
     public void Load()
     {
+
+        // Gets the saved inventory data; Creates all the new items with the appropriate data, transform, etc
         #region Inventory Load
 
-        //ClearInventory();
+        ClearInventory();
 
-        //saveJson.LoadInventoryData();
+        saveJson.LoadInventoryData();
 
-        //int i = 0;
-        //while (i < items.Length)
-        //{
+        for (int i = 0; i < itemsData.Length; i++)
+        {
 
-        //    if (items[i] is ItemScript)
-        //    {
+            // If it's not a blank item, make the item
+            if (itemsData[i] != null && itemsData[i].itemName != "null")
+            {
 
-        //        items[i].gameObject.transform.SetParent(itemSlots[i].gameObject.transform);
+                GameObject newItem = Instantiate(item, itemSlots[i].transform);
+                newItem.GetComponent<ItemScript>().itemData = itemsData[i];
+                newItem.GetComponent<ItemScript>().itemData.name = itemsData[i].itemName;
+                newItem.name = itemsData[i].itemName;
+                newItem.GetComponent<Image>().sprite = Resources.Load<Sprite>("ItemImages/" + newItem.name);
+                newItem.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("ItemImages/" + newItem.name);
+                items[i] = newItem.GetComponent<ItemScript>();
+            }
 
-        //    }
+        }
 
-        //    if (stackableNums[i] != "")
-        //    {
-
-        //        itemSlots[i].GetComponentInChildren<Text>().text = stackableNums[i];
-
-        //    }
-
-        //    i++;
-        //}
-
-        //for (int j = 0; j < itemsData.Length; j++)
-        //{
-
-        //    if (itemsData[j].itemName != "null")
-        //    {
-
-        //        GameObject newItem = Instantiate(item, itemSlots[j].transform);
-        //        newItem.GetComponent<ItemScript>().itemData = itemsData[j];
-        //        newItem.GetComponent<ItemScript>().itemData.name = itemsData[j].itemName;
-        //        newItem.name = itemsData[j].itemName;
-        //        newItem.GetComponent<Image>().sprite = Resources.Load<Sprite>("ItemImages/" + newItem.name);
-        //        items[j] = newItem.GetComponent<ItemScript>();
-        //        Debug.Log(newItem.name);
-        //    }
-
-        //}
-
-        //getItems();
-
+        // For some reason has to happen after the load function happens to properly get the right items
+        Invoke("GetItems", 0.001f);
 
         #endregion
 
     }
 
+    #endregion
 
-    private void Start()
+
+    #region Function Calls
+
+    void Awake()
     {
 
         saveJson = GetComponent<SaveJson>();
+        
+    }
 
-        getItemSlots();
 
+    void Start()
+    {
+        GetItemSlots();
+
+        GetItems();
+
+        // TODO: Uncomment the load (works better when commented for testing)
         //Load();
 
     }
@@ -402,18 +476,28 @@ public class UiManager : MonoBehaviour
     {
         CheckMenu();
 
+        // Hotbar Selection
         if (!inMenu)
         {
 
             SelectHotbar();
-        
+
         }
 
+        // Item Drop
         if (Input.GetKeyDown("g"))
         {
 
-            DropItem();   
+            DropItem();
 
         }
+
+        // Item Placing
+        if (itemCanPlace && Input.GetKeyDown("f"))
+        {
+            ItemInteract();
+        }
     }
+    
+    #endregion
 }

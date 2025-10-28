@@ -1,5 +1,6 @@
 using System;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
 
 // Will create one if we don't have one
@@ -7,36 +8,78 @@ using UnityEngine;
 
 public class PlayerScript : MonoBehaviour
 {
-    
+
+    // Scene pull stuff
+    public UiManager uiManager;
+
+    public GameControllerScript gameControllerScript;
+
+    // Player stuff
     CharacterController characterController;
 
     public PlayerData playerData;
 
-    #region movement + camera vars
+
+    // Raycast Player Look
+    LayerMask playerLookMask;
+
+    public RaycastHit containerHit;
+
+    [SerializeField] float PlayerLook;
+
+
+    // Movement + camera vars
     public Camera playerCamera;
     private float walkSpeed = 6f;
     private float runSpeed = 8f;
     private float jumpPower = 5f;
     private float gravity = 10f;
 
-    [SerializeField] float lookSpeed  = 10f;
+    [SerializeField] float lookSpeed = 10f;
     [SerializeField] float lookXLimit = 89f;
 
     Vector3 moveDirection = Vector3.zero;
     float rotationX = 0;
 
     public bool canMove = true;
-    #endregion
+
+
+    // Checks if looking at an item container
+    void ItemContainerCheck()
+    {
+        if (Physics.Raycast(transform.position, GetComponentInChildren<Camera>().gameObject.transform.forward, out containerHit, PlayerLook, playerLookMask) && !uiManager.inMenu)
+        {
+
+            uiManager.itemCanPlace = true;
+
+        }
+        else
+        {
+
+            uiManager.itemCanPlace = false;
+
+        }
+
+    }
+
+
+    #region Function Calls
+
+    void Awake()
+    {
+
+        characterController = GetComponent<CharacterController>();
+
+        playerLookMask = LayerMask.GetMask("PlayerLook");
+
+    }
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
 
-
-        characterController = GetComponent<CharacterController>();
         Cursor.lockState = CursorLockMode.Locked;
-
 
     }
 
@@ -44,7 +87,6 @@ public class PlayerScript : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-
 
         #region Handles Movement
         Vector3 forward = transform.TransformDirection(Vector3.forward);
@@ -58,6 +100,7 @@ public class PlayerScript : MonoBehaviour
         moveDirection = (forward * curSpeedX) + (right * curSpeedY);
 
         #endregion
+
 
         #region Handles Jumping
         if (Input.GetButton("Jump") && canMove && characterController.isGrounded)
@@ -76,6 +119,7 @@ public class PlayerScript : MonoBehaviour
 
         #endregion
 
+
         #region Handles Rotation
         characterController.Move(moveDirection * Time.deltaTime);
 
@@ -90,7 +134,14 @@ public class PlayerScript : MonoBehaviour
         #endregion
 
 
+        ItemContainerCheck();
+
+
+
 
         playerData.playerPos = transform.position;
     }
+
+    #endregion
+
 }
