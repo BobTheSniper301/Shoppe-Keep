@@ -8,7 +8,7 @@ using UnityEngine;
 
 public class PlayerScript : MonoBehaviour
 {
-    
+
     // Scene pull stuff
     public UiManager uiManager;
 
@@ -42,7 +42,7 @@ public class PlayerScript : MonoBehaviour
     float rotationX = 0;
 
     public bool canMove = true;
-    
+
 
     // Checks if looking at an item container
     void ItemContainerCheck()
