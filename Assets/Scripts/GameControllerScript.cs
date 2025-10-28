@@ -11,22 +11,6 @@ public class GameControllerScript : MonoBehaviour
     public Transform[] heldObjects;
 
 
-    // Ex:PlayerStatChange(playerScript.playerData.maxHealth, 10);
-    public void PlayerStatChange(float stat, float statValue)
-    {
-        stat = statValue;
-    }
-
-    // Button BS
-    public void ButtonIncreasePlayerMaxHealth(float statChange)
-    {
-        PlayerStatChange(playerScript.playerData.maxHealth, playerScript.playerData.maxHealth + 1f);
-    }
-    public void ButtonDecreasePlayerMaxHealth(float statChange)
-    {
-        PlayerStatChange(playerScript.playerData.maxHealth, playerScript.playerData.maxHealth - 1f);
-    }
-
     void Start()
     {
 

@@ -2,6 +2,7 @@ using System;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 
 // Will create one if we don't have one
 [RequireComponent(typeof(CharacterController))]
@@ -44,6 +45,10 @@ public class PlayerScript : MonoBehaviour
     public bool canMove = true;
 
 
+    public delegate void PlayerStatChanged();
+    public static PlayerStatChanged playerStatChanged;
+
+
     // Checks if looking at an item container
     void ItemContainerCheck()
     {
@@ -60,6 +65,18 @@ public class PlayerScript : MonoBehaviour
 
         }
 
+    }
+
+
+    public void ButtonIncreasePlayerMaxHealth(float statChange)
+    {
+        playerData.maxHealth += statChange;
+        playerStatChanged?.Invoke();
+        Debug.Log("sdfpasd");
+    }
+    public void ButtonDecreasePlayerMaxHealth(float statChange)
+    {
+        playerData.maxHealth -= statChange;
     }
 
 

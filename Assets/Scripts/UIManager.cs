@@ -17,11 +17,17 @@ public class UiManager : MonoBehaviour
 {
 
     // In scene pull stuff
-    public PlayerScript playerScript;
+    [SerializeField] PlayerScript playerScript;
     
-    public new Camera camera;
+    [SerializeField] new Camera camera;
 
     [HideInInspector] public SaveJson saveJson;
+
+    [SerializeField] GameControllerScript gameControllerScript;
+
+
+    // Stats
+    public GameObject healthBar;
 
 
     // Menu stuff
@@ -36,13 +42,11 @@ public class UiManager : MonoBehaviour
 
     // Vars for items
     // Set in inspector first
-    [HideInInspector] public ItemData[] itemsData;
+    public ItemData[] itemsData;
 
-    [HideInInspector] public ItemScript[] items;
+    public ItemScript[] items;
 
-    [HideInInspector] public int[] hotbarNums;
-
-    [HideInInspector] public ItemSlotScript[] itemSlots;
+    public ItemSlotScript[] itemSlots;
 
     [HideInInspector] public GameObject itemPickedUp;
 
@@ -53,6 +57,7 @@ public class UiManager : MonoBehaviour
 
     // PREFABS
     [SerializeField] GameObject item;
+    
 
 
     #region Items
@@ -396,6 +401,17 @@ public class UiManager : MonoBehaviour
     #endregion
 
 
+    #region Stats
+
+
+    public void UpdateStats()
+    {
+        Debug.Log("UpdateStats");
+    }
+
+    #endregion
+
+
     #region Save + Load
 
     public void Save()
@@ -452,6 +468,16 @@ public class UiManager : MonoBehaviour
 
     #region Function Calls
 
+    void OnEnable()
+    {
+        PlayerScript.playerStatChanged += UpdateStats;
+    }
+
+    void OnDisable()
+    {
+        PlayerScript.playerStatChanged -= UpdateStats;
+    }
+
     void Awake()
     {
 
@@ -469,6 +495,7 @@ public class UiManager : MonoBehaviour
         // TODO: Uncomment the load (works better when commented for testing)
         //Load();
 
+        
     }
 
 
