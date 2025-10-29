@@ -72,11 +72,13 @@ public class PlayerScript : MonoBehaviour
     {
         playerData.maxHealth += statChange;
         playerStatChanged?.Invoke();
-        Debug.Log("sdfpasd");
+        Debug.Log("Buton Press");
     }
     public void ButtonDecreasePlayerMaxHealth(float statChange)
     {
         playerData.maxHealth -= statChange;
+        playerStatChanged?.Invoke();
+        Debug.Log("Buton Press");
     }
 
 

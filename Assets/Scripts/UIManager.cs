@@ -27,7 +27,9 @@ public class UiManager : MonoBehaviour
 
 
     // Stats
-    public GameObject healthBar;
+    [SerializeField] Text maxHealthNum;
+    [SerializeField] GameObject healthBar;
+    [SerializeField] Image healthBarCurrent;
 
 
     // Menu stuff
@@ -309,6 +311,9 @@ public class UiManager : MonoBehaviour
 
             inMenu = true;
             keepMenu.gameObject.SetActive(true);
+            Time.timeScale = 0;
+            menu.gameObject.SetActive(true);
+            Cursor.lockState = CursorLockMode.None;
 
         }
         else
@@ -318,22 +323,26 @@ public class UiManager : MonoBehaviour
             menu.SetActive(false);
             playerScript.canMove = true;
             Cursor.lockState = CursorLockMode.Locked;
+            Time.timeScale = 1;
 
         }
     }
 
-    // Manages Container Text
-    void ContainerText()
+
+// Manages Container Text
+void ContainerText()
     {
         if (itemCanPlace)
         {
+
             containerText.SetActive(true);
-            // Debug.Log("set active");
+
         }
         else if (containerText.activeSelf && !itemCanPlace)
         {
-            // Debug.Log("else if");
+
             containerText.SetActive(false);
+
         }
     }
 
@@ -357,9 +366,12 @@ public class UiManager : MonoBehaviour
     }
 
     // Manages Settings Menu
+    // Button param is soley for when you press the settings button in the overview menu
     public void SettingsMenu()
     {
+
         MenuOpen(settingsMenu);
+
     }
 
 
@@ -377,21 +389,12 @@ public class UiManager : MonoBehaviour
     }
 
 
-
-
-
     // Checks if the player is in a menu, if so, the player can no longer do anything, locks mouse, opens menus
     void CheckMenu()
     {
         OverviewMenu();
         ContainerText();
 
-        if (inMenu)
-        {
-            menu.gameObject.SetActive(true);
-            playerScript.canMove = false;
-            Cursor.lockState = CursorLockMode.None;
-        }
         if (inMenu && Input.GetKeyDown("escape"))
         {
             MenuOpen(null);
@@ -406,7 +409,10 @@ public class UiManager : MonoBehaviour
 
     public void UpdateStats()
     {
-        Debug.Log("UpdateStats");
+        maxHealthNum.text = playerScript.playerData.maxHealth.ToString();
+        healthBar.transform.localScale = new Vector3(1 * (1 + (int.Parse(maxHealthNum.text)-100) * 0.0025f), 1, 1);
+        healthBarCurrent.fillAmount = playerScript.playerData.currentHealth / playerScript.playerData.maxHealth;
+        Debug.Log("num " + playerScript.playerData.currentHealth * 0.01f);
     }
 
     #endregion
