@@ -33,7 +33,8 @@ public class UiManager : MonoBehaviour
 
 
     // Menu stuff
-    [HideInInspector] public bool itemCanPlace = false;
+    bool itemCanPlace = false;
+    [HideInInspector] public bool canChangePrice = false;
     [HideInInspector] public bool inMenu = false;
     // Set in inspector first
     [SerializeField] GameObject menu;
@@ -329,21 +330,23 @@ public class UiManager : MonoBehaviour
     }
 
 
-// Manages Container Text
-void ContainerText()
+    // Manages Container Text
+    public void ContainerText(bool canPlaceItem)
     {
-        if (itemCanPlace)
+        Debug.Log(canPlaceItem);
+        if (canPlaceItem)
         {
 
             containerText.SetActive(true);
 
         }
-        else if (containerText.activeSelf && !itemCanPlace)
+        else if (containerText.activeSelf && ! canPlaceItem)
         {
 
             containerText.SetActive(false);
 
         }
+        itemCanPlace = canPlaceItem;
     }
 
     // Manages Overview Menu
@@ -393,7 +396,7 @@ void ContainerText()
     void CheckMenu()
     {
         OverviewMenu();
-        ContainerText();
+
 
         if (inMenu && Input.GetKeyDown("escape"))
         {

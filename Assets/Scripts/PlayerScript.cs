@@ -23,10 +23,12 @@ public class PlayerScript : MonoBehaviour
 
     // Raycast Player Look
     LayerMask playerLookMask;
+    LayerMask playerLookPriceMask;
 
     public RaycastHit containerHit;
+    public RaycastHit priceChangeHit;
 
-    [SerializeField] float PlayerLook;
+    [SerializeField] float PlayerLookDistance;
 
 
     // Movement + camera vars
@@ -52,16 +54,35 @@ public class PlayerScript : MonoBehaviour
     // Checks if looking at an item container
     void ItemContainerCheck()
     {
-        if (Physics.Raycast(transform.position, GetComponentInChildren<Camera>().gameObject.transform.forward, out containerHit, PlayerLook, playerLookMask) && !uiManager.inMenu)
+
+        if (Physics.Raycast(transform.position, GetComponentInChildren<Camera>().gameObject.transform.forward, out containerHit, PlayerLookDistance, playerLookMask) && !uiManager.inMenu && ! uiManager.canChangePrice)
         {
 
-            uiManager.itemCanPlace = true;
+            uiManager.ContainerText(true);
 
         }
         else
         {
 
-            uiManager.itemCanPlace = false;
+            uiManager.ContainerText(false);
+
+        }
+
+    }
+
+    void ItemPriceChangeLook()
+    {
+        if (Physics.Raycast(transform.position, GetComponentInChildren<Camera>().gameObject.transform.forward, out containerHit, PlayerLookDistance, playerLookPriceMask) && !uiManager.inMenu)
+        {
+            Debug.Log("its true price");
+            uiManager.canChangePrice = true;
+
+
+        }
+        else
+        {
+
+            uiManager.canChangePrice = false;
 
         }
 
@@ -89,7 +110,7 @@ public class PlayerScript : MonoBehaviour
 
         characterController = GetComponent<CharacterController>();
 
-        playerLookMask = LayerMask.GetMask("PlayerLook");
+        playerLookMask = LayerMask.GetMask("PlayerLookContainer");
 
     }
 
