@@ -15,4 +15,5 @@ MonoBehaviour:
   placeable: 0
   itemName: Pickaxe
   count: 1
+  price: 10
   itemType: 1
