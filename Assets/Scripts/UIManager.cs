@@ -266,6 +266,11 @@ public class UiManager : MonoBehaviour
             selectedItem.transform.rotation = playerScript.containerHit.transform.parent.rotation;
             selectedItem.transform.localScale = new Vector3(5, 5, 5);
             selectedItem.GetComponent<SphereCollider>().enabled = false;
+            playerScript.containerHit.transform.parent.transform.parent.GetComponent<PedestalScript>().ItemPlaced();
+        }
+        else
+        {
+            playerScript.containerHit.transform.parent.transform.parent.GetComponent<PedestalScript>().ItemRemoved();
         }
     }
 
@@ -276,13 +281,12 @@ public class UiManager : MonoBehaviour
         ItemScript itemInContainer = playerScript.containerHit.transform.parent.GetComponentInChildren<ItemScript>();
         if (itemInContainer != null)
         {
-            Debug.Log("item in container");
             AddItemToContainer();
             DeselectAll();
             GetItems();
             PickUpItem(itemInContainer.gameObject);
         }
-        else
+        else 
         {
             AddItemToContainer();
         }
@@ -333,7 +337,6 @@ public class UiManager : MonoBehaviour
     // Manages Container Text
     public void ContainerText(bool canPlaceItem)
     {
-        Debug.Log(canPlaceItem);
         if (canPlaceItem)
         {
 
@@ -415,7 +418,6 @@ public class UiManager : MonoBehaviour
         maxHealthNum.text = playerScript.playerData.maxHealth.ToString();
         healthBar.transform.localScale = new Vector3(1 * (1 + (int.Parse(maxHealthNum.text)-100) * 0.0025f), 1, 1);
         healthBarCurrent.fillAmount = playerScript.playerData.currentHealth / playerScript.playerData.maxHealth;
-        Debug.Log("num " + playerScript.playerData.currentHealth * 0.01f);
     }
 
     #endregion

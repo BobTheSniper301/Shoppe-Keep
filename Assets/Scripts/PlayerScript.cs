@@ -20,6 +20,7 @@ public class PlayerScript : MonoBehaviour
 
     public PlayerData playerData;
 
+    public int priceChangePower = 1;
 
     // Raycast Player Look
     LayerMask playerLookMask;
@@ -33,6 +34,7 @@ public class PlayerScript : MonoBehaviour
 
     // Movement + camera vars
     public Camera playerCamera;
+    private Ray cameraRay;
     private float walkSpeed = 6f;
     private float runSpeed = 8f;
     private float jumpPower = 5f;
@@ -55,7 +57,7 @@ public class PlayerScript : MonoBehaviour
     void ItemContainerCheck()
     {
 
-        if (Physics.Raycast(transform.position, GetComponentInChildren<Camera>().gameObject.transform.forward, out containerHit, PlayerLookDistance, playerLookMask) && !uiManager.inMenu && ! uiManager.canChangePrice)
+        if (Physics.Raycast(cameraRay, out containerHit, PlayerLookDistance, playerLookMask) && !uiManager.inMenu && ! uiManager.canChangePrice)
         {
 
             uiManager.ContainerText(true);
@@ -72,34 +74,44 @@ public class PlayerScript : MonoBehaviour
 
     void ItemPriceChangeLook()
     {
-        if (Physics.Raycast(transform.position, GetComponentInChildren<Camera>().gameObject.transform.forward, out containerHit, PlayerLookDistance, playerLookPriceMask) && !uiManager.inMenu)
+        if (Physics.Raycast(cameraRay, out priceChangeHit, PlayerLookDistance, playerLookPriceMask))
         {
-            Debug.Log("its true price");
-            uiManager.canChangePrice = true;
 
+            PedestalScript pedestal = priceChangeHit.transform.parent.root.GetComponent<PedestalScript>();
+            
+            uiManager.canChangePrice = true;
+            // Debug.Log(priceChangeHit.transform.name);
+            if (Input.GetKeyDown(KeyCode.Mouse0))
+            {
+                // Debug.Log("Mouse down!");
+                pedestal.PedestalChange(priceChangeHit.transform.gameObject.name, priceChangePower);
+            }
 
         }
         else
         {
 
             uiManager.canChangePrice = false;
-
         }
 
+        // Debug.Log("canchangeprice: " + uiManager.canChangePrice);
+        
     }
 
 
     public void ButtonIncreasePlayerMaxHealth(float statChange)
     {
+
         playerData.maxHealth += statChange;
         playerStatChanged?.Invoke();
-        Debug.Log("Buton Press");
+
     }
     public void ButtonDecreasePlayerMaxHealth(float statChange)
     {
+
         playerData.maxHealth -= statChange;
         playerStatChanged?.Invoke();
-        Debug.Log("Buton Press");
+
     }
 
 
@@ -111,6 +123,8 @@ public class PlayerScript : MonoBehaviour
         characterController = GetComponent<CharacterController>();
 
         playerLookMask = LayerMask.GetMask("PlayerLookContainer");
+
+        playerLookPriceMask = LayerMask.GetMask("PlayerLookPrice");
 
     }
 
@@ -173,10 +187,27 @@ public class PlayerScript : MonoBehaviour
 
         #endregion
 
+        cameraRay = playerCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+
+
+        if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))
+        {
+            priceChangePower = 5;
+        }
+        else
+        {
+            priceChangePower = 1;
+        }
+
 
         ItemContainerCheck();
 
+        ItemPriceChangeLook();
 
+
+
+
+        // Debug.DrawRay(cameraRay.origin, cameraRay.direction * PlayerLookDistance, Color.red, 0.5f);
 
 
         playerData.playerPos = transform.position;
