@@ -12,6 +12,7 @@ public class PedestalScript : MonoBehaviour
 
     public void PedestalChange(string interactedButton, int value)
     {
+        
 
         if (interactedButton != null)
         {
@@ -32,10 +33,8 @@ public class PedestalScript : MonoBehaviour
 
     }
 
-
     public void ItemPlaced()
     {
-        itemOnSelfScript = GetComponentInChildren<ItemScript>();
         itemPrice = itemOnSelfScript.itemData.price;
         itemPriceText.transform.parent.transform.parent.gameObject.SetActive(true);
         PedestalChange(null, 0);
@@ -43,6 +42,7 @@ public class PedestalScript : MonoBehaviour
 
     public void ItemRemoved()
     {
+        itemOnSelfScript = null;
         itemPriceText.transform.parent.transform.parent.gameObject.SetActive(false);
     }
 

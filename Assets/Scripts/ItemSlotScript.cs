@@ -74,6 +74,7 @@ public class ItemSlotScript : MonoBehaviour, IDropHandler
     // Checks each item in the heldObjects list, finds what matches the slotted item, then shows it the held object
     void ShowItem()
     {
+        Debug.Log("showitem");
         foreach (Transform i in gameController.heldObjects)
         {
             if (i.name == slottedItem.name)

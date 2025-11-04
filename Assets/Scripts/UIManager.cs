@@ -180,8 +180,8 @@ public class UiManager : MonoBehaviour
         {
             if (i.GetComponentInChildren<ItemScript>() == null)
             {
-                itemToAdd.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
                 itemToAdd.transform.SetParent(i.transform);
+                itemToAdd.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
                 itemToAdd.transform.localRotation = new Quaternion(0, 0, 0, 0);
 
                 break;
@@ -266,6 +266,7 @@ public class UiManager : MonoBehaviour
             selectedItem.transform.rotation = playerScript.containerHit.transform.parent.rotation;
             selectedItem.transform.localScale = new Vector3(5, 5, 5);
             selectedItem.GetComponent<SphereCollider>().enabled = false;
+            playerScript.containerHit.transform.parent.transform.parent.GetComponent<PedestalScript>().itemOnSelfScript = selectedItem.GetComponent<ItemScript>();
             playerScript.containerHit.transform.parent.transform.parent.GetComponent<PedestalScript>().ItemPlaced();
         }
         else
@@ -467,8 +468,9 @@ public class UiManager : MonoBehaviour
 
         }
 
-        // For some reason has to happen after the load function happens to properly get the right items
-        Invoke("GetItems", 0.001f);
+        // ToDo: make this actually run on the next frame
+        // Calls this the "next frame" to ensure the items are moved correctly when the itemslots are updated
+        Invoke("GetItems", 0.01f);
 
         #endregion
 
