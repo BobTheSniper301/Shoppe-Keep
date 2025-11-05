@@ -30,6 +30,7 @@ public class UiManager : MonoBehaviour
     [SerializeField] Text maxHealthNum;
     [SerializeField] GameObject healthBar;
     [SerializeField] Image healthBarCurrent;
+    [SerializeField] Text goldText;
 
 
     // Menu stuff
@@ -416,9 +417,15 @@ public class UiManager : MonoBehaviour
 
     public void UpdateStats()
     {
+        // Stats Overview
         maxHealthNum.text = playerScript.playerData.maxHealth.ToString();
+
+        // Health bar
         healthBar.transform.localScale = new Vector3(1 * (1 + (int.Parse(maxHealthNum.text)-100) * 0.0025f), 1, 1);
         healthBarCurrent.fillAmount = playerScript.playerData.currentHealth / playerScript.playerData.maxHealth;
+
+        // Gold
+        goldText.text = playerScript.playerData.gold.ToString();
     }
 
     #endregion

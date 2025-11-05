@@ -85,6 +85,8 @@ public class PlayerScript : MonoBehaviour
             {
                 // Debug.Log("Mouse down!");
                 pedestal.PedestalChange(priceChangeHit.transform.gameObject.name, priceChangePower);
+                // Incase a purchase happens
+                playerStatChanged?.Invoke();
             }
 
         }
@@ -187,6 +189,15 @@ public class PlayerScript : MonoBehaviour
 
         #endregion
 
+        
+
+
+        playerData.playerPos = transform.position;
+    }
+
+
+    private void Update()
+    {
         cameraRay = playerCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
 
 
@@ -208,9 +219,6 @@ public class PlayerScript : MonoBehaviour
 
 
         // Debug.DrawRay(cameraRay.origin, cameraRay.direction * PlayerLookDistance, Color.red, 0.5f);
-
-
-        playerData.playerPos = transform.position;
     }
 
     #endregion

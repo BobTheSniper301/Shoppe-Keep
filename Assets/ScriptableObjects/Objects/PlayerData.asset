@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentHealth: 100
   maxHealth: 100
-  gold: 0
-  playerPos: {x: -3.7, y: 2.08, z: -0.68126}
+  gold: 70
+  playerPos: {x: 2.7742956, y: 2.08, z: 0.015942851}
