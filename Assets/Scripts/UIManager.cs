@@ -15,15 +15,14 @@ using UnityEngine.SceneManagement;
 
 public class UiManager : MonoBehaviour
 {
+    public static UiManager instance { get; private set; }
 
     // In scene pull stuff
-    [SerializeField] PlayerScript playerScript;
     
     [SerializeField] new Camera camera;
 
     [HideInInspector] public SaveJson saveJson;
 
-    [SerializeField] GameControllerScript gameControllerScript;
 
 
     // Stats
@@ -245,7 +244,7 @@ public class UiManager : MonoBehaviour
 
             selectedItem.transform.SetParent(null);
 
-            selectedItem.transform.position = playerScript.gameObject.transform.position;
+            selectedItem.transform.position = PlayerScript.instance.gameObject.transform.position;
             selectedItem.transform.Translate(transform.forward * 5);
 
             selectedItem.transform.localScale = new Vector3(10, 10, 10);
@@ -262,17 +261,17 @@ public class UiManager : MonoBehaviour
     {
         if (selectedItem != null)
         {
-            selectedItem.transform.SetParent(playerScript.containerHit.transform.parent);
-            selectedItem.transform.position = playerScript.containerHit.transform.parent.position;
-            selectedItem.transform.rotation = playerScript.containerHit.transform.parent.rotation;
+            selectedItem.transform.SetParent(PlayerScript.instance.containerHit.transform.parent);
+            selectedItem.transform.position = PlayerScript.instance.containerHit.transform.parent.position;
+            selectedItem.transform.rotation = PlayerScript.instance.containerHit.transform.parent.rotation;
             selectedItem.transform.localScale = new Vector3(5, 5, 5);
             selectedItem.GetComponent<SphereCollider>().enabled = false;
-            playerScript.containerHit.transform.parent.transform.parent.GetComponent<PedestalScript>().itemOnSelfScript = selectedItem.GetComponent<ItemScript>();
-            playerScript.containerHit.transform.parent.transform.parent.GetComponent<PedestalScript>().ItemPlaced();
+            PlayerScript.instance.containerHit.transform.parent.transform.parent.GetComponent<PedestalScript>().itemOnSelfScript = selectedItem.GetComponent<ItemScript>();
+            PlayerScript.instance.containerHit.transform.parent.transform.parent.GetComponent<PedestalScript>().ItemPlaced();
         }
         else
         {
-            playerScript.containerHit.transform.parent.transform.parent.GetComponent<PedestalScript>().ItemRemoved();
+            PlayerScript.instance.containerHit.transform.parent.transform.parent.GetComponent<PedestalScript>().ItemRemoved();
         }
     }
 
@@ -280,7 +279,7 @@ public class UiManager : MonoBehaviour
     // For item placing; does proper item placing depending upon if theres an item in the container or not
     public void ItemInteract()
     {
-        ItemScript itemInContainer = playerScript.containerHit.transform.parent.GetComponentInChildren<ItemScript>();
+        ItemScript itemInContainer = PlayerScript.instance.containerHit.transform.parent.GetComponentInChildren<ItemScript>();
         if (itemInContainer != null)
         {
             AddItemToContainer();
@@ -328,7 +327,7 @@ public class UiManager : MonoBehaviour
 
             inMenu = false;
             menu.SetActive(false);
-            playerScript.canMove = true;
+            PlayerScript.instance.canMove = true;
             Cursor.lockState = CursorLockMode.Locked;
             Time.timeScale = 1;
 
@@ -418,14 +417,14 @@ public class UiManager : MonoBehaviour
     public void UpdateStats()
     {
         // Stats Overview
-        maxHealthNum.text = playerScript.playerData.maxHealth.ToString();
+        maxHealthNum.text = PlayerScript.instance.playerData.maxHealth.ToString();
 
         // Health bar
         healthBar.transform.localScale = new Vector3(1 * (1 + (int.Parse(maxHealthNum.text)-100) * 0.0025f), 1, 1);
-        healthBarCurrent.fillAmount = playerScript.playerData.currentHealth / playerScript.playerData.maxHealth;
+        healthBarCurrent.fillAmount = PlayerScript.instance.playerData.currentHealth / PlayerScript.instance.playerData.maxHealth;
 
         // Gold
-        goldText.text = playerScript.playerData.gold.ToString();
+        goldText.text = PlayerScript.instance.playerData.gold.ToString();
     }
 
     #endregion
@@ -502,7 +501,16 @@ public class UiManager : MonoBehaviour
     {
 
         saveJson = GetComponent<SaveJson>();
-        
+
+        if (instance != null && instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Debug.Log("else");
+            instance = this;
+        }
     }
 
 

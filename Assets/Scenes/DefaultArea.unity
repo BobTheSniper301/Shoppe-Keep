@@ -1033,7 +1033,13 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4815235636140060367, guid: 34c0c64e134957d439575e9795c058f2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1431657353}
+    - targetCorrespondingSourceObject: {fileID: 4815235636140060367, guid: 34c0c64e134957d439575e9795c058f2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1431657354}
   m_SourcePrefab: {fileID: 100100000, guid: 34c0c64e134957d439575e9795c058f2, type: 3}
 --- !u!1001 &415961378
 PrefabInstance:
@@ -3147,10 +3153,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6e388d0b8f6eaa418ef3851d3e7eb10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerScript: {fileID: 1014425061}
   camera: {fileID: 1218840763}
   saveJson: {fileID: 0}
-  gameControllerScript: {fileID: 656190222}
   maxHealthNum: {fileID: 2089425249}
   healthBar: {fileID: 68135219}
   healthBarCurrent: {fileID: 1202911312}
@@ -3683,6 +3687,40 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4815235636140060367, guid: 34c0c64e134957d439575e9795c058f2, type: 3}
   m_PrefabInstance: {fileID: 391643396}
   m_PrefabAsset: {fileID: 0}
+--- !u!143 &1431657351 stripped
+CharacterController:
+  m_CorrespondingSourceObject: {fileID: 2393170248441193750, guid: 34c0c64e134957d439575e9795c058f2, type: 3}
+  m_PrefabInstance: {fileID: 391643396}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1431657353
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1431657350}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 207011e790dac1c49a3ef74e1dccbbca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  characterController: {fileID: 1431657351}
+  lookSpeed: 10
+  lookXLimit: 89
+--- !u!114 &1431657354
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1431657350}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ba451ff4eeecfd4d86914de39500566, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  PlayerLookDistance: 2.5
+  camera: {fileID: 1218840763}
 --- !u!1 &1441957780
 GameObject:
   m_ObjectHideFlags: 0
@@ -3719,9 +3757,9 @@ NavMeshAgent:
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 0
+  m_StoppingDistance: 0.1
   m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
+  m_AutoBraking: 0
   m_AutoRepath: 1
   m_Height: 2
   m_BaseOffset: 1
@@ -3860,7 +3898,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84de6baa779738b4b810b304e362acc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  pedestal: {fileID: 330347218}
+  pedestal: {fileID: 1532742934}
 --- !u!1 &1475559023
 GameObject:
   m_ObjectHideFlags: 0
@@ -4020,6 +4058,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1511741165}
   m_CullTransparentMesh: 1
+--- !u!1 &1532742934
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1532742935}
+  m_Layer: 0
+  m_Name: NPCSpot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1532742935
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1532742934}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.32, y: 4.76, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 718704080}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1554335411
 GameObject:
   m_ObjectHideFlags: 0
@@ -6585,6 +6654,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2648895204295160860, guid: 1936c3fb9ec050848981b21aaae18882, type: 3}
       insertIndex: -1
       addedObject: {fileID: 741024928}
+    - targetCorrespondingSourceObject: {fileID: 2648895204295160860, guid: 1936c3fb9ec050848981b21aaae18882, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1532742935}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 3717986035769937653, guid: 1936c3fb9ec050848981b21aaae18882, type: 3}
       insertIndex: -1
