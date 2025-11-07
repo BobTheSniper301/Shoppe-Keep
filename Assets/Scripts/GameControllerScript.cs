@@ -4,11 +4,15 @@ using UnityEngine.UI;
 
 public class GameControllerScript : MonoBehaviour
 {
-    [HideInInspector] GameObject container;
-    public GameObject player;
-    public PlayerScript playerScript;
+    // AI variables
+    // Only pedestals with items
+    public List<GameObject> pedestals = new List<GameObject>();
+    public GameObject[] walkways;
+
+
 
     public Transform[] heldObjects;
+
 
     public static GameControllerScript instance { get; private set; }
 

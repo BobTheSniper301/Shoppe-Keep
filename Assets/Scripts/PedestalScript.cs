@@ -8,7 +8,6 @@ public class PedestalScript : MonoBehaviour
     public float itemPrice;
     public ItemScript itemOnSelfScript;
     [SerializeField] Text itemPriceText;
-    GameObject player;
 
 
     public void PedestalChange(string interactedButton, int value)
@@ -19,13 +18,9 @@ public class PedestalScript : MonoBehaviour
         {
             if (interactedButton == "PurchaseButton" && itemOnSelfScript != null)
             {
-                Debug.Log("purchase");
-                Debug.Log(itemPrice);
-                Debug.Log(player.GetComponent<PlayerScript>().playerData.gold);
-                player.GetComponent<PlayerScript>().playerData.gold -= itemPrice;
+                PlayerScript.instance.playerData.gold -= itemPrice;
                 Destroy(itemOnSelfScript.gameObject);
                 ItemRemoved();
-                Debug.Log(player.GetComponent<PlayerScript>().playerData.gold);
                 return;
             }
             else if (interactedButton == "Minus")
@@ -63,7 +58,8 @@ public class PedestalScript : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
+        GameControllerScript.instance.pedestals.Add(this.transform.Find("NPCSpot").gameObject);
+
         GameObject priceTextOnSelf = transform.Find("PriceInterface").transform.Find("Price").transform.Find("PriceText").gameObject;
         itemPriceText = priceTextOnSelf.GetComponent<Text>();
         itemPriceText.transform.parent.transform.parent.gameObject.SetActive(false);
