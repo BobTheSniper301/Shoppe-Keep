@@ -508,7 +508,6 @@ public class UiManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("else");
             instance = this;
         }
     }

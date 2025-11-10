@@ -49,6 +49,10 @@ public class ItemScript : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
     void OnTriggerStay(Collider other)
     {
         // TODO: atempt to set up as an async function
+        if (other.gameObject.name != "Player")
+        {
+            return;
+        }
         transform.position = Vector3.Lerp(transform.position, player.transform.position, 0.01f);
         // Reaches the player
         if (Vector3.Distance(transform.position, player.transform.position) <= 1.2f)
