@@ -17,7 +17,6 @@ public class NPCScipt : MonoBehaviour
 
     [SerializeField] bool isTargetAPedestal;
 
-    Rigidbody rb;
 
     // Will have npc handle all of the purchasing due to me wanting them to grow stronger or have them know related things in the future so it would be easier for itself to know what items it has bought before
     public async Task Purchase()
@@ -92,8 +91,6 @@ public class NPCScipt : MonoBehaviour
 
         npcAnimationScript = GetComponent<NPCAnimationScript>();
 
-        rb = this.GetComponent<Rigidbody>();
-
         agent.SetDestination(target.transform.position);
 
         agent.updateRotation = true;
@@ -102,15 +99,14 @@ public class NPCScipt : MonoBehaviour
     // Update is called once per frame
     async void Update()
     {
-        
-        if (Vector3.Distance(this.transform.position, agent.destination) < 2.5f && agent.isStopped == false)
+        // Triggers when the NPC has reached the locations
+        if (Vector3.Distance(this.transform.position, agent.destination) <= 2.4f && agent.isStopped == false) // dist <= Agent radius
         {
             Debug.Log("stop");
             agent.isStopped = true;
+            agent.velocity = Vector3.zero;
 
-            
-            // this.transform.rotation = target.transform.rotation;
-
+            this.transform.rotation = target.transform.rotation;
 
 
             if (isTargetAPedestal && target.transform.parent.root.GetComponent<PedestalScript>().itemOnSelfScript != null)
@@ -119,15 +115,12 @@ public class NPCScipt : MonoBehaviour
             }
             isTargetAPedestal = false;
 
-            // DetermineTarget();
+            DetermineTarget();
         }
-        if (agent.velocity.magnitude <= 0.1f)
-        {
-            Debug.Log("rotate");
-            Debug.Log(target.transform.rotation);
-            Debug.Log(agent.transform.rotation);
-            Quaternion.RotateTowards(this.transform.rotation, target.transform.rotation, 5);
-            // agent.transform.rotation = target.transform.rotation;
-        }
+        // TODO: Learn to smoothly rotate the NPC when it reaches the location
+        // if (agent.velocity.magnitude <= 0.1f)
+        // {
+        //     Quaternion.RotateTowards(this.transform.rotation, target.transform.rotation, 1);
+        // }
     }
 }
