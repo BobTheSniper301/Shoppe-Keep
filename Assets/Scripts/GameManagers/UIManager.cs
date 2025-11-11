@@ -16,6 +16,7 @@ using UnityEngine.SceneManagement;
 public class UiManager : MonoBehaviour
 {
     public static UiManager instance { get; private set; }
+    
 
     // In scene pull stuff
     
@@ -58,8 +59,7 @@ public class UiManager : MonoBehaviour
     [HideInInspector] public int lastItemSlotNum;
 
 
-    // PREFABS
-    [SerializeField] GameObject item;
+    
     
 
 
@@ -67,6 +67,7 @@ public class UiManager : MonoBehaviour
     // Gets a list of all items
     public void GetItems()
     {
+        Debug.Log("get items");
 
         clearItems();
 
@@ -384,14 +385,14 @@ public class UiManager : MonoBehaviour
 
     public void QuitToDesktop()
     {
-        Save();
+        SaveJson.instance.Save();
         Application.Quit();
     }
 
 
     public void QuitToMainMenu()
     {
-        Save();
+        SaveJson.instance.Save();
         SceneManager.LoadScene("Start");
     }
 
@@ -430,61 +431,6 @@ public class UiManager : MonoBehaviour
     #endregion
 
 
-    #region Save + Load
-
-    public void Save()
-    {
-        // Updates items list then saves the data of the list and each item's data
-        #region Inventory Save
-
-        GetItems();
-
-        saveJson.SaveInventoryData();
-
-        #endregion
-
-    }
-
-
-    public void Load()
-    {
-
-        // Gets the saved inventory data; Creates all the new items with the appropriate data, transform, etc
-        #region Inventory Load
-
-        ClearInventory();
-
-        saveJson.LoadInventoryData();
-
-        for (int i = 0; i < itemsData.Length; i++)
-        {
-
-            // If it's not a blank item, make the item
-            if (itemsData[i] != null && itemsData[i].itemName != "null")
-            {
-
-                GameObject newItem = Instantiate(item, itemSlots[i].transform);
-                newItem.GetComponent<ItemScript>().itemData = itemsData[i];
-                newItem.GetComponent<ItemScript>().itemData.name = itemsData[i].itemName;
-                newItem.name = itemsData[i].itemName;
-                newItem.GetComponent<Image>().sprite = Resources.Load<Sprite>("ItemImages/" + newItem.name);
-                newItem.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("ItemImages/" + newItem.name);
-                items[i] = newItem.GetComponent<ItemScript>();
-            }
-
-        }
-
-        // ToDo: make this actually run on the next frame
-        // Calls this the "next frame" to ensure the items are moved correctly when the itemslots are updated
-        Invoke("GetItems", 0.01f);
-
-        #endregion
-
-    }
-
-    #endregion
-
-
     #region Function Calls
 
     void OnEnable()
@@ -501,8 +447,6 @@ public class UiManager : MonoBehaviour
 
     void Awake()
     {
-
-        saveJson = GetComponent<SaveJson>();
 
         if (instance != null && instance != this)
         {

@@ -372,8 +372,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1226013085}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+      - m_Target: {fileID: 656190224}
+        m_TargetAssemblyTypeName: SaveJson, Assembly-CSharp
         m_MethodName: Save
         m_Mode: 1
         m_Arguments:
@@ -1400,6 +1400,7 @@ GameObject:
   m_Component:
   - component: {fileID: 656190223}
   - component: {fileID: 656190222}
+  - component: {fileID: 656190224}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -1441,6 +1442,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &656190224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 656190221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6e293b02ed03074dbfd3338f9a06658, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SaveJson
+  itemPrefab: {fileID: 0}
 --- !u!1 &679821996
 GameObject:
   m_ObjectHideFlags: 0
@@ -1524,8 +1538,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1226013085}
-        m_TargetAssemblyTypeName: UiManager, Assembly-CSharp
+      - m_Target: {fileID: 656190224}
+        m_TargetAssemblyTypeName: SaveJson, Assembly-CSharp
         m_MethodName: Load
         m_Mode: 1
         m_Arguments:
@@ -2799,7 +2813,6 @@ GameObject:
   - component: {fileID: 1226013082}
   - component: {fileID: 1226013081}
   - component: {fileID: 1226013085}
-  - component: {fileID: 1226013086}
   m_Layer: 5
   m_Name: UI
   m_TagString: UiManager
@@ -2948,20 +2961,6 @@ MonoBehaviour:
   itemPickedUp: {fileID: 0}
   selectedItem: {fileID: 0}
   lastItemSlotNum: 0
-  item: {fileID: 4699033617661492032, guid: 18890f3f1865d7c41ac3f5f6cda25803, type: 3}
---- !u!114 &1226013086
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1226013080}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b6e293b02ed03074dbfd3338f9a06658, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SaveJson
-  uiManager: {fileID: 1226013085}
 --- !u!1 &1243115461
 GameObject:
   m_ObjectHideFlags: 0

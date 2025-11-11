@@ -10,14 +10,18 @@ using UnityEngine.UI;
 
 public class SaveJson : MonoBehaviour
 {
-    private InventoryData _InventoryData = new InventoryData();
+    public static SaveJson instance { get; private set; }
+
+
+    // PREFABS
+    [SerializeField] GameObject itemPrefab;
+
+    InventoryData _InventoryData = new InventoryData();
     [HideInInspector] string item;
-    public UiManager uiManager;
 
     // Function to call to clear any json file if given the path.
     public static void ClearJsonFile(string filepath)
     {
-        Debug.Log("clear");
         System.IO.File.WriteAllText(filepath, string.Empty);
     }
 
@@ -32,7 +36,7 @@ public class SaveJson : MonoBehaviour
         // Fills the list with blank objects blank values
         _InventoryData.inventoryItemDatas = new List<InventoryItemData>(8);
         InventoryItemData emptyObj = new InventoryItemData("null", "null", false, 0);
-        for (int i = 0; i < uiManager.items.Length; i++)
+        for (int i = 0; i < UiManager.instance.items.Length; i++)
         {
             _InventoryData.inventoryItemDatas.Add(emptyObj);
         }
@@ -41,9 +45,9 @@ public class SaveJson : MonoBehaviour
         // Updates each item with the right information
         for (int i = 0; i < _InventoryData.inventoryItemDatas.Count; i++)
         {
-            if (uiManager.itemsData[i] != null)
+            if (UiManager.instance.itemsData[i] != null)
             {
-                InventoryItemData item = new InventoryItemData(uiManager.itemsData[i].itemName, uiManager.itemsData[i].itemType.ToString(), uiManager.itemsData[i].placeable, uiManager.itemsData[i].count);
+                InventoryItemData item = new InventoryItemData(UiManager.instance.itemsData[i].itemName, UiManager.instance.itemsData[i].itemType.ToString(), UiManager.instance.itemsData[i].placeable, UiManager.instance.itemsData[i].count);
                 _InventoryData.inventoryItemDatas[i] = item;
             }
         }
@@ -63,7 +67,6 @@ public class SaveJson : MonoBehaviour
         // Ensures having an inventory list
         if (file == "")
         {
-
             SaveInventoryData();
             return;
 
@@ -73,29 +76,77 @@ public class SaveJson : MonoBehaviour
         InventoryData loadData = JsonUtility.FromJson<InventoryData>(file);
 
         // Make the UiManager info, match the saved data
-        for (int i = 0; i < uiManager.itemsData.Length; i++)
+        for (int i = 0; i < UiManager.instance.itemsData.Length; i++)
         {
-            if (uiManager.itemsData[i] == null)
+            if (UiManager.instance.itemsData[i] == null)
             {
-                uiManager.itemsData[i] = ScriptableObject.CreateInstance<ItemData>();
+                UiManager.instance.itemsData[i] = ScriptableObject.CreateInstance<ItemData>();
             }
             object empty;
             if (!Enum.TryParse(typeof(ItemData.ItemType), loadData.inventoryItemDatas[i]._itemType, out empty))
             {
-                uiManager.itemsData[i].itemType = ItemData.ItemType.EMPTY;
+                UiManager.instance.itemsData[i].itemType = ItemData.ItemType.EMPTY;
             }
             else
             {
-                uiManager.itemsData[i].itemType = (ItemData.ItemType)Enum.Parse(typeof(ItemData.ItemType), loadData.inventoryItemDatas[i]._itemType);
+                UiManager.instance.itemsData[i].itemType = (ItemData.ItemType)Enum.Parse(typeof(ItemData.ItemType), loadData.inventoryItemDatas[i]._itemType);
             }
-            uiManager.itemsData[i].itemName = loadData.inventoryItemDatas[i]._name;
-            uiManager.itemsData[i].placeable = loadData.inventoryItemDatas[i]._placeable;
-            uiManager.itemsData[i].count = loadData.inventoryItemDatas[i]._count;
+            UiManager.instance.itemsData[i].itemName = loadData.inventoryItemDatas[i]._name;
+            UiManager.instance.itemsData[i].placeable = loadData.inventoryItemDatas[i]._placeable;
+            UiManager.instance.itemsData[i].count = loadData.inventoryItemDatas[i]._count;
 
         }
 
     }
-    
+
+    public void Save()
+    {
+        // Updates UiManager.instance.items list then saves the data of the list and each item's data
+        #region Inventory Save
+
+        UiManager.instance.GetItems();
+
+        SaveInventoryData();
+
+        #endregion
+
+    }
+
+
+    public void Load()
+    {
+
+        // Gets the saved inventory data; Creates all the new UiManager.instance.items with the appropriate data, transform, etc
+        #region Inventory Load
+
+        UiManager.instance.ClearInventory();
+
+        LoadInventoryData();
+
+        for (int i = 0; i < UiManager.instance.itemsData.Length; i++)
+        {
+
+            // If it's not a blank item, make the item
+            if (UiManager.instance.itemsData[i] != null && UiManager.instance.itemsData[i].itemName != "null")
+            {
+
+                GameObject newItem = Instantiate(itemPrefab, UiManager.instance.itemSlots[i].transform);
+                newItem.GetComponent<ItemScript>().itemData = UiManager.instance.itemsData[i];
+                newItem.GetComponent<ItemScript>().itemData.name = UiManager.instance.itemsData[i].itemName;
+                newItem.name = UiManager.instance.itemsData[i].itemName;
+                newItem.GetComponent<Image>().sprite = Resources.Load<Sprite>("ItemImages/" + newItem.name);
+                newItem.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("ItemImages/" + newItem.name);
+                UiManager.instance.items[i] = newItem.GetComponent<ItemScript>();
+            }
+
+        }
+
+        // ToDo: make this actually run on the next frame
+        // Calls this the "next frame" to ensure the UiManager.instance.items are moved correctly when the itemslots are updated
+        UiManager.instance.Invoke("GetItems", 0.000001f);
+
+        #endregion
+    }
     
 }
 
