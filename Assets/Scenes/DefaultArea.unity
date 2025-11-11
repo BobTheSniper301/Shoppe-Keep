@@ -5579,7 +5579,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2961887240060139106, guid: 0ca3002963593344d871cc016a6128f7, type: 3}
       propertyPath: m_Speed
-      value: 0
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 2961887240060139106, guid: 0ca3002963593344d871cc016a6128f7, type: 3}
       propertyPath: m_Height
@@ -5595,7 +5595,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2961887240060139106, guid: 0ca3002963593344d871cc016a6128f7, type: 3}
       propertyPath: m_Acceleration
-      value: 0
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3280844572041216068, guid: 0ca3002963593344d871cc016a6128f7, type: 3}
       propertyPath: m_Name

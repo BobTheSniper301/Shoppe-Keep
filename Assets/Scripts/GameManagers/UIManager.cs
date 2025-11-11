@@ -490,11 +490,13 @@ public class UiManager : MonoBehaviour
     void OnEnable()
     {
         PlayerScript.playerStatChanged += UpdateStats;
+        GameControllerScript.itemPurchased += UpdateStats;
     }
 
     void OnDisable()
     {
         PlayerScript.playerStatChanged -= UpdateStats;
+        GameControllerScript.itemPurchased -= UpdateStats;
     }
 
     void Awake()

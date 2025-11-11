@@ -76,9 +76,6 @@ public class PlayerScript : MonoBehaviour
 
 
     // Update is called once per frame
-    
-
-
     private void Update()
     {
 

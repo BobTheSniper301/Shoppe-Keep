@@ -15,26 +15,48 @@ public class NPCScipt : MonoBehaviour
 
     int walkOrBuy;
 
-    bool isTargetAPedestal;
+    [SerializeField] bool isTargetAPedestal;
 
+    Rigidbody rb;
+
+    // Will have npc handle all of the purchasing due to me wanting them to grow stronger or have them know related things in the future so it would be easier for itself to know what items it has bought before
     public async Task Purchase()
     {
-        if (target.transform.parent.root.GetComponentInChildren<ItemScript>() == null)
-        {
-            return;
-        }
+        PedestalScript pedestalScript = target.transform.parent.root.GetComponent<PedestalScript>();
+        ItemScript pedestalItem = pedestalScript.itemOnSelfScript;
+
+        Debug.Log("pedestal item " + pedestalItem);
+        Debug.Log("pedestal script " + pedestalScript);
+        Debug.Log("player gold " + PlayerScript.instance.playerData.gold);
+        Debug.Log("item price " + pedestalItem.itemData.price);
 
         await npcAnimationScript.PlayerPurchaseAnim();
         Debug.Log("purchase");
-        GameControllerScript.instance.pedestals.Remove(target);
-        isTargetAPedestal = false;
+
+        PlayerScript.instance.playerData.gold += pedestalItem.itemData.price; 
+        pedestalScript.ItemRemoved();
+        Destroy(pedestalItem.gameObject);
+
+        GameControllerScript.itemPurchased?.Invoke();
+        
+
+        
 
     }
 
 
     public void DetermineTarget()
     {
-
+        // To swap between start and end on path finding
+        if (walkOrBuy == 0)
+        {
+            lastWentToEnd = 1;
+        }
+        else if (walkOrBuy == 1)
+        {
+            lastWentToEnd = 0;
+        }
+            
         // (x, y) makes a random number from x to y-1 
         walkOrBuy = Random.Range(0, 4);
 
@@ -48,6 +70,8 @@ public class NPCScipt : MonoBehaviour
         {
             // Debug.Log("find pedestal");
             target = GameControllerScript.instance.pedestals[Random.Range(0, GameControllerScript.instance.pedestals.Count)];
+            // Removes the pedestal from the list so it doesn't get targeted by anything else
+            GameControllerScript.instance.pedestals.Remove(target);
             isTargetAPedestal = true;
         }
 
@@ -68,6 +92,11 @@ public class NPCScipt : MonoBehaviour
 
         npcAnimationScript = GetComponent<NPCAnimationScript>();
 
+        rb = this.GetComponent<Rigidbody>();
+
+        agent.SetDestination(target.transform.position);
+
+        agent.updateRotation = true;
     }
 
     // Update is called once per frame
@@ -76,28 +105,29 @@ public class NPCScipt : MonoBehaviour
         
         if (Vector3.Distance(this.transform.position, agent.destination) < 2.5f && agent.isStopped == false)
         {
-            // To swap between start and end on path finding
-            if (walkOrBuy == 0)
-            {
-                lastWentToEnd = 1;
-            }
-            else if (walkOrBuy == 1)
-            {
-                lastWentToEnd = 0;
-            }
-
-
+            Debug.Log("stop");
             agent.isStopped = true;
 
-            this.transform.rotation = target.transform.rotation;
             
-            if (isTargetAPedestal)
+            // this.transform.rotation = target.transform.rotation;
+
+
+
+            if (isTargetAPedestal && target.transform.parent.root.GetComponent<PedestalScript>().itemOnSelfScript != null)
             {
                 await Purchase();
             }
+            isTargetAPedestal = false;
 
-            DetermineTarget();
+            // DetermineTarget();
         }
-            
+        if (agent.velocity.magnitude <= 0.1f)
+        {
+            Debug.Log("rotate");
+            Debug.Log(target.transform.rotation);
+            Debug.Log(agent.transform.rotation);
+            Quaternion.RotateTowards(this.transform.rotation, target.transform.rotation, 5);
+            // agent.transform.rotation = target.transform.rotation;
+        }
     }
 }

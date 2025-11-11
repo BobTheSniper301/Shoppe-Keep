@@ -14,6 +14,10 @@ public class GameControllerScript : MonoBehaviour
     public Transform[] heldObjects;
 
 
+    public delegate void ItemPurchased();
+    public static ItemPurchased itemPurchased;
+
+
     public static GameControllerScript instance { get; private set; }
 
     private void Awake()
