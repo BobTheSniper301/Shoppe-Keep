@@ -1454,7 +1454,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6e293b02ed03074dbfd3338f9a06658, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SaveJson
-  itemPrefab: {fileID: 0}
+  itemPrefab: {fileID: 4699033617661492032, guid: 18890f3f1865d7c41ac3f5f6cda25803, type: 3}
 --- !u!1 &679821996
 GameObject:
   m_ObjectHideFlags: 0
