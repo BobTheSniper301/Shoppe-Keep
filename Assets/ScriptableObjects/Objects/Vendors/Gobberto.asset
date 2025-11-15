@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c7dcac63c3125944a239630b8887a89, type: 3}
+  m_Name: Gobberto
+  m_EditorClassIdentifier: Assembly-CSharp::VendorData
+  reputation: 0
+  questProgress: 0
+  vendorName: Gobberto
+  text: Howdy partner! How's it goin' on dis lovle' afternoon?
+  unlockedWares: 0
+  wares:
+  - {fileID: 11400000, guid: bcb3d12098fc0c64f915bda92b110d7d, type: 2}

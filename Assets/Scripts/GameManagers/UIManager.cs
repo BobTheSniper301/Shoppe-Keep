@@ -1,26 +1,15 @@
 using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine.UI;
-using System.Runtime.CompilerServices;
-using System.IO;
-using Unity.VisualScripting;
-using System;
-using UnityEditorInternal.Profiling.Memory.Experimental;
-using UnityEditor;
-using System.ComponentModel;
-using Unity.Mathematics;
 using UnityEngine.SceneManagement;
-using System.Threading.Tasks;
 
 
 public class UiManager : MonoBehaviour
 {
-    // Refactor a lot of each menus stuff onto a script on that menu
+    // TODO: Refactor a lot of each menus stuff onto a script on that menu
 
     public static UiManager instance { get; private set; }
     
-
+    #region Vars
     // In scene pull stuff
     
     [SerializeField] new Camera camera;
@@ -42,11 +31,16 @@ public class UiManager : MonoBehaviour
     public GameObject overviewMenu;
     public GameObject itemContainerPrompt;
     public GameObject settingsMenu;
+
+    // Vendor Stuff
     public GameObject vendorMenu;
     public GameObject vendorPrompt;
     [SerializeField] GameObject vendorItemContainer;
     [SerializeField] GameObject vendorItem;
     [SerializeField] GameObject vendorMenuGoldAmount;
+    [SerializeField] GameObject vendorName;
+    [SerializeField] GameObject vendorText;
+    [SerializeField] GameObject vendorPortrait;
 
 
     // Vars for items
@@ -63,9 +57,7 @@ public class UiManager : MonoBehaviour
 
     [HideInInspector] public int lastItemSlotNum;
 
-
-    
-    
+    #endregion  
 
 
     #region Items
@@ -189,6 +181,7 @@ public class UiManager : MonoBehaviour
                 itemToAdd.transform.SetParent(i.transform);
                 itemToAdd.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
                 itemToAdd.transform.localRotation = new Quaternion(0, 0, 0, 0);
+                itemToAdd.GetComponent<ItemScript>().itemData = Instantiate(itemToAdd.GetComponent<ItemScript>().itemData);
 
                 break;
             }
@@ -204,7 +197,7 @@ public class UiManager : MonoBehaviour
         foreach (ItemScript i in items)
         {
 
-            if (i is ItemScript && itemToAdd.name == i.gameObject.name)
+            if (i is ItemScript && itemToAdd.GetComponent<ItemScript>().itemData.itemName == i.itemData.itemName)
             {
 
                 Destroy(itemToAdd);
@@ -359,13 +352,15 @@ public class UiManager : MonoBehaviour
         VendorData currentVendorData = PlayerScript.instance.vendorHit.transform.gameObject.GetComponent<VendorScript>().vendorData;
         MenuOpen(vendorMenu);
         vendorMenuGoldAmount.GetComponent<Text>().text = PlayerScript.instance.playerData.gold.ToString();
-        // Debug.Log(currentVendorData.wares.Count);
-        foreach (ItemData wareInList in currentVendorData.wares)
-        {
+        vendorText.GetComponent<Text>().text = currentVendorData.text;
+        vendorName.GetComponent<Text>().text = currentVendorData.vendorName;
+        vendorPortrait.GetComponent<Image>().sprite =  Resources.Load<Sprite>("VendorPortraits/" + currentVendorData.vendorName);
+        for (int i = 0; i < currentVendorData.unlockedWares; i++)
+        {       
             GameObject newItemToSell = Instantiate(vendorItem, vendorItemContainer.transform);
-            newItemToSell.GetComponent<VendorItemScript>().itemData = wareInList;
-            newItemToSell.GetComponentInChildren<Text>().text = "G " + wareInList.price.ToString();
-            newItemToSell.transform.Find("ItemContainer").transform.Find("ItemToSell").GetComponent<Image>().sprite = Resources.Load<Sprite>("ItemImages/" + wareInList.itemName);
+            newItemToSell.GetComponent<VendorItemScript>().itemData = currentVendorData.wares[i];
+            newItemToSell.GetComponentInChildren<Text>().text = "G " + currentVendorData.wares[i].price.ToString();
+            newItemToSell.transform.Find("ItemContainer").transform.Find("ItemToSell").GetComponent<Image>().sprite = Resources.Load<Sprite>("ItemImages/" + currentVendorData.wares[i].itemName);
         }
         
 

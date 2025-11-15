@@ -77,7 +77,7 @@ public class ItemSlotScript : MonoBehaviour, IDropHandler
         Debug.Log("showitem");
         foreach (Transform i in gameController.heldObjects)
         {
-            if (i.name == slottedItem.name)
+            if (i.name == slottedItem.GetComponent<ItemScript>().itemData.itemName)
             {
                 i.gameObject.SetActive(true);
             }
@@ -89,7 +89,7 @@ public class ItemSlotScript : MonoBehaviour, IDropHandler
     {
         foreach (Transform i in gameController.heldObjects)
         {
-            if (i.name == slottedItem.name)
+            if (i.name == slottedItem.GetComponent<ItemScript>().itemData.itemName)
             {
                 i.gameObject.SetActive(false);
             }

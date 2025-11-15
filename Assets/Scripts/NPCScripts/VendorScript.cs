@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class VendorScript : MonoBehaviour
 {
-    private GameObject vendorMenu;
 
     public VendorData vendorData;
 
@@ -25,12 +24,6 @@ public class VendorScript : MonoBehaviour
 
 
     void Start()
-    {
-        vendorMenu = UiManager.instance.vendorMenu;
-    }
-
-
-    void Update()
     {
         
     }
