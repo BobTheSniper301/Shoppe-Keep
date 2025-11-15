@@ -2,16 +2,34 @@ using UnityEngine;
 
 public class VendorScript : MonoBehaviour
 {
+    private GameObject vendorMenu;
 
     public ScriptableObject vendorData;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+
+    public void UpdateVendor()
     {
-        
+        Debug.Log("update vendor");
     }
 
-    // Update is called once per frame
+
+    void OnEnable()
+    {
+        GameControllerScript.itemSale += UpdateVendor;
+    }
+    void OnDisable()
+    {
+        GameControllerScript.itemSale -= UpdateVendor;
+    }
+
+
+
+    void Start()
+    {
+        vendorMenu = UiManager.instance.vendorMenu;
+    }
+
+
     void Update()
     {
         

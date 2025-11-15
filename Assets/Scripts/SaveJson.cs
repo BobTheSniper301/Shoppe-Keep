@@ -10,6 +10,9 @@ using UnityEngine.UI;
 
 public class SaveJson : MonoBehaviour
 {
+    // TODO: Change the way things are saved (kinda refactor)
+
+
     public static SaveJson instance { get; private set; }
 
 
@@ -148,6 +151,19 @@ public class SaveJson : MonoBehaviour
         #endregion
     }
     
+    private void Awake()
+    {
+        if (instance != null && instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            instance = this;
+        }
+    }
+
+
 }
 
 [System.Serializable]

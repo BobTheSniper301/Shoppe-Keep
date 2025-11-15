@@ -14,8 +14,8 @@ public class GameControllerScript : MonoBehaviour
     public Transform[] heldObjects;
 
 
-    public delegate void ItemPurchased();
-    public static ItemPurchased itemPurchased;
+    public delegate void ItemSale();
+    public static ItemSale itemSale;
 
 
     public static GameControllerScript instance { get; private set; }

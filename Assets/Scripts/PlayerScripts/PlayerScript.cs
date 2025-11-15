@@ -19,6 +19,7 @@ public class PlayerScript : MonoBehaviour
 
     public RaycastHit containerHit;
     public RaycastHit priceChangeHit;
+    public RaycastHit vendorHit;
 
 
     // Movement + camera vars

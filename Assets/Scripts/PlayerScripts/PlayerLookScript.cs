@@ -7,6 +7,7 @@ public class PlayerLookScript : MonoBehaviour
 
     LayerMask playerLookMask;
     LayerMask playerLookPriceMask;
+    LayerMask playerLookVendorMask;
 
 
     [SerializeField] float PlayerLookDistance;
@@ -14,30 +15,45 @@ public class PlayerLookScript : MonoBehaviour
 
     [SerializeField] new Camera camera;
 
+    // TODO: Need to fix up this trash check where looking stuff (could use on trigger stay from another object)
+    void VendorCheck()
+    {
+        if (Physics.Raycast(cameraRay, out PlayerScript.instance.vendorHit, PlayerLookDistance + 2, playerLookVendorMask) && ! UiManager.instance.inMenu)
+        {
+            UiManager.instance.vendorPrompt.SetActive(true);
+            if (Input.GetKeyDown("f"))
+            {
+                UiManager.instance.VendorMenu();
+            }
+        }
+        else
+        {
+            UiManager.instance.vendorPrompt.SetActive(false);
+        }
+    }
+
+
     // Checks if looking at an item container
     void ItemContainerCheck()
     {
 
         if (Physics.Raycast(cameraRay, out PlayerScript.instance.containerHit, PlayerLookDistance, playerLookMask) && !UiManager.instance.inMenu && !UiManager.instance.canChangePrice)
         {
-
-            UiManager.instance.ContainerText(true);
-
+            UiManager.instance.ItemContainerPrompt(true);
         }
         else
         {
-
-            UiManager.instance.ContainerText(false);
-
+            UiManager.instance.ItemContainerPrompt(false);
         }
 
     }
 
+
+   // Checks if looking at a price change interface
     void ItemPriceChangeLook()
     {
         if (Physics.Raycast(cameraRay, out PlayerScript.instance.priceChangeHit, PlayerLookDistance, playerLookPriceMask))
         {
-
             PedestalScript pedestal = PlayerScript.instance.priceChangeHit.transform.parent.root.GetComponent<PedestalScript>();
 
             UiManager.instance.canChangePrice = true;
@@ -54,11 +70,8 @@ public class PlayerLookScript : MonoBehaviour
         }
         else
         {
-
             UiManager.instance.canChangePrice = false;
         }
-
-        // Debug.Log("canchangeprice: " + UiManager.instance.canChangePrice);
 
     }
 
@@ -67,23 +80,27 @@ public class PlayerLookScript : MonoBehaviour
         playerLookMask = LayerMask.GetMask("PlayerLookContainer");
 
         playerLookPriceMask = LayerMask.GetMask("PlayerLookPrice");
+
+        playerLookVendorMask = LayerMask.GetMask("Vendor");
     }
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+
     void Start()
     {
-
         Cursor.lockState = CursorLockMode.Locked;
-        
     }
 
-    // Update is called once per frame
+
     void Update()
     {
+        // Ray shoots out from center of player view
         cameraRay = camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
 
         ItemContainerCheck();
 
         ItemPriceChangeLook();
+
+        VendorCheck();
 
 
         // Debug.DrawRay(cameraRay.origin, cameraRay.direction * PlayerLookDistance, Color.red, 0.5f);

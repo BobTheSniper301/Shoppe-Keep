@@ -36,7 +36,7 @@ public class NPCScipt : MonoBehaviour
         pedestalScript.ItemRemoved();
         Destroy(pedestalItem.gameObject);
 
-        GameControllerScript.itemPurchased?.Invoke();
+        GameControllerScript.itemSale?.Invoke();
         
 
         

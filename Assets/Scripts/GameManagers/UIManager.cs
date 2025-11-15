@@ -15,15 +15,14 @@ using UnityEngine.SceneManagement;
 
 public class UiManager : MonoBehaviour
 {
+    // Refactor a lot of each menus stuff onto a script on that menu
+
     public static UiManager instance { get; private set; }
     
 
     // In scene pull stuff
     
     [SerializeField] new Camera camera;
-
-    [HideInInspector] public SaveJson saveJson;
-
 
 
     // Stats
@@ -38,10 +37,12 @@ public class UiManager : MonoBehaviour
     [HideInInspector] public bool canChangePrice = false;
     [HideInInspector] public bool inMenu = false;
     // Set in inspector first
-    [SerializeField] GameObject menu;
-    [SerializeField] GameObject overviewMenu;
-    [SerializeField] GameObject containerText;
-    [SerializeField] GameObject settingsMenu;
+    public GameObject menu;
+    public GameObject overviewMenu;
+    public GameObject itemContainerPrompt;
+    public GameObject settingsMenu;
+    public GameObject vendorMenu;
+    public GameObject vendorPrompt;
 
 
     // Vars for items
@@ -309,8 +310,9 @@ public class UiManager : MonoBehaviour
 
         // All menus close
         overviewMenu.SetActive(false);
-        containerText.SetActive(false);
+        itemContainerPrompt.SetActive(false);
         settingsMenu.SetActive(false);
+        vendorMenu.SetActive(false);
 
         // Controls the in menu variable and freeing the player when leaving a menu
         if (keepMenu != null)
@@ -336,19 +338,26 @@ public class UiManager : MonoBehaviour
     }
 
 
-    // Manages Container Text
-    public void ContainerText(bool canPlaceItem)
+    // Manages Vendor Menu
+    public void VendorMenu()
+    {
+        MenuOpen(vendorMenu);
+    }
+
+    // TODO: Move this to player look script like vendor prompt
+    // Manages ItemContainerPrompt
+    public void ItemContainerPrompt(bool canPlaceItem)
     {
         if (canPlaceItem)
         {
 
-            containerText.SetActive(true);
+            itemContainerPrompt.SetActive(true);
 
         }
-        else if (containerText.activeSelf && ! canPlaceItem)
+        else if (itemContainerPrompt.activeSelf && ! canPlaceItem)
         {
 
-            containerText.SetActive(false);
+            itemContainerPrompt.SetActive(false);
 
         }
         itemCanPlace = canPlaceItem;
@@ -392,6 +401,7 @@ public class UiManager : MonoBehaviour
 
     public void QuitToMainMenu()
     {
+        Debug.Log("Save Json: " + SaveJson.instance);
         SaveJson.instance.Save();
         SceneManager.LoadScene("Start");
     }
@@ -406,6 +416,10 @@ public class UiManager : MonoBehaviour
         if (inMenu && Input.GetKeyDown("escape"))
         {
             MenuOpen(null);
+        }
+        else if (!inMenu && Input.GetKeyDown("escape"))
+        {
+            SettingsMenu();
         }
     }
 
@@ -436,13 +450,13 @@ public class UiManager : MonoBehaviour
     void OnEnable()
     {
         PlayerScript.playerStatChanged += UpdateStats;
-        GameControllerScript.itemPurchased += UpdateStats;
+        GameControllerScript.itemSale += UpdateStats;
     }
 
     void OnDisable()
     {
         PlayerScript.playerStatChanged -= UpdateStats;
-        GameControllerScript.itemPurchased -= UpdateStats;
+        GameControllerScript.itemSale -= UpdateStats;
     }
 
     void Awake()
