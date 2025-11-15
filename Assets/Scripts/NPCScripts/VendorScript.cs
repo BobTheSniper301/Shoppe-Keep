@@ -4,7 +4,7 @@ public class VendorScript : MonoBehaviour
 {
     private GameObject vendorMenu;
 
-    public ScriptableObject vendorData;
+    public VendorData vendorData;
 
 
     public void UpdateVendor()

@@ -15,4 +15,5 @@ MonoBehaviour:
   placeable: 1
   itemName: Shovel
   count: 1
+  price: 10
   itemType: 3

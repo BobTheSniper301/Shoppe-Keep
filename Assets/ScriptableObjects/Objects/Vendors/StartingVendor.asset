@@ -13,4 +13,7 @@ MonoBehaviour:
   m_Name: StartingVendor
   m_EditorClassIdentifier: Assembly-CSharp::MerchantData
   reputation: 0
-  wares: []
+  unlockedWares: 1
+  wares:
+  - {fileID: 11400000, guid: bcb3d12098fc0c64f915bda92b110d7d, type: 2}
+  - {fileID: 11400000, guid: 8ef60194aa24ba842ab87954203fa3fd, type: 2}

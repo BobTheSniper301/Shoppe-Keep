@@ -11,6 +11,7 @@ using UnityEditor;
 using System.ComponentModel;
 using Unity.Mathematics;
 using UnityEngine.SceneManagement;
+using System.Threading.Tasks;
 
 
 public class UiManager : MonoBehaviour
@@ -43,6 +44,9 @@ public class UiManager : MonoBehaviour
     public GameObject settingsMenu;
     public GameObject vendorMenu;
     public GameObject vendorPrompt;
+    [SerializeField] GameObject vendorItemContainer;
+    [SerializeField] GameObject vendorItem;
+    [SerializeField] GameObject vendorMenuGoldAmount;
 
 
     // Vars for items
@@ -305,7 +309,7 @@ public class UiManager : MonoBehaviour
 
 
     // Opens the given menu, and closes the rest. Will wipe all menus if a null value is passed
-    void MenuOpen(GameObject keepMenu)
+    public void MenuOpen(GameObject keepMenu)
     {
 
         // All menus close
@@ -335,13 +339,36 @@ public class UiManager : MonoBehaviour
             Time.timeScale = 1;
 
         }
+        if (! vendorMenu.activeSelf && vendorItemContainer.transform.childCount > 0)
+        {          
+            foreach (VendorItemScript child in vendorItemContainer.GetComponentsInChildren<VendorItemScript>())
+            {
+                Destroy(child.gameObject);
+                Debug.Log("delete");
+            }
+            
+        }
     }
 
 
     // Manages Vendor Menu
     public void VendorMenu()
+    
     {
+
+        VendorData currentVendorData = PlayerScript.instance.vendorHit.transform.gameObject.GetComponent<VendorScript>().vendorData;
         MenuOpen(vendorMenu);
+        vendorMenuGoldAmount.GetComponent<Text>().text = PlayerScript.instance.playerData.gold.ToString();
+        // Debug.Log(currentVendorData.wares.Count);
+        foreach (ItemData wareInList in currentVendorData.wares)
+        {
+            GameObject newItemToSell = Instantiate(vendorItem, vendorItemContainer.transform);
+            newItemToSell.GetComponent<VendorItemScript>().itemData = wareInList;
+            newItemToSell.GetComponentInChildren<Text>().text = "G " + wareInList.price.ToString();
+            newItemToSell.transform.Find("ItemContainer").transform.Find("ItemToSell").GetComponent<Image>().sprite = Resources.Load<Sprite>("ItemImages/" + wareInList.itemName);
+        }
+        
+
     }
 
     // TODO: Move this to player look script like vendor prompt
@@ -440,6 +467,7 @@ public class UiManager : MonoBehaviour
 
         // Gold
         goldText.text = PlayerScript.instance.playerData.gold.ToString();
+        vendorMenuGoldAmount.GetComponent<Text>().text = PlayerScript.instance.playerData.gold.ToString();
     }
 
     #endregion

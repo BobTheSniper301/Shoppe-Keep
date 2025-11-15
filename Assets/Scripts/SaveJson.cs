@@ -17,7 +17,7 @@ public class SaveJson : MonoBehaviour
 
 
     // PREFABS
-    [SerializeField] GameObject itemPrefab;
+    public GameObject itemPrefab;
 
     InventoryData _InventoryData = new InventoryData();
     [HideInInspector] string item;
@@ -147,6 +147,7 @@ public class SaveJson : MonoBehaviour
         // ToDo: make this actually run on the next frame
         // Calls this the "next frame" to ensure the UiManager.instance.items are moved correctly when the itemslots are updated
         UiManager.instance.Invoke("GetItems", 0.000001f);
+
 
         #endregion
     }
