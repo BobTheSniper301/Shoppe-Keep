@@ -23,6 +23,7 @@ public class UiManager : MonoBehaviour
 
 
     // Menu stuff
+    public bool canOpenMenu = true;
     bool itemCanPlace = false;
     [HideInInspector] public bool canChangePrice = false;
     [HideInInspector] public bool inMenu = false;
@@ -31,6 +32,8 @@ public class UiManager : MonoBehaviour
     public GameObject overviewMenu;
     public GameObject itemContainerPrompt;
     public GameObject settingsMenu;
+    public GameObject craftingPrompt;
+    public GameObject craftingMenu;
 
     // Vendor Stuff
     public GameObject vendorMenu;
@@ -304,10 +307,12 @@ public class UiManager : MonoBehaviour
     // Opens the given menu, and closes the rest. Will wipe all menus if a null value is passed
     public void MenuOpen(GameObject keepMenu)
     {
-
+        if (canOpenMenu == false && keepMenu != null)
+        {
+            return;
+        }
         // All menus close
         overviewMenu.SetActive(false);
-        itemContainerPrompt.SetActive(false);
         settingsMenu.SetActive(false);
         vendorMenu.SetActive(false);
 
@@ -439,10 +444,10 @@ public class UiManager : MonoBehaviour
         {
             MenuOpen(null);
         }
-        else if (!inMenu && Input.GetKeyDown("escape"))
-        {
-            SettingsMenu();
-        }
+        //else if (!inMenu && Input.GetKeyDown("escape"))
+        //{
+        //    SettingsMenu();
+        //}
     }
 
     #endregion

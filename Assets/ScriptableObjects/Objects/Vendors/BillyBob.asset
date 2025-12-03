@@ -16,7 +16,7 @@ MonoBehaviour:
   questProgress: 0
   vendorName: BillyBob
   text: Welcome! Feel free to purchase anything that tickles your fancy!
-  unlockedWares: 0
+  unlockedWares: 2
   wares:
   - {fileID: 11400000, guid: bcb3d12098fc0c64f915bda92b110d7d, type: 2}
   - {fileID: 11400000, guid: 8ef60194aa24ba842ab87954203fa3fd, type: 2}

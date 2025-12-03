@@ -8,6 +8,7 @@ public class PlayerLookScript : MonoBehaviour
     LayerMask playerLookMask;
     LayerMask playerLookPriceMask;
     LayerMask playerLookVendorMask;
+    LayerMask playerLookCraftingMask;
 
 
     [SerializeField] float PlayerLookDistance;
@@ -29,6 +30,25 @@ public class PlayerLookScript : MonoBehaviour
         else
         {
             UiManager.instance.vendorPrompt.SetActive(false);
+        }
+    }
+
+
+    void CraftingPromptCheck()
+    {
+        if (Physics.Raycast(cameraRay, out PlayerScript.instance.craftingHit, PlayerLookDistance + 2, playerLookCraftingMask) && !UiManager.instance.inMenu)
+        {
+            UiManager.instance.craftingPrompt.SetActive(true);
+            if (Input.GetKeyDown("f"))
+            {
+                Debug.Log("f");
+                PotionCraftingStationScript potionStationScript = PlayerScript.instance.craftingHit.transform.parent.gameObject.GetComponent<PotionCraftingStationScript>();
+                potionStationScript.OpenCrafting();
+            }
+        }
+        else
+        {
+            UiManager.instance.craftingPrompt.SetActive(false);
         }
     }
 
@@ -82,6 +102,8 @@ public class PlayerLookScript : MonoBehaviour
         playerLookPriceMask = LayerMask.GetMask("PlayerLookPrice");
 
         playerLookVendorMask = LayerMask.GetMask("Vendor");
+
+        playerLookCraftingMask = LayerMask.GetMask("PlayerLookCrafting");
     }
 
 
@@ -102,6 +124,7 @@ public class PlayerLookScript : MonoBehaviour
 
         VendorCheck();
 
+        CraftingPromptCheck();
 
         // Debug.DrawRay(cameraRay.origin, cameraRay.direction * PlayerLookDistance, Color.red, 0.5f);
     }
