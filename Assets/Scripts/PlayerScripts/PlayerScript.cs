@@ -19,6 +19,8 @@ public class PlayerScript : MonoBehaviour
     public RaycastHit craftingHit;
 
 
+    public GameObject currentCraftingStation = null;
+
     // Movement + camera vars
     public Camera playerCamera;
     

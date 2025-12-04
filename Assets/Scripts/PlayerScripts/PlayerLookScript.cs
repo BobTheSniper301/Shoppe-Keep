@@ -42,6 +42,7 @@ public class PlayerLookScript : MonoBehaviour
             if (Input.GetKeyDown("f"))
             {
                 Debug.Log("f");
+                PlayerScript.instance.currentCraftingStation = PlayerScript.instance.craftingHit.transform.parent.gameObject;
                 PotionCraftingStationScript potionStationScript = PlayerScript.instance.craftingHit.transform.parent.gameObject.GetComponent<PotionCraftingStationScript>();
                 potionStationScript.OpenCrafting();
             }
