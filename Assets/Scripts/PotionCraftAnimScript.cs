@@ -1,12 +1,12 @@
 using UnityEngine;
-
+using System.Threading.Tasks;
 
 public class PotionCraftAnimScript : MonoBehaviour
 {
     Animator animator;
 
 
-    public void CraftAnim()
+    public async Task CraftAnim()
     {
         animator.SetTrigger("Crafting");
     }

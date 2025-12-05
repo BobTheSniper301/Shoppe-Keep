@@ -60,6 +60,8 @@ public class UiManager : MonoBehaviour
 
     [HideInInspector] public int lastItemSlotNum;
 
+    public bool isInventoryFull;
+
     #endregion  
 
 
@@ -90,7 +92,17 @@ public class UiManager : MonoBehaviour
 
             i++;
         }
-        
+        for (int j = 0; j < items.Length; j++)
+        {
+            if (items[j] == null)
+            {
+                isInventoryFull = false;
+            }
+            else if (j == items.Length)
+            {
+                isInventoryFull = true;
+            }
+        }
     }
 
 
@@ -235,8 +247,15 @@ public class UiManager : MonoBehaviour
     }
 
 
+    public void SpawnGroundItem(GameObject item, Vector3 spawnLocation)
+    {
+        Instantiate(item);
+        item.transform.position = spawnLocation;
+    }
+
+
     // Drops the selected item, goes forward from camera rotation, and adjusts transform values
-    void DropItem()
+    public void DropItem()
     {
         if (selectedItem)
         {
@@ -344,7 +363,6 @@ public class UiManager : MonoBehaviour
                 Destroy(child.gameObject);
                 Debug.Log("delete");
             }
-            
         }
     }
 

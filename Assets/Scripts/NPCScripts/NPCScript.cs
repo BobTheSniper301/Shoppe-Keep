@@ -101,7 +101,6 @@ public class NPCScipt : MonoBehaviour
         // Triggers when the NPC has reached the locations
         if (Vector3.Distance(this.transform.position, agent.destination) <= 2.4f && agent.isStopped == false) // dist <= Agent radius
         {
-            Debug.Log("stop");
             agent.isStopped = true;
             agent.velocity = Vector3.zero;
 

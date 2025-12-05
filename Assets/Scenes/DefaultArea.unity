@@ -4311,6 +4311,7 @@ MonoBehaviour:
   itemPickedUp: {fileID: 0}
   selectedItem: {fileID: 0}
   lastItemSlotNum: 0
+  isInventoryFull: 0
 --- !u!1 &1243115461
 GameObject:
   m_ObjectHideFlags: 0
@@ -5481,6 +5482,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 137cc4e21fbf723479363dc3b114bb82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  inputItems: []
+  outputItem: {fileID: 8386220439716674854, guid: 78cebbaa49adb604a9e72732269e7b56, type: 3}
+  outputItemInst: {fileID: 0}
 --- !u!1 &1553425818
 GameObject:
   m_ObjectHideFlags: 0
