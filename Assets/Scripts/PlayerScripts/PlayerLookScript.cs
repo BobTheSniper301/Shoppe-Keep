@@ -43,8 +43,7 @@ public class PlayerLookScript : MonoBehaviour
             {
                 Debug.Log("f");
                 PlayerScript.instance.currentCraftingStation = PlayerScript.instance.craftingHit.transform.parent.gameObject;
-                PotionCraftingStationScript potionStationScript = PlayerScript.instance.craftingHit.transform.parent.gameObject.GetComponent<PotionCraftingStationScript>();
-                potionStationScript.OpenCrafting();
+                UiManager.instance.craftingMenu.GetComponent<CraftingMenuScript>().OpenCrafting();
             }
         }
         else

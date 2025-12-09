@@ -1,12 +1,11 @@
 using UnityEngine;
-using System.Threading.Tasks;
 
 public class PotionCraftAnimScript : MonoBehaviour
 {
     Animator animator;
 
 
-    public async Task CraftAnim()
+    public void CraftAnim()
     {
         animator.SetTrigger("Crafting");
     }
@@ -15,5 +14,10 @@ public class PotionCraftAnimScript : MonoBehaviour
     void Start()
     {
         animator = GetComponent<Animator>();
+    }
+    // Soley for the animation event
+    void _CraftItem()
+    {
+        UiManager.instance.craftingMenu.GetComponent<CraftingMenuScript>().CraftItem();
     }
 }
