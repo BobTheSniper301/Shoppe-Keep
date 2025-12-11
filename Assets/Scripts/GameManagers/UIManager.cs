@@ -34,6 +34,7 @@ public class UiManager : MonoBehaviour
     public GameObject settingsMenu;
     public GameObject craftingPrompt;
     public GameObject craftingMenu;
+    public GameObject questDetailsMenu;
 
     // Vendor Stuff
     public GameObject vendorMenu;

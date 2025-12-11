@@ -1,15 +1,16 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-[CreateAssetMenu]
+[CreateAssetMenu(fileName = "Quest", menuName = "Scriptable Objects/Quests/Base Quest")]
 public class Quest : ScriptableObject
 {
     public string questName;
-    public string description;
+    public string questDescription;
 
-    public float questProgress;
-    
-    
+    public int[] questRequirementsInt;
+    public string[] questRequirementsText;
+
+
     public List<ItemData> rewards = new List<ItemData>();
     
 
