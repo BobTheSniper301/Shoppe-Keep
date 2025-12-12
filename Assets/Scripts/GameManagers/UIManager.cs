@@ -335,6 +335,7 @@ public class UiManager : MonoBehaviour
         overviewMenu.SetActive(false);
         settingsMenu.SetActive(false);
         vendorMenu.SetActive(false);
+        questDetailsMenu.SetActive(false);
 
         // Controls the in menu variable and freeing the player when leaving a menu
         if (keepMenu != null)

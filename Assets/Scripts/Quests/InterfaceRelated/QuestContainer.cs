@@ -13,7 +13,24 @@ public class QuestContainer : MonoBehaviour
 
     public void ShowQuestDetails()
     {
+        UiManager.instance.MenuOpen(UiManager.instance.questDetailsMenu);
+        Debug.Log("menu open");
+        UiManager.instance.questDetailsMenu.GetComponent<QuestDetailsMenu>().questDescription.text = quest.questDescription;
+        UiManager.instance.questDetailsMenu.GetComponent<QuestDetailsMenu>().questName.text = quest.questName;
+        
+        int i = 0;
+        UiManager.instance.questDetailsMenu.GetComponent<QuestDetailsMenu>().questObjectives.text = quest.questRequirementsText[0] + ": " + questProgress[0] + "/" + quest.questRequirementsInt[i] + "\n";
+        foreach (string questRequirement in quest.questRequirementsText)
+        {
+            if (i > 0)
+            {
+                Debug.Log("run");
+                UiManager.instance.questDetailsMenu.GetComponent<QuestDetailsMenu>().questObjectives.text += questRequirement + ": " + questProgress[i] + "/" + quest.questRequirementsInt[i] + "\n";
 
+            }
+            i++;
+        }
+        
     }
 
 

@@ -11,7 +11,7 @@ public class Quest : ScriptableObject
     public string[] questRequirementsText;
 
 
-    public List<ItemData> rewards = new List<ItemData>();
+    public List<GameObject> rewards = new List<GameObject>();
     
 
     public enum ObjectiveStatus

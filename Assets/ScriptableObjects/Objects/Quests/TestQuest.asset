@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68c8415a8bbd0b4438089a1a73f89613, type: 3}
+  m_Name: TestQuest
+  m_EditorClassIdentifier: Assembly-CSharp::Quest
+  questName: TestQuest1
+  questDescription: This is nothing but a test quest (number 1)
+  questRequirementsInt: 0a00000017000000
+  questRequirementsText:
+  - Sell 10 items
+  - Buy 23 items
+  rewards:
+  - {fileID: 4955017473313866128, guid: 07c966e01c7478246a2727a9d3135c4d, type: 3}
