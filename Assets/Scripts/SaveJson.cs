@@ -22,7 +22,7 @@ public class SaveJson : MonoBehaviour
     // Function to call to clear any json file if given the path.
     public static void ClearJsonFile(string filepath)
     {
-        System.IO.File.WriteAllText(filepath, string.Empty);
+        File.WriteAllText(filepath, string.Empty);
     }
 
     // Makes the saved items match the UiManager items
@@ -54,7 +54,7 @@ public class SaveJson : MonoBehaviour
 
         // Updates the file
         item = JsonUtility.ToJson(_InventoryData);
-        System.IO.File.WriteAllText(Application.persistentDataPath + "/InventoryData.json", item);
+        File.WriteAllText(Application.persistentDataPath + "/InventoryData.json", item);
     }
 
 
@@ -164,7 +164,7 @@ public class SaveJson : MonoBehaviour
 
 }
 
-[System.Serializable]
+[Serializable]
 public class InventoryItemData
 {
     public string _name;
@@ -182,9 +182,8 @@ public class InventoryItemData
 
 }
 
-[System.Serializable]
+[Serializable]
 public class InventoryData
 {
-    // public string blank = "hi";
     public List<InventoryItemData> inventoryItemDatas;
 }

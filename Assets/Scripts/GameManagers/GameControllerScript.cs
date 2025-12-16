@@ -17,6 +17,9 @@ public class GameControllerScript : MonoBehaviour
     public static ItemSale itemSale;
 
 
+    public QuestEvents questEvents;
+
+
     public static GameControllerScript instance { get; private set; }
 
     private void Awake()
@@ -29,6 +32,8 @@ public class GameControllerScript : MonoBehaviour
         {
             instance = this;
         }
+
+        questEvents = new QuestEvents();
     }
 
 

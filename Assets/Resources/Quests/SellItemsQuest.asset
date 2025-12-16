@@ -10,16 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 68c8415a8bbd0b4438089a1a73f89613, type: 3}
-  m_Name: TestQuest
+  m_Name: SellItemsQuest
   m_EditorClassIdentifier: Assembly-CSharp::Quest
-  id: TestQuest
-  displayName: 
+  id: SellItemsQuest
+  displayName: SellItemsQuest
   questPrereqs: []
-  questStepPrefabs: []
+  questStepPrefabs:
+  - {fileID: 899568413682101752, guid: 7a1f5d6323d474647a66b44ddded25ee, type: 3}
   rewards:
   - {fileID: 4955017473313866128, guid: 07c966e01c7478246a2727a9d3135c4d, type: 3}
-  questDescription: This is nothing but a test quest (number 1)
-  questRequirementsInt: 0a00000017000000
-  questRequirementsText:
-  - Sell 10 items
-  - Buy 23 items
+  questDescription: 
+  questRequirementsInt: 
+  questRequirementsText: []

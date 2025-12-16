@@ -8,7 +8,7 @@ public class VendorScript : MonoBehaviour
 
     public void UpdateVendor()
     {
-        Debug.Log("update vendor");
+        // Debug.Log("update vendor");
     }
 
 

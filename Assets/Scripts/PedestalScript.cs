@@ -17,12 +17,12 @@ public class PedestalScript : MonoBehaviour
         {
             if (interactedButton == "Minus")
             {
-                Debug.Log("minus");
+                
                 itemPrice -= value;
             }
             else if (interactedButton == "Plus")
             {
-                Debug.Log("plus");
+                
                 itemPrice += value;
             }
             itemOnSelfScript.itemData.price = itemPrice;
