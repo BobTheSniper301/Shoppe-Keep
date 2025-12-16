@@ -35,6 +35,7 @@ public class UiManager : MonoBehaviour
     public GameObject craftingPrompt;
     public GameObject craftingMenu;
     public GameObject questDetailsMenu;
+    public GameObject allQuestsMenu;
 
     // Vendor Stuff
     public GameObject vendorMenu;
@@ -336,6 +337,7 @@ public class UiManager : MonoBehaviour
         settingsMenu.SetActive(false);
         vendorMenu.SetActive(false);
         questDetailsMenu.SetActive(false);
+        allQuestsMenu.SetActive(false);
 
         // Controls the in menu variable and freeing the player when leaving a menu
         if (keepMenu != null)
@@ -366,6 +368,11 @@ public class UiManager : MonoBehaviour
                 Debug.Log("delete");
             }
         }
+    }
+
+    public void AllQuestsMenu()
+    {
+        MenuOpen(allQuestsMenu);
     }
 
 
