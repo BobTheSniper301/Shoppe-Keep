@@ -16,6 +16,9 @@ public class GameControllerScript : MonoBehaviour
     public delegate void ItemSale();
     public static ItemSale itemSale;
 
+    public delegate void GoldGained();
+    public static GoldGained goldGained;
+
 
     public QuestEvents questEvents;
 

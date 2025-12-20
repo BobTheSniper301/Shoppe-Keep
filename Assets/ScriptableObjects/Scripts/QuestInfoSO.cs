@@ -16,7 +16,10 @@ public class QuestInfoSO : ScriptableObject
     public GameObject[] questStepPrefabs;
 
     [Header("Rewards")]
-    public GameObject[] rewards;
+    public GameObject[] itemRewards;
+    public int goldReward;
+    public int renownReward;
+
 
 
     private void OnValidate()
@@ -33,26 +36,4 @@ public class QuestInfoSO : ScriptableObject
     public int[] questRequirementsInt;
     public string[] questRequirementsText;
 
-    
-
-    // public QuestUpdateType questUpdateType;
-    // public enum QuestUpdateType
-    // {
-    //     Sale,
-    //     Pickup,
-    //     Dialogue,
-    //     Interaction
-    // }
-
-
-    // public QuestStatus questStatus;
-    // public enum QuestStatus
-    // {
-    //     INACTIVE,
-    //     STARTED,
-    //     ACTIVE,
-    //     ACHIEVED,
-    //     TURNEDIN,
-    //     DONE
-    // }
 }

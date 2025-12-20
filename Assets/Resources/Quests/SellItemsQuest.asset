@@ -17,8 +17,10 @@ MonoBehaviour:
   questPrereqs: []
   questStepPrefabs:
   - {fileID: 899568413682101752, guid: 7a1f5d6323d474647a66b44ddded25ee, type: 3}
-  rewards:
+  itemRewards:
   - {fileID: 4955017473313866128, guid: 07c966e01c7478246a2727a9d3135c4d, type: 3}
+  goldReward: 50
+  renownReward: 0
   questDescription: 
   questRequirementsInt: 
   questRequirementsText: []

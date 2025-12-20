@@ -55,5 +55,6 @@ public class PedestalScript : MonoBehaviour
         GameObject priceTextOnSelf = transform.Find("PriceInterface").transform.Find("Price").transform.Find("PriceText").gameObject;
         itemPriceText = priceTextOnSelf.GetComponent<Text>();
         itemPriceText.transform.parent.transform.parent.gameObject.SetActive(false);
+        
     }
 }

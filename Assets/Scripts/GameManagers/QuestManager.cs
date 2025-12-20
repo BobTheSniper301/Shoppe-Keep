@@ -1,7 +1,5 @@
 using UnityEngine;
 using System.Collections.Generic;
-using System;
-using Unity.VisualScripting;
 
 public class QuestManager : MonoBehaviour
 {
@@ -9,7 +7,7 @@ public class QuestManager : MonoBehaviour
 
     private Dictionary<string, Quest> questMap;
 
-    
+    public List<QuestInfoSO> activeQuests;
 
 
     private void ChangeQuestState(string id, QuestState state)
@@ -44,6 +42,7 @@ public class QuestManager : MonoBehaviour
         Quest quest = GetQuestById(id);
         quest.InstatiateCurrentQuestStep(this.transform);
         ChangeQuestState(quest.info.id, QuestState.IN_PROGRESS);
+        activeQuests.Add(quest.info);
     }
 
     private void AdvanceQuest(string id)
@@ -71,11 +70,18 @@ public class QuestManager : MonoBehaviour
         Quest quest = GetQuestById(id);
         ClaimRewards(quest);
         ChangeQuestState(quest.info.id, QuestState.FINISHED);
+        activeQuests.Remove(quest.info);
     }
 
 
     private void ClaimRewards(Quest quest)
     {
+        PlayerScript.instance.playerData.gold += quest.info.goldReward;
+        GameControllerScript.goldGained();
+        foreach (GameObject item in quest.info.itemRewards)
+        {
+            UiManager.instance.SpawnGroundItem(item, new Vector3(PlayerScript.instance.transform.position.x, 0, PlayerScript.instance.transform.position.z));
+        }
         Debug.Log("claim rewards");
     }
 
@@ -111,6 +117,15 @@ public class QuestManager : MonoBehaviour
 
     void Awake()
     {
+        if (instance != null && instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            instance = this;
+        }
+        
         questMap = CreateQuestMap();
     }
 

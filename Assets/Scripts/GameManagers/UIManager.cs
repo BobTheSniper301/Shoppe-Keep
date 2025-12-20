@@ -252,6 +252,7 @@ public class UiManager : MonoBehaviour
     public void SpawnGroundItem(GameObject item, Vector3 spawnLocation)
     {
         Instantiate(item);
+        item.transform.localScale = new Vector3(10,10,10);
         item.transform.position = spawnLocation;
     }
 
@@ -485,6 +486,7 @@ public class UiManager : MonoBehaviour
 
     public void UpdateStats()
     {
+        Debug.Log("update stats");
         // Stats Overview
         maxHealthNum.text = PlayerScript.instance.playerData.maxHealth.ToString();
 
@@ -506,12 +508,14 @@ public class UiManager : MonoBehaviour
     {
         PlayerScript.playerStatChanged += UpdateStats;
         GameControllerScript.itemSale += UpdateStats;
+        GameControllerScript.goldGained += UpdateStats;
     }
 
     void OnDisable()
     {
         PlayerScript.playerStatChanged -= UpdateStats;
         GameControllerScript.itemSale -= UpdateStats;
+        GameControllerScript.goldGained -= UpdateStats;
     }
 
     void Awake()

@@ -10,10 +10,12 @@ public class AllQuestsMenu : MonoBehaviour
 
     public List<GameObject> questContainers;
 
+    private QuestInfoSO[] allQuests;
+
 
      public void DisplayQuests()
     {
-        QuestInfoSO[] allQuests = Resources.LoadAll<QuestInfoSO>("Quests");
+        allQuests = Resources.LoadAll<QuestInfoSO>("Quests");
         foreach (QuestInfoSO quest in allQuests)
         {
             GameObject _questContainer = Instantiate(questContainer, questContainerHolder.transform);

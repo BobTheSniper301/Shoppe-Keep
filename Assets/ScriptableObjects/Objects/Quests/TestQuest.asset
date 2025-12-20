@@ -16,8 +16,9 @@ MonoBehaviour:
   displayName: 
   questPrereqs: []
   questStepPrefabs: []
-  rewards:
-  - {fileID: 4955017473313866128, guid: 07c966e01c7478246a2727a9d3135c4d, type: 3}
+  itemRewards: []
+  goldReward: 0
+  renownReward: 0
   questDescription: This is nothing but a test quest (number 1)
   questRequirementsInt: 0a00000017000000
   questRequirementsText:
