@@ -2444,8 +2444,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d158bfb336ae90c459ac5c340a39149c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  questContainer: {fileID: 0}
-  questContainerHolder: {fileID: 0}
+  questContainer: {fileID: 4363884625987364892, guid: 23180f8ff765a924f99aed420b9c25e0, type: 3}
+  questContainerHolder: {fileID: 104466174}
   questContainers: []
 --- !u!1 &656190221
 GameObject:

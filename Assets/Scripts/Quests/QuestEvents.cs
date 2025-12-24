@@ -40,4 +40,14 @@ public class QuestEvents
             onQuestStateChange(quest);
         }
     }
+
+
+    // public event Action<string, int, int> onQuestStepStateChange;
+    // public void QuestStateChange(string id, int stateValue, int index)
+    // {
+    //     if (onQuestStateChange != null)
+    //     {
+    //         onQuestStateChange(quest);
+    //     }
+    // }
 }
