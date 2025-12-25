@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 6886245911694184178}
   - component: {fileID: 2393170248441193750}
   - component: {fileID: 609704017519179376}
+  - component: {fileID: 4315901257889176842}
+  - component: {fileID: 8326519789426857779}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -54,7 +56,7 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 3
   m_Height: 4
-  m_Radius: 0.5
+  m_Radius: 1
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
@@ -73,11 +75,39 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerData: {fileID: 11400000, guid: 498224c3bf9e72e42921ffa15aaf6781, type: 2}
-  PlayerLook: 0
+  priceChangePower: 1
+  currentCraftingStation: {fileID: 0}
   playerCamera: {fileID: 169961786557267079}
+  canMove: 1
+--- !u!114 &4315901257889176842
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4815235636140060367}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 207011e790dac1c49a3ef74e1dccbbca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  characterController: {fileID: 2393170248441193750}
   lookSpeed: 10
   lookXLimit: 89
-  canMove: 1
+--- !u!114 &8326519789426857779
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4815235636140060367}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ba451ff4eeecfd4d86914de39500566, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  PlayerLookDistance: 2.5
+  camera: {fileID: 169961786557267079}
 --- !u!1 &5080148776011721718
 GameObject:
   m_ObjectHideFlags: 0
@@ -204,7 +234,7 @@ GameObject:
   - component: {fileID: 6295729169060252521}
   - component: {fileID: 8033031260261781746}
   m_Layer: 0
-  m_Name: Player Camera
+  m_Name: PlayerCamera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -219,7 +249,7 @@ Transform:
   m_GameObject: {fileID: 8350756227247580537}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.51, z: 0}
+  m_LocalPosition: {x: 0, y: 1.58, z: 0.57}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
