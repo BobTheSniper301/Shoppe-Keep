@@ -902,6 +902,14 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -4723740034965742994, guid: c5d6c0568f2c1df49b87b249d133a77b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.0000000037252903
+      objectReference: {fileID: 0}
+    - target: {fileID: -4723740034965742994, guid: c5d6c0568f2c1df49b87b249d133a77b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.0250001
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: c5d6c0568f2c1df49b87b249d133a77b, type: 3}
       propertyPath: m_Name
       value: Stone_Wall_2
