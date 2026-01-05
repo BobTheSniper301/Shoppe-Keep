@@ -1,98 +1,98 @@
-using UnityEngine;
+// using UnityEngine;
 
-// Will create one if we don't have one
-[RequireComponent(typeof(CharacterController))]
+// // Will create one if we don't have one
+// [RequireComponent(typeof(CharacterController))]
 
-public class PlayerScript : MonoBehaviour
-{
+// public class PlayerScript : MonoBehaviour
+// {
 
-    // Player stuff
+//     // Player stuff
 
-    public PlayerData playerData;
+//     public PlayerData playerData;
 
-    public int priceChangePower = 1;
-
-
-    public RaycastHit containerHit;
-    public RaycastHit priceChangeHit;
-    public RaycastHit vendorHit;
-    public RaycastHit craftingHit;
+//     public int priceChangePower = 1;
 
 
-    public GameObject currentCraftingStation = null;
+//     public RaycastHit containerHit;
+//     public RaycastHit priceChangeHit;
+//     public RaycastHit vendorHit;
+//     public RaycastHit craftingHit;
 
-    // Movement + camera vars
-    public Camera playerCamera;
+
+//     public GameObject currentCraftingStation = null;
+
+//     // Movement + camera vars
+//     public Camera playerCamera;
     
-    public bool canMove = true;
+//     public bool canMove = true;
 
 
-    public delegate void PlayerStatChanged();
-    public static PlayerStatChanged playerStatChanged;
+//     public delegate void PlayerStatChanged();
+//     public static PlayerStatChanged playerStatChanged;
 
 
-    public static PlayerScript instance { get; private set;  }
+//     public static PlayerScript instance { get; private set;  }
 
 
-    public void ButtonIncreasePlayerMaxHealth(float statChange)
-    {
+//     public void ButtonIncreasePlayerMaxHealth(float statChange)
+//     {
 
-        playerData.maxHealth += statChange;
-        playerStatChanged?.Invoke();
+//         playerData.maxHealth += statChange;
+//         playerStatChanged?.Invoke();
 
-    }
-    public void ButtonDecreasePlayerMaxHealth(float statChange)
-    {
+//     }
+//     public void ButtonDecreasePlayerMaxHealth(float statChange)
+//     {
 
-        playerData.maxHealth -= statChange;
-        playerStatChanged?.Invoke();
+//         playerData.maxHealth -= statChange;
+//         playerStatChanged?.Invoke();
 
-    }
-
-
-    #region Function Calls
+//     }
 
 
-    private void Awake()
-    {
-        if (instance != null && instance != this)
-        {
-            Destroy(this);
-        }
-        else
-        {
-            instance = this;
-        }
-    }
+//     #region Function Calls
 
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
+//     private void Awake()
+//     {
+//         if (instance != null && instance != this)
+//         {
+//             Destroy(this);
+//         }
+//         else
+//         {
+//             instance = this;
+//         }
+//     }
 
-        playerStatChanged?.Invoke();
 
-    }
+//     // Start is called once before the first execution of Update after the MonoBehaviour is created
+//     void Start()
+//     {
+
+//         playerStatChanged?.Invoke();
+
+//     }
 
 
-    // Update is called once per frame
-    private void Update()
-    {
+//     // Update is called once per frame
+//     private void Update()
+//     {
 
 
-        if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))
-        {
-            priceChangePower = 5;
-        }
-        else
-        {
-            priceChangePower = 1;
-        }
+//         if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))
+//         {
+//             priceChangePower = 5;
+//         }
+//         else
+//         {
+//             priceChangePower = 1;
+//         }
 
 
         
-    }
+//     }
 
-    #endregion
+//     #endregion
 
-}
+// }

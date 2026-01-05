@@ -1,576 +1,576 @@
-using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
+// using UnityEngine;
+// using UnityEngine.UI;
+// using UnityEngine.SceneManagement;
 
 
-public class UiManager : MonoBehaviour
-{
-    // TODO: Refactor a lot of each menus stuff onto a script on that menu
+// public class UiManager : MonoBehaviour
+// {
+//     // TODO: Refactor a lot of each menus stuff onto a script on that menu
 
-    public static UiManager instance { get; private set; }
+//     public static UiManager instance { get; private set; }
     
-    #region Vars
-    // In scene pull stuff
+//     #region Vars
+//     // In scene pull stuff
     
-    [SerializeField] new Camera camera;
+//     [SerializeField] new Camera camera;
 
 
-    // Stats
-    [SerializeField] Text maxHealthNum;
-    [SerializeField] GameObject healthBar;
-    [SerializeField] Image healthBarCurrent;
-    [SerializeField] Text goldText;
+//     // Stats
+//     [SerializeField] Text maxHealthNum;
+//     [SerializeField] GameObject healthBar;
+//     [SerializeField] Image healthBarCurrent;
+//     [SerializeField] Text goldText;
 
 
-    // Menu stuff
-    public bool canOpenMenu = true;
-    bool itemCanPlace = false;
-    [HideInInspector] public bool canChangePrice = false;
-    [HideInInspector] public bool inMenu = false;
-    // Set in inspector first
-    public GameObject menu;
-    public GameObject overviewMenu;
-    public GameObject itemContainerPrompt;
-    public GameObject settingsMenu;
-    public GameObject craftingPrompt;
-    public GameObject craftingMenu;
-    public GameObject questDetailsMenu;
-    public GameObject allQuestsMenu;
+//     // Menu stuff
+//     public bool canOpenMenu = true;
+//     bool itemCanPlace = false;
+//     [HideInInspector] public bool canChangePrice = false;
+//     [HideInInspector] public bool inMenu = false;
+//     // Set in inspector first
+//     public GameObject menu;
+//     public GameObject overviewMenu;
+//     public GameObject itemContainerPrompt;
+//     public GameObject settingsMenu;
+//     public GameObject craftingPrompt;
+//     public GameObject craftingMenu;
+//     public GameObject questDetailsMenu;
+//     public GameObject allQuestsMenu;
 
-    // Vendor Stuff
-    public GameObject vendorMenu;
-    public GameObject vendorPrompt;
-    [SerializeField] GameObject vendorItemContainer;
-    [SerializeField] GameObject vendorItem;
-    [SerializeField] GameObject vendorMenuGoldAmount;
-    [SerializeField] GameObject vendorName;
-    [SerializeField] GameObject vendorText;
-    [SerializeField] GameObject vendorPortrait;
+//     // Vendor Stuff
+//     public GameObject vendorMenu;
+//     public GameObject vendorPrompt;
+//     [SerializeField] GameObject vendorItemContainer;
+//     [SerializeField] GameObject vendorItem;
+//     [SerializeField] GameObject vendorMenuGoldAmount;
+//     [SerializeField] GameObject vendorName;
+//     [SerializeField] GameObject vendorText;
+//     [SerializeField] GameObject vendorPortrait;
 
 
-    // Vars for items
-    // Set in inspector first
-    public ItemData[] itemsData;
+//     // Vars for items
+//     // Set in inspector first
+//     public ItemData[] itemsData;
 
-    public ItemScript[] items;
+//     public ItemScript[] items;
 
-    public ItemSlotScript[] itemSlots;
+//     public ItemSlotScript[] itemSlots;
 
-    [HideInInspector] public GameObject itemPickedUp;
+//     [HideInInspector] public GameObject itemPickedUp;
 
-    public GameObject selectedItem;
+//     public GameObject selectedItem;
 
-    [HideInInspector] public int lastItemSlotNum;
+//     [HideInInspector] public int lastItemSlotNum;
 
-    public bool isInventoryFull;
+//     public bool isInventoryFull;
 
-    #endregion  
+//     #endregion  
 
 
-    #region Items
-    // Gets a list of all items
-    public void GetItems()
-    {
-        Debug.Log("get items");
+//     #region Items
+//     // Gets a list of all items
+//     public void GetItems()
+//     {
+//         Debug.Log("get items");
 
-        clearItems();
+//         clearItems();
 
-        int i = 0;
-        // Check each of the items slots to see if they have an item in them
-        foreach (ItemSlotScript slot in itemSlots)
-        {
+//         int i = 0;
+//         // Check each of the items slots to see if they have an item in them
+//         foreach (ItemSlotScript slot in itemSlots)
+//         {
 
-            // Ensures itemslots show correct text for (non)stackable items
-            slot.UpdateItemSlot();
+//             // Ensures itemslots show correct text for (non)stackable items
+//             slot.UpdateItemSlot();
 
-            // If the itemslot does have an item, it stores it into the items list at the proper index
-            if (slot.GetComponentInChildren<ItemScript>())
-            {
+//             // If the itemslot does have an item, it stores it into the items list at the proper index
+//             if (slot.GetComponentInChildren<ItemScript>())
+//             {
 
-                items[i] = slot.GetComponentInChildren<ItemScript>();
-                itemsData[i] = items[i].itemData;
+//                 items[i] = slot.GetComponentInChildren<ItemScript>();
+//                 itemsData[i] = items[i].itemData;
 
-            }
+//             }
 
-            i++;
-        }
-        for (int j = 0; j < items.Length; j++)
-        {
-            if (items[j] == null)
-            {
-                isInventoryFull = false;
-            }
-            else if (j == items.Length)
-            {
-                isInventoryFull = true;
-            }
-        }
-    }
+//             i++;
+//         }
+//         for (int j = 0; j < items.Length; j++)
+//         {
+//             if (items[j] == null)
+//             {
+//                 isInventoryFull = false;
+//             }
+//             else if (j == items.Length)
+//             {
+//                 isInventoryFull = true;
+//             }
+//         }
+//     }
 
 
-    // Gets a list of all item slots
-    void GetItemSlots()
-    {
+//     // Gets a list of all item slots
+//     void GetItemSlots()
+//     {
 
-        itemSlots = GetComponentsInChildren<ItemSlotScript>();
+//         itemSlots = GetComponentsInChildren<ItemSlotScript>();
 
-    }
+//     }
 
 
-    // Clears the item list before updating it
-    public void clearItems()
-    {
+//     // Clears the item list before updating it
+//     public void clearItems()
+//     {
 
-        for (int i = 0; i < items.Length; i++)
-        {
+//         for (int i = 0; i < items.Length; i++)
+//         {
 
-            items[i] = null;
-            itemsData[i] = null;
-        }
-    }
+//             items[i] = null;
+//             itemsData[i] = null;
+//         }
+//     }
 
 
-    // To deselect all itemslots
-    void DeselectAll()
-    {
+//     // To deselect all itemslots
+//     void DeselectAll()
+//     {
 
-        foreach (ItemSlotScript i in itemSlots)
-        {
-            i.Deselected();
-        }
-        selectedItem = null;
-    }
+//         foreach (ItemSlotScript i in itemSlots)
+//         {
+//             i.Deselected();
+//         }
+//         selectedItem = null;
+//     }
 
 
-    // Selects a hotbar slot depending upon input
-    void SelectHotbar()
-    {
+//     // Selects a hotbar slot depending upon input
+//     void SelectHotbar()
+//     {
 
-        for (int i = 0; i < items.Length; i++)
-            if (Input.GetKeyDown((i + 1).ToString()))
-                {
-                    // For select/deselect same slot
-                    itemSlots[i].ToggleSelect();
+//         for (int i = 0; i < items.Length; i++)
+//             if (Input.GetKeyDown((i + 1).ToString()))
+//                 {
+//                     // For select/deselect same slot
+//                     itemSlots[i].ToggleSelect();
 
-                    DeselectAll();
+//                     DeselectAll();
 
-                    if (!itemSlots[i].toggled)
-                    {
+//                     if (!itemSlots[i].toggled)
+//                     {
 
-                        itemSlots[i].Selected();
+//                         itemSlots[i].Selected();
 
-                    }
+//                     }
 
-                }
+//                 }
 
-    }
+//     }
 
 
-    // Clears all current item related data - items[], itemsData[], etc - and destroys all items in slots
-    public void ClearInventory()
-    {
-        int i = 0;
-        while (i < items.Length)
-        {
+//     // Clears all current item related data - items[], itemsData[], etc - and destroys all items in slots
+//     public void ClearInventory()
+//     {
+//         int i = 0;
+//         while (i < items.Length)
+//         {
 
-            items[i] = null;
-            itemsData[i] = null;
-            itemSlots[i].GetComponentInChildren<Text>().text = "";
-            if (itemSlots[i].GetComponentInChildren<ItemScript>() != null)
-            {
+//             items[i] = null;
+//             itemsData[i] = null;
+//             itemSlots[i].GetComponentInChildren<Text>().text = "";
+//             if (itemSlots[i].GetComponentInChildren<ItemScript>() != null)
+//             {
 
-                Destroy(itemSlots[i].GetComponentInChildren<ItemScript>().gameObject);
+//                 Destroy(itemSlots[i].GetComponentInChildren<ItemScript>().gameObject);
 
-            }
-            i++;
+//             }
+//             i++;
 
-        }
-    }
+//         }
+//     }
 
 
-    // Adds a nonStackable item to the inventory in the first open slot (Adjusts transform values)
-    public void AddItem(GameObject itemToAdd)
-    {
-        foreach (ItemSlotScript i in itemSlots)
-        {
-            if (i.GetComponentInChildren<ItemScript>() == null)
-            {
-                itemToAdd.transform.SetParent(i.transform);
-                itemToAdd.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
-                itemToAdd.transform.localRotation = new Quaternion(0, 0, 0, 0);
-                itemToAdd.GetComponent<ItemScript>().itemData = Instantiate(itemToAdd.GetComponent<ItemScript>().itemData);
+//     // Adds a nonStackable item to the inventory in the first open slot (Adjusts transform values)
+//     public void AddItem(GameObject itemToAdd)
+//     {
+//         foreach (ItemSlotScript i in itemSlots)
+//         {
+//             if (i.GetComponentInChildren<ItemScript>() == null)
+//             {
+//                 itemToAdd.transform.SetParent(i.transform);
+//                 itemToAdd.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+//                 itemToAdd.transform.localRotation = new Quaternion(0, 0, 0, 0);
+//                 itemToAdd.GetComponent<ItemScript>().itemData = Instantiate(itemToAdd.GetComponent<ItemScript>().itemData);
 
-                break;
-            }
-        }
-    }
+//                 break;
+//             }
+//         }
+//     }
 
 
-    // Adds a Stackable item to the inventory, will add to the count of the same stackable item if it's in the inventory
-    // If a stackable item of the same name is not in, it will treat it as a normal item and add it into the first open slot
-    public void AddStackableItem(GameObject itemToAdd)
-    {
-        bool didStack = false;
-        foreach (ItemScript i in items)
-        {
-
-            if (i is ItemScript && itemToAdd.GetComponent<ItemScript>().itemData.itemName == i.itemData.itemName)
-            {
-
-                Destroy(itemToAdd);
-                i.itemData.count += itemToAdd.GetComponent<ItemScript>().itemData.count;
-                didStack = true;
-                break;
-            }
-        }
-        if (didStack == false)
-        {
-            AddItem(itemToAdd);
-        }
-    }
+//     // Adds a Stackable item to the inventory, will add to the count of the same stackable item if it's in the inventory
+//     // If a stackable item of the same name is not in, it will treat it as a normal item and add it into the first open slot
+//     public void AddStackableItem(GameObject itemToAdd)
+//     {
+//         bool didStack = false;
+//         foreach (ItemScript i in items)
+//         {
+
+//             if (i is ItemScript && itemToAdd.GetComponent<ItemScript>().itemData.itemName == i.itemData.itemName)
+//             {
+
+//                 Destroy(itemToAdd);
+//                 i.itemData.count += itemToAdd.GetComponent<ItemScript>().itemData.count;
+//                 didStack = true;
+//                 break;
+//             }
+//         }
+//         if (didStack == false)
+//         {
+//             AddItem(itemToAdd);
+//         }
+//     }
 
 
-    // Called when an item is picked up; will do AddStackableItem() or AddItem() depending on type
-    public void PickUpItem(GameObject itemToAdd)
-    {
-        if (itemToAdd.GetComponent<ItemScript>().itemData.itemType == ItemData.ItemType.STACKABLE)
-        {
-
-            AddStackableItem(itemToAdd);
-
-        }
-        else
-        {
-
-            AddItem(itemToAdd);
-
-        }
-        GetItems();
-    }
-
-
-    public void SpawnGroundItem(GameObject item, Vector3 spawnLocation)
-    {
-        Instantiate(item);
-        item.transform.localScale = new Vector3(10,10,10);
-        item.transform.position = spawnLocation;
-    }
-
-
-    // Drops the selected item, goes forward from camera rotation, and adjusts transform values
-    public void DropItem()
-    {
-        if (selectedItem)
-        {
-
-            selectedItem.transform.rotation = camera.transform.rotation;
-            selectedItem.transform.eulerAngles = new Vector3(0, selectedItem.transform.rotation.eulerAngles.y, selectedItem.transform.rotation.eulerAngles.z);
-
-            selectedItem.transform.SetParent(null);
-
-            selectedItem.transform.position = PlayerScript.instance.gameObject.transform.position;
-            selectedItem.transform.Translate(transform.forward * 5);
-
-            selectedItem.transform.localScale = new Vector3(10, 10, 10);
-
-            selectedItem.GetComponent<SphereCollider>().enabled = true;
-        }
-        DeselectAll();
-        GetItems();
-    }
-
-
-    // Takes the selected item, moves it to the container, and adjusts transform values
-    public void AddItemToContainer()
-    {
-        if (selectedItem != null)
-        {
-            selectedItem.transform.SetParent(PlayerScript.instance.containerHit.transform.parent);
-            selectedItem.transform.position = PlayerScript.instance.containerHit.transform.parent.position;
-            selectedItem.transform.rotation = PlayerScript.instance.containerHit.transform.parent.rotation;
-            selectedItem.transform.localScale = new Vector3(5, 5, 5);
-            selectedItem.GetComponent<SphereCollider>().enabled = false;
-            PlayerScript.instance.containerHit.transform.parent.transform.parent.GetComponent<PedestalScript>().itemOnSelfScript = selectedItem.GetComponent<ItemScript>();
-            PlayerScript.instance.containerHit.transform.parent.transform.parent.GetComponent<PedestalScript>().ItemPlaced();
-        }
-        else
-        {
-            PlayerScript.instance.containerHit.transform.parent.transform.parent.GetComponent<PedestalScript>().ItemRemoved();
-        }
-    }
-
-
-    // For item placing; does proper item placing depending upon if theres an item in the container or not
-    public void ItemInteract()
-    {
-        ItemScript itemInContainer = PlayerScript.instance.containerHit.transform.parent.GetComponentInChildren<ItemScript>();
-        if (itemInContainer != null)
-        {
-            AddItemToContainer();
-            DeselectAll();
-            GetItems();
-            PickUpItem(itemInContainer.gameObject);
-        }
-        else 
-        {
-            AddItemToContainer();
-        }
-        DeselectAll();
-        GetItems();
-    }
-
-
-    #endregion
-
-
-    #region Menus 
-
-
-    // Opens the given menu, and closes the rest. Will wipe all menus if a null value is passed
-    public void MenuOpen(GameObject keepMenu)
-    {
-        if (canOpenMenu == false && keepMenu != null)
-        {
-            return;
-        }
-        // All menus close
-        overviewMenu.SetActive(false);
-        settingsMenu.SetActive(false);
-        vendorMenu.SetActive(false);
-        questDetailsMenu.SetActive(false);
-        allQuestsMenu.SetActive(false);
-
-        // Controls the in menu variable and freeing the player when leaving a menu
-        if (keepMenu != null)
-        {
-
-            inMenu = true;
-            keepMenu.gameObject.SetActive(true);
-            Time.timeScale = 0;
-            menu.gameObject.SetActive(true);
-            Cursor.lockState = CursorLockMode.None;
-
-        }
-        else
-        {
-
-            inMenu = false;
-            menu.SetActive(false);
-            PlayerScript.instance.canMove = true;
-            Cursor.lockState = CursorLockMode.Locked;
-            Time.timeScale = 1;
-
-        }
-        if (! vendorMenu.activeSelf && vendorItemContainer.transform.childCount > 0)
-        {          
-            foreach (VendorItemScript child in vendorItemContainer.GetComponentsInChildren<VendorItemScript>())
-            {
-                Destroy(child.gameObject);
-                Debug.Log("delete");
-            }
-        }
-    }
-
-    public void AllQuestsMenu()
-    {
-        MenuOpen(allQuestsMenu);
-    }
-
-
-    // Manages Vendor Menu
-    public void VendorMenu()
+//     // Called when an item is picked up; will do AddStackableItem() or AddItem() depending on type
+//     public void PickUpItem(GameObject itemToAdd)
+//     {
+//         if (itemToAdd.GetComponent<ItemScript>().itemData.itemType == ItemData.ItemType.STACKABLE)
+//         {
+
+//             AddStackableItem(itemToAdd);
+
+//         }
+//         else
+//         {
+
+//             AddItem(itemToAdd);
+
+//         }
+//         GetItems();
+//     }
+
+
+//     public void SpawnGroundItem(GameObject item, Vector3 spawnLocation)
+//     {
+//         Instantiate(item);
+//         item.transform.localScale = new Vector3(10,10,10);
+//         item.transform.position = spawnLocation;
+//     }
+
+
+//     // Drops the selected item, goes forward from camera rotation, and adjusts transform values
+//     public void DropItem()
+//     {
+//         if (selectedItem)
+//         {
+
+//             selectedItem.transform.rotation = camera.transform.rotation;
+//             selectedItem.transform.eulerAngles = new Vector3(0, selectedItem.transform.rotation.eulerAngles.y, selectedItem.transform.rotation.eulerAngles.z);
+
+//             selectedItem.transform.SetParent(null);
+
+//             selectedItem.transform.position = PlayerScript.instance.gameObject.transform.position;
+//             selectedItem.transform.Translate(transform.forward * 5);
+
+//             selectedItem.transform.localScale = new Vector3(10, 10, 10);
+
+//             selectedItem.GetComponent<SphereCollider>().enabled = true;
+//         }
+//         DeselectAll();
+//         GetItems();
+//     }
+
+
+//     // Takes the selected item, moves it to the container, and adjusts transform values
+//     public void AddItemToContainer()
+//     {
+//         if (selectedItem != null)
+//         {
+//             selectedItem.transform.SetParent(PlayerScript.instance.containerHit.transform.parent);
+//             selectedItem.transform.position = PlayerScript.instance.containerHit.transform.parent.position;
+//             selectedItem.transform.rotation = PlayerScript.instance.containerHit.transform.parent.rotation;
+//             selectedItem.transform.localScale = new Vector3(5, 5, 5);
+//             selectedItem.GetComponent<SphereCollider>().enabled = false;
+//             PlayerScript.instance.containerHit.transform.parent.transform.parent.GetComponent<PedestalScript>().itemOnSelfScript = selectedItem.GetComponent<ItemScript>();
+//             PlayerScript.instance.containerHit.transform.parent.transform.parent.GetComponent<PedestalScript>().ItemPlaced();
+//         }
+//         else
+//         {
+//             PlayerScript.instance.containerHit.transform.parent.transform.parent.GetComponent<PedestalScript>().ItemRemoved();
+//         }
+//     }
+
+
+//     // For item placing; does proper item placing depending upon if theres an item in the container or not
+//     public void ItemInteract()
+//     {
+//         ItemScript itemInContainer = PlayerScript.instance.containerHit.transform.parent.GetComponentInChildren<ItemScript>();
+//         if (itemInContainer != null)
+//         {
+//             AddItemToContainer();
+//             DeselectAll();
+//             GetItems();
+//             PickUpItem(itemInContainer.gameObject);
+//         }
+//         else 
+//         {
+//             AddItemToContainer();
+//         }
+//         DeselectAll();
+//         GetItems();
+//     }
+
+
+//     #endregion
+
+
+//     #region Menus 
+
+
+//     // Opens the given menu, and closes the rest. Will wipe all menus if a null value is passed
+//     public void MenuOpen(GameObject keepMenu)
+//     {
+//         if (canOpenMenu == false && keepMenu != null)
+//         {
+//             return;
+//         }
+//         // All menus close
+//         overviewMenu.SetActive(false);
+//         settingsMenu.SetActive(false);
+//         vendorMenu.SetActive(false);
+//         questDetailsMenu.SetActive(false);
+//         allQuestsMenu.SetActive(false);
+
+//         // Controls the in menu variable and freeing the player when leaving a menu
+//         if (keepMenu != null)
+//         {
+
+//             inMenu = true;
+//             keepMenu.gameObject.SetActive(true);
+//             Time.timeScale = 0;
+//             menu.gameObject.SetActive(true);
+//             Cursor.lockState = CursorLockMode.None;
+
+//         }
+//         else
+//         {
+
+//             inMenu = false;
+//             menu.SetActive(false);
+//             PlayerScript.instance.canMove = true;
+//             Cursor.lockState = CursorLockMode.Locked;
+//             Time.timeScale = 1;
+
+//         }
+//         if (! vendorMenu.activeSelf && vendorItemContainer.transform.childCount > 0)
+//         {          
+//             foreach (VendorItemScript child in vendorItemContainer.GetComponentsInChildren<VendorItemScript>())
+//             {
+//                 Destroy(child.gameObject);
+//                 Debug.Log("delete");
+//             }
+//         }
+//     }
+
+//     public void AllQuestsMenu()
+//     {
+//         MenuOpen(allQuestsMenu);
+//     }
+
+
+//     // Manages Vendor Menu
+//     public void VendorMenu()
     
-    {
+//     {
 
-        VendorData currentVendorData = PlayerScript.instance.vendorHit.transform.gameObject.GetComponent<VendorScript>().vendorData;
-        MenuOpen(vendorMenu);
-        vendorMenuGoldAmount.GetComponent<Text>().text = PlayerScript.instance.playerData.gold.ToString();
-        vendorText.GetComponent<Text>().text = currentVendorData.text;
-        vendorName.GetComponent<Text>().text = currentVendorData.vendorName;
-        vendorPortrait.GetComponent<Image>().sprite =  Resources.Load<Sprite>("VendorPortraits/" + currentVendorData.vendorName);
-        for (int i = 0; i < currentVendorData.unlockedWares; i++)
-        {       
-            GameObject newItemToSell = Instantiate(vendorItem, vendorItemContainer.transform);
-            newItemToSell.GetComponent<VendorItemScript>().itemData = currentVendorData.wares[i];
-            newItemToSell.GetComponentInChildren<Text>().text = "G " + currentVendorData.wares[i].price.ToString();
-            newItemToSell.transform.Find("ItemContainer").transform.Find("ItemToSell").GetComponent<Image>().sprite = Resources.Load<Sprite>("ItemImages/" + currentVendorData.wares[i].itemName);
-        }
+//         VendorData currentVendorData = PlayerScript.instance.vendorHit.transform.gameObject.GetComponent<VendorScript>().vendorData;
+//         MenuOpen(vendorMenu);
+//         vendorMenuGoldAmount.GetComponent<Text>().text = PlayerScript.instance.playerData.gold.ToString();
+//         vendorText.GetComponent<Text>().text = currentVendorData.text;
+//         vendorName.GetComponent<Text>().text = currentVendorData.vendorName;
+//         vendorPortrait.GetComponent<Image>().sprite =  Resources.Load<Sprite>("VendorPortraits/" + currentVendorData.vendorName);
+//         for (int i = 0; i < currentVendorData.unlockedWares; i++)
+//         {       
+//             GameObject newItemToSell = Instantiate(vendorItem, vendorItemContainer.transform);
+//             newItemToSell.GetComponent<VendorItemScript>().itemData = currentVendorData.wares[i];
+//             newItemToSell.GetComponentInChildren<Text>().text = "G " + currentVendorData.wares[i].price.ToString();
+//             newItemToSell.transform.Find("ItemContainer").transform.Find("ItemToSell").GetComponent<Image>().sprite = Resources.Load<Sprite>("ItemImages/" + currentVendorData.wares[i].itemName);
+//         }
         
 
-    }
+//     }
 
-    // TODO: Move this to player look script like vendor prompt
-    // Manages ItemContainerPrompt
-    public void ItemContainerPrompt(bool canPlaceItem)
-    {
-        if (canPlaceItem)
-        {
+//     // TODO: Move this to player look script like vendor prompt
+//     // Manages ItemContainerPrompt
+//     public void ItemContainerPrompt(bool canPlaceItem)
+//     {
+//         if (canPlaceItem)
+//         {
 
-            itemContainerPrompt.SetActive(true);
+//             itemContainerPrompt.SetActive(true);
 
-        }
-        else if (itemContainerPrompt.activeSelf && ! canPlaceItem)
-        {
+//         }
+//         else if (itemContainerPrompt.activeSelf && ! canPlaceItem)
+//         {
 
-            itemContainerPrompt.SetActive(false);
+//             itemContainerPrompt.SetActive(false);
 
-        }
-        itemCanPlace = canPlaceItem;
-    }
+//         }
+//         itemCanPlace = canPlaceItem;
+//     }
 
-    // Manages Overview Menu
-    void OverviewMenu()
-    {
+//     // Manages Overview Menu
+//     void OverviewMenu()
+//     {
 
-        if (Input.GetKeyDown("tab") && !overviewMenu.activeSelf)
-        {
+//         if (Input.GetKeyDown("tab") && !overviewMenu.activeSelf)
+//         {
 
-            MenuOpen(overviewMenu);
+//             MenuOpen(overviewMenu);
 
-        }
-        else if (overviewMenu.activeSelf && Input.GetKeyDown(KeyCode.Tab))
-        {
+//         }
+//         else if (overviewMenu.activeSelf && Input.GetKeyDown(KeyCode.Tab))
+//         {
 
-            MenuOpen(null);
+//             MenuOpen(null);
 
-        }
+//         }
 
-    }
+//     }
 
-    // Manages Settings Menu
-    // Button param is soley for when you press the settings button in the overview menu
-    public void SettingsMenu()
-    {
+//     // Manages Settings Menu
+//     // Button param is soley for when you press the settings button in the overview menu
+//     public void SettingsMenu()
+//     {
 
-        MenuOpen(settingsMenu);
+//         MenuOpen(settingsMenu);
 
-    }
-
-
-    public void QuitToDesktop()
-    {
-        SaveJson.instance.Save();
-        Application.Quit();
-    }
+//     }
 
 
-    public void QuitToMainMenu()
-    {
-        Debug.Log("Save Json: " + SaveJson.instance);
-        SaveJson.instance.Save();
-        SceneManager.LoadScene("Start");
-    }
+//     public void QuitToDesktop()
+//     {
+//         SaveJson.instance.Save();
+//         Application.Quit();
+//     }
 
 
-    // Checks if the player is in a menu, if so, the player can no longer do anything, locks mouse, opens menus
-    void CheckMenu()
-    {
-        OverviewMenu();
+//     public void QuitToMainMenu()
+//     {
+//         Debug.Log("Save Json: " + SaveJson.instance);
+//         SaveJson.instance.Save();
+//         SceneManager.LoadScene("Start");
+//     }
 
 
-        if (inMenu && Input.GetKeyDown("escape"))
-        {
-            MenuOpen(null);
-        }
-        //else if (!inMenu && Input.GetKeyDown("escape"))
-        //{
-        //    SettingsMenu();
-        //}
-    }
-
-    #endregion
+//     // Checks if the player is in a menu, if so, the player can no longer do anything, locks mouse, opens menus
+//     void CheckMenu()
+//     {
+//         OverviewMenu();
 
 
-    #region Stats
+//         if (inMenu && Input.GetKeyDown("escape"))
+//         {
+//             MenuOpen(null);
+//         }
+//         //else if (!inMenu && Input.GetKeyDown("escape"))
+//         //{
+//         //    SettingsMenu();
+//         //}
+//     }
+
+//     #endregion
 
 
-    public void UpdateStats()
-    {
-        Debug.Log("update stats");
-        // Stats Overview
-        maxHealthNum.text = PlayerScript.instance.playerData.maxHealth.ToString();
-
-        // Health bar
-        healthBar.transform.localScale = new Vector3(1 * (1 + (int.Parse(maxHealthNum.text)-100) * 0.0025f), 1, 1);
-        healthBarCurrent.fillAmount = PlayerScript.instance.playerData.currentHealth / PlayerScript.instance.playerData.maxHealth;
-
-        // Gold
-        goldText.text = PlayerScript.instance.playerData.gold.ToString();
-        vendorMenuGoldAmount.GetComponent<Text>().text = PlayerScript.instance.playerData.gold.ToString();
-    }
-
-    #endregion
+//     #region Stats
 
 
-    #region Function Calls
+//     public void UpdateStats()
+//     {
+//         Debug.Log("update stats");
+//         // Stats Overview
+//         maxHealthNum.text = PlayerScript.instance.playerData.maxHealth.ToString();
 
-    void OnEnable()
-    {
-        PlayerScript.playerStatChanged += UpdateStats;
-        GameControllerScript.itemSale += UpdateStats;
-        GameControllerScript.goldGained += UpdateStats;
-    }
+//         // Health bar
+//         healthBar.transform.localScale = new Vector3(1 * (1 + (int.Parse(maxHealthNum.text)-100) * 0.0025f), 1, 1);
+//         healthBarCurrent.fillAmount = PlayerScript.instance.playerData.currentHealth / PlayerScript.instance.playerData.maxHealth;
 
-    void OnDisable()
-    {
-        PlayerScript.playerStatChanged -= UpdateStats;
-        GameControllerScript.itemSale -= UpdateStats;
-        GameControllerScript.goldGained -= UpdateStats;
-    }
+//         // Gold
+//         goldText.text = PlayerScript.instance.playerData.gold.ToString();
+//         vendorMenuGoldAmount.GetComponent<Text>().text = PlayerScript.instance.playerData.gold.ToString();
+//     }
 
-    void Awake()
-    {
-
-        if (instance != null && instance != this)
-        {
-            Destroy(this);
-        }
-        else
-        {
-            instance = this;
-        }
-    }
+//     #endregion
 
 
-    void Start()
-    {
-        GetItemSlots();
+//     #region Function Calls
 
-        GetItems();
+//     void OnEnable()
+//     {
+//         PlayerScript.playerStatChanged += UpdateStats;
+//         GameControllerScript.itemSale += UpdateStats;
+//         GameControllerScript.goldGained += UpdateStats;
+//     }
 
-        // TODO: Uncomment the load (works better when commented for testing)
-        //Load();
+//     void OnDisable()
+//     {
+//         PlayerScript.playerStatChanged -= UpdateStats;
+//         GameControllerScript.itemSale -= UpdateStats;
+//         GameControllerScript.goldGained -= UpdateStats;
+//     }
+
+//     void Awake()
+//     {
+
+//         if (instance != null && instance != this)
+//         {
+//             Destroy(this);
+//         }
+//         else
+//         {
+//             instance = this;
+//         }
+//     }
+
+
+//     void Start()
+//     {
+//         GetItemSlots();
+
+//         GetItems();
+
+//         // TODO: Uncomment the load (works better when commented for testing)
+//         //Load();
 
         
-    }
+//     }
 
 
-    void Update()
-    {
-        CheckMenu();
+//     void Update()
+//     {
+//         CheckMenu();
 
-        // Hotbar Selection
-        if (!inMenu)
-        {
+//         // Hotbar Selection
+//         if (!inMenu)
+//         {
 
-            SelectHotbar();
+//             SelectHotbar();
 
-        }
+//         }
 
-        // Item Drop
-        if (Input.GetKeyDown("g"))
-        {
+//         // Item Drop
+//         if (Input.GetKeyDown("g"))
+//         {
 
-            DropItem();
+//             DropItem();
 
-        }
+//         }
 
-        // Item Placing
-        if (itemCanPlace && Input.GetKeyDown("f"))
-        {
-            ItemInteract();
-        }
-    }
+//         // Item Placing
+//         if (itemCanPlace && Input.GetKeyDown("f"))
+//         {
+//             ItemInteract();
+//         }
+//     }
     
-    #endregion
-}
+//     #endregion
+// }
