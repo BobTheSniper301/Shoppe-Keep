@@ -1,17 +1,36 @@
-// using UnityEngine;
-// using UnityEngine.UI;
-// using UnityEngine.SceneManagement;
+ using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 
-// public class UiManager : MonoBehaviour
-// {
+public class UiManager : MonoBehaviour
+{
+    #region Vars
+    
+
+    #endregion
+
+
+
+
+
+
+
+
+
+    #region Function Calls
+
+
+    #endregion
+}
+
 //     // TODO: Refactor a lot of each menus stuff onto a script on that menu
 
 //     public static UiManager instance { get; private set; }
-    
+
 //     #region Vars
 //     // In scene pull stuff
-    
+
 //     [SerializeField] new Camera camera;
 
 
@@ -379,7 +398,7 @@
 
 //     // Manages Vendor Menu
 //     public void VendorMenu()
-    
+
 //     {
 
 //         VendorData currentVendorData = PlayerScript.instance.vendorHit.transform.gameObject.GetComponent<VendorScript>().vendorData;
@@ -395,7 +414,7 @@
 //             newItemToSell.GetComponentInChildren<Text>().text = "G " + currentVendorData.wares[i].price.ToString();
 //             newItemToSell.transform.Find("ItemContainer").transform.Find("ItemToSell").GetComponent<Image>().sprite = Resources.Load<Sprite>("ItemImages/" + currentVendorData.wares[i].itemName);
 //         }
-        
+
 
 //     }
 
@@ -541,7 +560,7 @@
 //         // TODO: Uncomment the load (works better when commented for testing)
 //         //Load();
 
-        
+
 //     }
 
 
@@ -571,6 +590,5 @@
 //             ItemInteract();
 //         }
 //     }
-    
+
 //     #endregion
-// }

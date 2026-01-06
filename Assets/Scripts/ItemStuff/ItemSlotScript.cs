@@ -1,163 +1,313 @@
-// using UnityEngine;
-// using UnityEngine.EventSystems;
-// using UnityEngine.UI;
+//using UnityEngine;
+//using UnityEngine.EventSystems;
+//using UnityEngine.UI;
 
-// // This scripts runs on the Inventory slot that the item is being moved to
-// public class ItemSlotScript : MonoBehaviour, IDropHandler
-// {
-//     // Object grab stuff
-//     public UiManager uiManager;
-//     public GameControllerScript gameController;
+//// This scripts runs on the Inventory slot that the item is being moved to
+//public class ItemSlotScript : MonoBehaviour, IDropHandler
+//{
+//    // Item stuff
+//    [HideInInspector] public ItemScript item;
+//    [HideInInspector] public ItemScript slottedItem;
 
-
-//     // Item stuff
-//     [HideInInspector] public ItemScript item;
-//     [HideInInspector] public ItemScript slottedItem;
-
-
-//     // Color vars
-//     Color selectionColor;
-//     public Image slotImage;
+//    // Color vars
+//    Color selectionColor;
+//    public Image slotImage;
 
 
-//     // ItemSlot stuff
-//     public int slotNum;
+//    // ItemSlot stuff
+//    public int slotNum;
 
-//     [HideInInspector] public bool lastSelected;
+//    [HideInInspector] public bool lastSelected;
 
-//     [HideInInspector] public bool toggled;
-
-
-//     // Runs when the dragged item is dropped into this slot
-//     public void OnDrop(PointerEventData eventData)
-//     {
-//         // Gets the item and updates slotted item
-//         item = eventData.pointerDrag.GetComponent<ItemScript>();
-//         // UpdateItemSlot();
-
-//         // if no other item, just move the dropped item into this slot
-//         if (transform.childCount == 1)
-//         {
-//             GetComponentInChildren<Text>().text = item.itemData.count.ToString();
-//             item.parentBeforeDrag = transform;
-//         }
-//         // if there is an item, swap where they are and the item stacks text
-//         else if (transform.childCount == 2)
-//         {
-//             // Update stackable item amount
-//             int slottedItemAmount = slottedItem.itemData.count;
-//             int itemAmount = item.itemData.count;
-//             item.parentBeforeDrag.GetComponentInChildren<Text>().text = slottedItemAmount.ToString();
-//             slottedItem.transform.parent.GetComponentInChildren<Text>().text = itemAmount.ToString();
-//             // Reparents
-//             slottedItem.transform.SetParent(item.parentBeforeDrag);
-//             item.parentBeforeDrag = transform;
-//         }
-//         item.OnEndDrag(eventData);
-
-//         // Updates the Items list with the new parents
-//         uiManager.GetItems();
-//     }
+//    [HideInInspector] public bool toggled;
 
 
-//     // Updates the slotted item, and shows proper text if there is a stackable item or not
-//     public void UpdateItemSlot()
-//     {
-//         slottedItem = gameObject.GetComponentInChildren<ItemScript>();
-//         if (slottedItem && slottedItem.itemData.itemType == ItemData.ItemType.STACKABLE)
-//             gameObject.GetComponentInChildren<Text>().text = slottedItem.itemData.count.ToString();
-//         else if ((!slottedItem || slottedItem.itemData.itemType != ItemData.ItemType.STACKABLE))
-//             gameObject.GetComponentInChildren<Text>().text = "";
-//     }
+//    // Runs when the dragged item is dropped into this slot
+//    public void OnDrop(PointerEventData eventData)
+//    {
+//        // Gets the item and updates slotted item
+//        item = eventData.pointerDrag.GetComponent<ItemScript>();
+//        // UpdateItemSlot();
+
+//        // if no other item, just move the dropped item into this slot
+//        if (transform.childCount == 1)
+//        {
+//            GetComponentInChildren<Text>().text = item.itemData.count.ToString();
+//            item.parentBeforeDrag = transform;
+//        }
+//        // if there is an item, swap where they are and the item stacks text
+//        else if (transform.childCount == 2)
+//        {
+//            // Update stackable item amount
+//            int slottedItemAmount = slottedItem.itemData.count;
+//            int itemAmount = item.itemData.count;
+//            item.parentBeforeDrag.GetComponentInChildren<Text>().text = slottedItemAmount.ToString();
+//            slottedItem.transform.parent.GetComponentInChildren<Text>().text = itemAmount.ToString();
+//            // Reparents
+//            slottedItem.transform.SetParent(item.parentBeforeDrag);
+//            item.parentBeforeDrag = transform;
+//        }
+//        item.OnEndDrag(eventData);
+
+//        // Updates the Items list with the new parents
+//        uiManager.GetItems();
+//    }
 
 
-//     // Checks each item in the heldObjects list, finds what matches the slotted item, then shows it the held object
-//     void ShowItem()
-//     {
-//         Debug.Log("showitem");
-//         foreach (Transform i in gameController.heldObjects)
-//         {
-//             if (i.name == slottedItem.GetComponent<ItemScript>().itemData.itemName)
-//             {
-//                 i.gameObject.SetActive(true);
-//             }
-//         }
-//     }
-
-//     // Inverse of ShowItem()
-//     void HideItem()
-//     {
-//         foreach (Transform i in gameController.heldObjects)
-//         {
-//             if (i.name == slottedItem.GetComponent<ItemScript>().itemData.itemName)
-//             {
-//                 i.gameObject.SetActive(false);
-//             }
-//         }
-//     }
+//    // Updates the slotted item, and shows proper text if there is a stackable item or not
+//    public void UpdateItemSlot()
+//    {
+//        slottedItem = gameObject.GetComponentInChildren<ItemScript>();
+//        if (slottedItem && slottedItem.itemData.itemType == ItemData.ItemType.STACKABLE)
+//            gameObject.GetComponentInChildren<Text>().text = slottedItem.itemData.count.ToString();
+//        else if ((!slottedItem || slottedItem.itemData.itemType != ItemData.ItemType.STACKABLE))
+//            gameObject.GetComponentInChildren<Text>().text = "";
+//    }
 
 
-//     // Called when player presses the key corresponding to this slot
-//     // Change color, show item, update selected item
-//     public void Selected()
-//     {
-//         // Shows the item slotted if there is one
-//         if (slottedItem)
-//         {
-//             ShowItem();
-//         }
+//    // Checks each item in the heldObjects list, finds what matches the slotted item, then shows it the held object
+//    void ShowItem()
+//    {
+//        Debug.Log("showitem");
+//        foreach (Transform i in gameController.heldObjects)
+//        {
+//            if (i.name == slottedItem.GetComponent<ItemScript>().itemData.itemName)
+//            {
+//                i.gameObject.SetActive(true);
+//            }
+//        }
+//    }
 
-//         // Updates the current selected item
-//         if (transform.childCount > 1)
-//         {
-//             uiManager.selectedItem = GetComponentInChildren<ItemScript>().gameObject;
-//         }
-//         else
-//         {
-//             uiManager.selectedItem = null;
-//         }
+//    // Inverse of ShowItem()
+//    void HideItem()
+//    {
+//        foreach (Transform i in gameController.heldObjects)
+//        {
+//            if (i.name == slottedItem.GetComponent<ItemScript>().itemData.itemName)
+//            {
+//                i.gameObject.SetActive(false);
+//            }
+//        }
+//    }
 
-//         lastSelected = true;
 
-//         // Changes color when selected
-//         ColorUtility.TryParseHtmlString("#84FFDF", out selectionColor);
-//         GetComponent<Image>().color = selectionColor;
+//    // Called when player presses the key corresponding to this slot
+//    // Change color, show item, update selected item
+//    public void Selected()
+//    {
+//        // Shows the item slotted if there is one
+//        if (slottedItem)
+//        {
+//            ShowItem();
+//        }
 
-//     }
+//        // Updates the current selected item
+//        if (transform.childCount > 1)
+//        {
+//            uiManager.selectedItem = GetComponentInChildren<ItemScript>().gameObject;
+//        }
+//        else
+//        {
+//            uiManager.selectedItem = null;
+//        }
 
-//     // Inverse of Selected()
-//     public void Deselected()
-//     {
-//         if (slottedItem)
-//         {
-//             HideItem();
-//         }
+//        lastSelected = true;
 
-//         lastSelected = false;
+//        // Changes color when selected
+//        ColorUtility.TryParseHtmlString("#84FFDF", out selectionColor);
+//        GetComponent<Image>().color = selectionColor;
 
-//         GetComponent<Image>().color = Color.white;
-//     }
+//    }
 
-//     // Can deselect the already selected item slot
-//     public void ToggleSelect()
-//     {
-//         if (lastSelected)
-//         {
-//             Deselected();
-//             lastSelected = false;
-//             toggled = true;
-//         }
-//         else
-//         {
-//             toggled = false;
-//         }
-        
-//     }
+//    // Inverse of Selected()
+//    public void Deselected()
+//    {
+//        if (slottedItem)
+//        {
+//            HideItem();
+//        }
 
-//     void Awake()
-//     {
+//        lastSelected = false;
 
-//         uiManager = GetComponentInParent<UiManager>();
-        
-//     }
-// }
+//        GetComponent<Image>().color = Color.white;
+//    }
+
+//    // Can deselect the already selected item slot
+//    public void ToggleSelect()
+//    {
+//        if (lastSelected)
+//        {
+//            Deselected();
+//            lastSelected = false;
+//            toggled = true;
+//        }
+//        else
+//        {
+//            toggled = false;
+//        }
+
+//    }
+
+//    void Awake()
+//    {
+
+//        uiManager = GetComponentInParent<UiManager>();
+
+//    }
+//}
+
+////    // Object grab stuff
+////    public UiManager uiManager;
+////    public GameControllerScript gameController;
+
+
+////    // Item stuff
+////    [HideInInspector] public ItemScript item;
+////    [HideInInspector] public ItemScript slottedItem;
+
+
+////    // Color vars
+////    Color selectionColor;
+////    public Image slotImage;
+
+
+////    // ItemSlot stuff
+////    public int slotNum;
+
+////    [HideInInspector] public bool lastSelected;
+
+////    [HideInInspector] public bool toggled;
+
+
+////    // Runs when the dragged item is dropped into this slot
+////    public void OnDrop(PointerEventData eventData)
+////    {
+////        // Gets the item and updates slotted item
+////        item = eventData.pointerDrag.GetComponent<ItemScript>();
+////        // UpdateItemSlot();
+
+////        // if no other item, just move the dropped item into this slot
+////        if (transform.childCount == 1)
+////        {
+////            GetComponentInChildren<Text>().text = item.itemData.count.ToString();
+////            item.parentBeforeDrag = transform;
+////        }
+////        // if there is an item, swap where they are and the item stacks text
+////        else if (transform.childCount == 2)
+////        {
+////            // Update stackable item amount
+////            int slottedItemAmount = slottedItem.itemData.count;
+////            int itemAmount = item.itemData.count;
+////            item.parentBeforeDrag.GetComponentInChildren<Text>().text = slottedItemAmount.ToString();
+////            slottedItem.transform.parent.GetComponentInChildren<Text>().text = itemAmount.ToString();
+////            // Reparents
+////            slottedItem.transform.SetParent(item.parentBeforeDrag);
+////            item.parentBeforeDrag = transform;
+////        }
+////        item.OnEndDrag(eventData);
+
+////        // Updates the Items list with the new parents
+////        uiManager.GetItems();
+////    }
+
+
+////    // Updates the slotted item, and shows proper text if there is a stackable item or not
+////    public void UpdateItemSlot()
+////    {
+////        slottedItem = gameObject.GetComponentInChildren<ItemScript>();
+////        if (slottedItem && slottedItem.itemData.itemType == ItemData.ItemType.STACKABLE)
+////            gameObject.GetComponentInChildren<Text>().text = slottedItem.itemData.count.ToString();
+////        else if ((!slottedItem || slottedItem.itemData.itemType != ItemData.ItemType.STACKABLE))
+////            gameObject.GetComponentInChildren<Text>().text = "";
+////    }
+
+
+////    // Checks each item in the heldObjects list, finds what matches the slotted item, then shows it the held object
+////    void ShowItem()
+////    {
+////        Debug.Log("showitem");
+////        foreach (Transform i in gameController.heldObjects)
+////        {
+////            if (i.name == slottedItem.GetComponent<ItemScript>().itemData.itemName)
+////            {
+////                i.gameObject.SetActive(true);
+////            }
+////        }
+////    }
+
+////    // Inverse of ShowItem()
+////    void HideItem()
+////    {
+////        foreach (Transform i in gameController.heldObjects)
+////        {
+////            if (i.name == slottedItem.GetComponent<ItemScript>().itemData.itemName)
+////            {
+////                i.gameObject.SetActive(false);
+////            }
+////        }
+////    }
+
+
+////    // Called when player presses the key corresponding to this slot
+////    // Change color, show item, update selected item
+////    public void Selected()
+////    {
+////        // Shows the item slotted if there is one
+////        if (slottedItem)
+////        {
+////            ShowItem();
+////        }
+
+////        // Updates the current selected item
+////        if (transform.childCount > 1)
+////        {
+////            uiManager.selectedItem = GetComponentInChildren<ItemScript>().gameObject;
+////        }
+////        else
+////        {
+////            uiManager.selectedItem = null;
+////        }
+
+////        lastSelected = true;
+
+////        // Changes color when selected
+////        ColorUtility.TryParseHtmlString("#84FFDF", out selectionColor);
+////        GetComponent<Image>().color = selectionColor;
+
+////    }
+
+////    // Inverse of Selected()
+////    public void Deselected()
+////    {
+////        if (slottedItem)
+////        {
+////            HideItem();
+////        }
+
+////        lastSelected = false;
+
+////        GetComponent<Image>().color = Color.white;
+////    }
+
+////    // Can deselect the already selected item slot
+////    public void ToggleSelect()
+////    {
+////        if (lastSelected)
+////        {
+////            Deselected();
+////            lastSelected = false;
+////            toggled = true;
+////        }
+////        else
+////        {
+////            toggled = false;
+////        }
+
+////    }
+
+////    void Awake()
+////    {
+
+////        uiManager = GetComponentInParent<UiManager>();
+
+////    }

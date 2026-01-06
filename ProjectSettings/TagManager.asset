@@ -5,8 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - HeldItem
-  - UiManager
-  - VendorItem
+  - Menu
   layers:
   - Default
   - TransparentFX
