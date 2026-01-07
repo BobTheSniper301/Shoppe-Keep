@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class OverviewMenuScript : MonoBehaviour
+public class SettingsMenuScript : MonoBehaviour
 {
     [SerializeField] MenuManager menuManager;
 
@@ -9,7 +9,7 @@ public class OverviewMenuScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown("tab"))
+        if (Input.GetKeyDown("escape"))
         {
             Debug.Log(menu.name + " key");
             if (menuManager.activeMenu == null)
@@ -28,10 +28,9 @@ public class OverviewMenuScript : MonoBehaviour
             {
                 Debug.Log("else");
                 menuManager.activeMenu.SetActive(false);
-                menu.SetActive(true);
-                menuManager.activeMenu = menu;
+                menuManager.activeMenu = null;
             }
         }
-        
+
     }
 }

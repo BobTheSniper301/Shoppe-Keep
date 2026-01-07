@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class MenuManager : MonoBehaviour
 {
-    private GameObject[] allMenus;
 
     public GameObject activeMenu;
 
@@ -11,7 +10,7 @@ public class MenuManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        allMenus = GameObject.FindGameObjectsWithTag("Menu");
+        GameObject[] allMenus = GameObject.FindGameObjectsWithTag("Menu");
         foreach (GameObject menu in allMenus)
         {
             menu.SetActive(false);
@@ -23,6 +22,14 @@ public class MenuManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (activeMenu != null)
+        {
+            // player cannot move
+            darkBackground.SetActive(true);
+        }
+        else
+        {
+            darkBackground.SetActive(false);
+        }
     }
 }

@@ -1,20 +1,18 @@
-// using Unity.VisualScripting;
-//using UnityEngine;
-//using UnityEngine.UI;
+using UnityEngine;
 
-//[CreateAssetMenu]
-//public class ItemData : ScriptableObject
-//{
-//    public bool placeable = false;
-//    public string itemName = "null";
-//    public float price;
+[CreateAssetMenu]
+public class ItemData : ScriptableObject
+{
+    public bool placeable = false;
+    public string itemName = "null";
+    public float price;
 
-//    public ItemType itemType;
-//    public enum ItemType
-//    {
-//        EMPTY,
-//        TOOL,
-//        ARMOR,
-//        STACKABLE
-//    }
-//}
+    public ItemType itemType;
+    public enum ItemType
+    {
+        EMPTY,
+        TOOL,
+        ARMOR,
+        STACKABLE
+    }
+}

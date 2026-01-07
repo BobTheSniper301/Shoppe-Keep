@@ -30,7 +30,7 @@ RectTransform:
   m_GameObject: {fileID: 4955017473313866128}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 5.4}
-  m_LocalScale: {x: 10, y: 10, z: 10}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -91,6 +91,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemData: {fileID: 11400000, guid: bcb3d12098fc0c64f915bda92b110d7d, type: 2}
+  count: 0
   image: {fileID: 2652635414022662241}
   parentBeforeDrag: {fileID: 0}
 --- !u!212 &5334832545686320367
