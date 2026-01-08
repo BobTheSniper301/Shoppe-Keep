@@ -11,26 +11,18 @@ public class OverviewMenuScript : MonoBehaviour
     {
         if (Input.GetKeyDown("tab"))
         {
-            Debug.Log(menu.name + " key");
-            if (menuManager.activeMenu == null)
+            if (menuManager.activeMenu == menu)
             {
-                Debug.Log("null");
-                menu.SetActive(true);
-                menuManager.activeMenu = menu;
-            }
-            else if (menuManager.activeMenu == menu)
-            {
-                Debug.Log("this");
                 menu.SetActive(false);
                 menuManager.activeMenu = null;
+                return;
             }
-            else
+            else if (menuManager.activeMenu != null)
             {
-                Debug.Log("else");
                 menuManager.activeMenu.SetActive(false);
-                menu.SetActive(true);
-                menuManager.activeMenu = menu;
             }
+            menu.SetActive(true);
+            menuManager.activeMenu = menu;
         }
         
     }

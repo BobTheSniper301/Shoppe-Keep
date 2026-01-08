@@ -8,10 +8,10 @@ public class ItemSlotScript : MonoBehaviour, IDropHandler
     // Item stuff
     [HideInInspector] public ItemScript item;
     [HideInInspector] public ItemScript slottedItem;
+    [SerializeField] ItemManagerScript itemManagerScript;
 
     // Color vars
     Color selectionColor;
-    //public Image slotImage;
 
 
     // ItemSlot stuff
@@ -25,6 +25,7 @@ public class ItemSlotScript : MonoBehaviour, IDropHandler
     // Runs when the dragged item is dropped into this slot
     public void OnDrop(PointerEventData eventData)
     {
+        slottedItem = this.GetComponentInChildren<ItemScript>();
         // Gets the item and updates slotted item
         item = eventData.pointerDrag.GetComponent<ItemScript>();
         // UpdateItemSlot();
@@ -93,60 +94,41 @@ public class ItemSlotScript : MonoBehaviour, IDropHandler
 
     //    // Called when player presses the key corresponding to this slot
     //    // Change color, show item, update selected item
-    //    public void Selected()
-    //    {
-    //        // Shows the item slotted if there is one
-    //        if (slottedItem)
-    //        {
-    //            ShowItem();
-    //        }
+    public void Select()
+    {
+        itemManagerScript.selectedItemSlotScript = this;
+        // Shows the item slotted if there is one
+        //if (slottedItem)
+        //{
+        //    ShowItem();
+        //}
 
-    //        // Updates the current selected item
-    //        if (transform.childCount > 1)
-    //        {
-    //            uiManager.selectedItem = GetComponentInChildren<ItemScript>().gameObject;
-    //        }
-    //        else
-    //        {
-    //            uiManager.selectedItem = null;
-    //        }
+        // Updates the current selected item
+        if (transform.childCount > 1)
+        {
+            itemManagerScript.selectedItemScript = slottedItem;
+        }
+        else
+        {
+            itemManagerScript.selectedItemScript = null;
+        }
 
-    //        lastSelected = true;
+        // Changes color when selected
+        ColorUtility.TryParseHtmlString("#84FFDF", out selectionColor);
+        GetComponent<Image>().color = selectionColor;
 
-    //        // Changes color when selected
-    //        ColorUtility.TryParseHtmlString("#84FFDF", out selectionColor);
-    //        GetComponent<Image>().color = selectionColor;
+    }
 
-    //    }
+    // Inverse of Select()
+    public void Deselect()
+    {
+        //if (slottedItem)
+        //{
+        //    HideItem();
+        //}
 
-    //    // Inverse of Selected()
-    //    public void Deselected()
-    //    {
-    //        if (slottedItem)
-    //        {
-    //            HideItem();
-    //        }
-
-    //        lastSelected = false;
-
-    //        GetComponent<Image>().color = Color.white;
-    //    }
-
-    //    // Can deselect the already selected item slot
-    //    public void ToggleSelect()
-    //    {
-    //        if (lastSelected)
-    //        {
-    //            Deselected();
-    //            lastSelected = false;
-    //            toggled = true;
-    //        }
-    //        else
-    //        {
-    //            toggled = false;
-    //        }
-
-    //}
+        GetComponent<Image>().color = Color.white;
+    }
 
     //    void Awake()
     //    {

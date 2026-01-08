@@ -11,22 +11,13 @@ public class SettingsMenuScript : MonoBehaviour
     {
         if (Input.GetKeyDown("escape"))
         {
-            Debug.Log(menu.name + " key");
             if (menuManager.activeMenu == null)
             {
-                Debug.Log("null");
                 menu.SetActive(true);
                 menuManager.activeMenu = menu;
             }
-            else if (menuManager.activeMenu == menu)
+            else // if any other menu, then close it
             {
-                Debug.Log("this");
-                menu.SetActive(false);
-                menuManager.activeMenu = null;
-            }
-            else
-            {
-                Debug.Log("else");
                 menuManager.activeMenu.SetActive(false);
                 menuManager.activeMenu = null;
             }
