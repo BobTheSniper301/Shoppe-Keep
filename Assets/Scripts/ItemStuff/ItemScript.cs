@@ -1,4 +1,4 @@
- using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
@@ -8,7 +8,7 @@ public class ItemScript : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 
     public ItemData itemData;
 
-    public int count;
+    public int count = 1;
 
     public Image image;
 

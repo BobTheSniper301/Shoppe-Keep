@@ -1,7 +1,87 @@
-// using UnityEngine;
+using UnityEngine;
+using UnityEngine.UI;
 
-// public class PlayerLookScript : MonoBehaviour
-// {
+public class PlayerLookScript : MonoBehaviour
+{
+
+    
+    private Ray cameraRay;
+
+//     LayerMask playerLookMask;
+//     LayerMask playerLookPriceMask;
+//     LayerMask playerLookVendorMask;
+//     LayerMask playerLookCraftingMask;
+
+
+    [SerializeField] float PlayerLookDistance;
+
+    private RaycastHit interactableHit;
+    private RaycastHit clickableHit;
+
+    [SerializeField] new Camera camera;
+
+    private LayerMask interactableMask;
+    private LayerMask clickableMask;
+
+
+
+    private void Awake()
+    {
+        interactableMask = LayerMask.GetMask("Interactable");
+        clickableMask = LayerMask.GetMask("Clickable");
+    }
+
+    void InteractCheck()
+    {
+        if (Physics.Raycast(cameraRay, out interactableHit,PlayerLookDistance, interactableMask) && ! MenuManager.instance.activeMenu)
+        {
+            UiManager.instance.InteractPrompt(true);
+            if (Input.GetKeyDown("f"))
+            {
+                interactableHit.transform.root.GetComponent<MonoBehaviour>().Invoke("Interact", 0);
+            }
+        }
+        else
+        {
+            UiManager.instance.InteractPrompt(false);
+        }
+    }
+
+    void ClickCheck()
+    {
+        if (Physics.Raycast(cameraRay, out clickableHit,PlayerLookDistance, clickableMask) && ! MenuManager.instance.activeMenu)
+        {
+            if (Input.GetKeyDown(KeyCode.Mouse0))
+            {
+                clickableHit.transform.GetComponent<Button>().onClick.Invoke();
+            }
+        }
+    }
+
+
+    void Update()
+    {
+        // Ray shoots out from center of player view
+        cameraRay = camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+        
+        InteractCheck();
+
+        ClickCheck();
+
+//         ItemContainerCheck();
+
+//         ItemPriceChangeLook();
+
+//         VendorCheck();
+
+//         CraftingPromptCheck();
+
+        Debug.DrawRay(cameraRay.origin, cameraRay.direction * PlayerLookDistance, Color.red, 0.5f);
+    }
+}
+
+
+
 
 //     private Ray cameraRay;
 
@@ -128,4 +208,3 @@
 
 //         // Debug.DrawRay(cameraRay.origin, cameraRay.direction * PlayerLookDistance, Color.red, 0.5f);
 //     }
-// }

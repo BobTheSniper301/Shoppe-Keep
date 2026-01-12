@@ -74,9 +74,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b35b6b57d13581246b9c0f3b40f94ec5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerData: {fileID: 11400000, guid: 498224c3bf9e72e42921ffa15aaf6781, type: 2}
-  priceChangePower: 1
-  currentCraftingStation: {fileID: 0}
+  currentHealth: 100
+  maxHealth: 100
+  gold: 100
   playerCamera: {fileID: 169961786557267079}
   canMove: 1
 --- !u!114 &4315901257889176842
@@ -106,8 +106,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ba451ff4eeecfd4d86914de39500566, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  PlayerLookDistance: 2.5
-  camera: {fileID: 169961786557267079}
 --- !u!1 &5080148776011721718
 GameObject:
   m_ObjectHideFlags: 0

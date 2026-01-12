@@ -1,60 +1,110 @@
-// using UnityEngine;
-// using UnityEngine.UI;
+using UnityEngine;
+using UnityEngine.UI;
 
-// public class PedestalScript : MonoBehaviour
-// {
+public class PedestalScript : MonoBehaviour
+{
 
-//     public float itemPrice;
-//     public ItemScript itemOnSelfScript;
-//     [SerializeField] Text itemPriceText;
+    float itemPrice;
+    public ItemScript placedItemScript;
+    [SerializeField] Text itemPriceText;
+    [SerializeField] GameObject priceInterface;
+    [SerializeField] GameObject itemContainer;
 
+    public void Interact()
+    {
+        if (ItemManager.instance.selectedItemScript)
+        {
+            if (placedItemScript)
+            {
+                SwapItem();
+            }
+            else
+            {
+                PlaceItem();
+            }
+        }
+        else if (placedItemScript)
+        {
+            RemoveItem();
+        }
+        PedestalChange();
+        ItemManager.instance.GetItems();
+    }
 
-//     public void PedestalChange(string interactedButton, int value)
-//     {
+    public void LowerPrice()
+    {
+        itemPrice -= PlayerScript.instance.priceChangePower;
+        placedItemScript.itemData.price -= PlayerScript.instance.priceChangePower;
+        PedestalChange();
+    }
+
+    public void IncreasePrice()
+    {
+        itemPrice += PlayerScript.instance.priceChangePower;
+        placedItemScript.itemData.price += PlayerScript.instance.priceChangePower;
+        PedestalChange();
+    }
+
+    void PedestalChange()
+    {
+        // Stops negative prices
+        itemPrice = Mathf.Clamp(itemPrice, 0f, 1000000);
+
+        itemPriceText.text = itemPrice.ToString();
+    }
+
+    void PlaceItem()
+    {
+        ItemScript selectedItem = ItemManager.instance.selectedItemScript;
         
-
-//         if (interactedButton != null)
-//         {
-//             if (interactedButton == "Minus")
-//             {
-                
-//                 itemPrice -= value;
-//             }
-//             else if (interactedButton == "Plus")
-//             {
-                
-//                 itemPrice += value;
-//             }
-//             itemOnSelfScript.itemData.price = itemPrice;
-//         }
-//         itemPrice = Mathf.Clamp(itemPrice, 0f, 1000000);
-
-//         itemPriceText.text = itemPrice.ToString();
-
-//     }
-
-//     public void ItemPlaced()
-//     {
-//         itemPrice = itemOnSelfScript.itemData.price;
-//         itemPriceText.transform.parent.transform.parent.gameObject.SetActive(true);
-//         GameControllerScript.instance.pedestals.Add(this.transform.Find("NPCSpot").gameObject);
-//         PedestalChange(null, 0);
-//     }
-
-//     public void ItemRemoved()
-//     {
-//         itemOnSelfScript = null;
-//         GameControllerScript.instance.pedestals.Remove(this.transform.Find("NPCSpot").gameObject);
-//         itemPriceText.transform.parent.transform.parent.gameObject.SetActive(false);
-//     }
-
-
-//     // Start is called once before the first execution of Update after the MonoBehaviour is created
-//     void Start()
-//     {
-//         GameObject priceTextOnSelf = transform.Find("PriceInterface").transform.Find("Price").transform.Find("PriceText").gameObject;
-//         itemPriceText = priceTextOnSelf.GetComponent<Text>();
-//         itemPriceText.transform.parent.transform.parent.gameObject.SetActive(false);
+        placedItemScript = selectedItem;
         
-//     }
-// }
+        selectedItem.transform.parent.GetComponent<ItemSlotScript>().Deselect();
+
+        // Moves the physical item
+        selectedItem.transform.SetParent(itemContainer.transform, false);
+        selectedItem.transform.position = itemContainer.transform.position;
+        
+        itemPriceText.transform.parent.transform.parent.gameObject.SetActive(true);
+        itemPrice = placedItemScript.itemData.price;
+        
+        //GameControllerScript.instance.pedestals.Add(this.transform.Find("NPCSpot").gameObject);
+    }
+
+    void RemoveItem()
+    {
+        ItemManager.instance.AddItem(placedItemScript.gameObject);
+
+        placedItemScript = null;
+        priceInterface.SetActive(false);
+
+        //GameControllerScript.instance.pedestals.Remove(this.transform.Find("NPCSpot").gameObject);
+    }
+
+    void SwapItem()
+    {
+        ItemScript selectedItem = ItemManager.instance.selectedItemScript;
+        ItemScript alreadyPlacedItemScript = placedItemScript;
+        // Handle new item
+        placedItemScript = selectedItem;
+        
+        selectedItem.transform.parent.GetComponent<ItemSlotScript>().Deselect();
+
+        // Moves the physical item
+        selectedItem.transform.SetParent(itemContainer.transform, false);
+        selectedItem.transform.position = itemContainer.transform.position;
+        
+        itemPriceText.transform.parent.transform.parent.gameObject.SetActive(true);
+        itemPrice = placedItemScript.itemData.price;
+
+
+        // Handle old item
+        ItemManager.instance.AddItem(alreadyPlacedItemScript.gameObject);
+    }
+
+
+    void Start()
+    {
+        priceInterface.SetActive(false);
+    }
+}

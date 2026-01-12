@@ -13,11 +13,11 @@ TagManager:
   - Player
   - Water
   - UI
-  - PlayerLookContainer
-  - PlayerLookPrice
-  - Walkable
-  - Vendor
-  - PlayerLookCrafting
+  - Interactable
+  - Clickable
+  - Item
+  - 
+  - 
   - 
   - 
   - 

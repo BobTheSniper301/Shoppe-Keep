@@ -28,14 +28,14 @@ RectTransform:
   m_GameObject: {fileID: 1597328276417366415}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1170820021316319928}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -19.1, y: 12}
+  m_AnchoredPosition: {x: -2.8, y: 1.0999985}
   m_SizeDelta: {x: 30, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3626654144689899086
@@ -59,7 +59,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Text
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -68,11 +68,11 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 20
+    m_FontSize: 200
     m_FontStyle: 1
     m_BestFit: 1
     m_MinSize: 0
-    m_MaxSize: 115
+    m_MaxSize: 200
     m_Alignment: 8
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -129,8 +129,8 @@ RectTransform:
   m_GameObject: {fileID: 8430406656233736951}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3772825948344452967}
   m_Father: {fileID: 0}
@@ -214,11 +214,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ae12eec9a95f04429f9dab3fafc860c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiManager: {fileID: 0}
-  gameController: {fileID: 0}
-  item: {fileID: 0}
+  movingItem: {fileID: 0}
   slottedItem: {fileID: 0}
-  slotImage: {fileID: 0}
-  slotNum: 1
-  lastSelected: 0
-  toggled: 0
+  itemManagerScript: {fileID: 0}

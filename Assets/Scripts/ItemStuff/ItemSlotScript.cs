@@ -6,9 +6,9 @@ using UnityEngine.UI;
 public class ItemSlotScript : MonoBehaviour, IDropHandler
 {
     // Item stuff
-    [HideInInspector] public ItemScript item;
+    [HideInInspector] public ItemScript movingItem;
     [HideInInspector] public ItemScript slottedItem;
-    [SerializeField] ItemManagerScript itemManagerScript;
+    [SerializeField] ItemManager itemManager;
 
     // Color vars
     Color selectionColor;
@@ -17,9 +17,9 @@ public class ItemSlotScript : MonoBehaviour, IDropHandler
     // ItemSlot stuff
     //    public int slotNum;
 
-    [HideInInspector] public bool lastSelected;
+    // [HideInInspector] public bool lastSelected;
 
-    [HideInInspector] public bool toggled;
+    // [HideInInspector] public bool toggled;
 
 
     // Runs when the dragged item is dropped into this slot
@@ -27,90 +27,88 @@ public class ItemSlotScript : MonoBehaviour, IDropHandler
     {
         slottedItem = this.GetComponentInChildren<ItemScript>();
         // Gets the item and updates slotted item
-        item = eventData.pointerDrag.GetComponent<ItemScript>();
+        movingItem = eventData.pointerDrag.GetComponent<ItemScript>();
         // UpdateItemSlot();
 
         // if no other item, just move the dropped item into this slot
         if (transform.childCount == 1)
         {
             //GetComponentInChildren<Text>().text = item.count.ToString();
-            item.parentBeforeDrag = transform;
+            movingItem.parentBeforeDrag = transform;
         }
         // if there is an item, swap where they are and the item stacks text
         else if (transform.childCount == 2)
         {
-            // Update stackable item amount
-                //int slottedItemAmount = slottedItem.count;
-                //int itemAmount = item.count;
-                //item.parentBeforeDrag.GetComponentInChildren<Text>().text = slottedItemAmount.ToString();
-                //slottedItem.transform.parent.GetComponentInChildren<Text>().text = itemAmount.ToString();
             // Reparents
-            slottedItem.transform.SetParent(item.parentBeforeDrag);
-            item.parentBeforeDrag = transform;
+            slottedItem.transform.SetParent(movingItem.parentBeforeDrag);
+            movingItem.parentBeforeDrag = transform;
         }
-        item.OnEndDrag(eventData);
+        movingItem.OnEndDrag(eventData);
 
         // Updates the Items list with the new parents
-        //uiManager.GetItems();
+        itemManager.GetItems();
     }
 
 
-    //    // Updates the slotted item, and shows proper text if there is a stackable item or not
-    //    public void UpdateItemSlot()
-    //    {
-    //        slottedItem = gameObject.GetComponentInChildren<ItemScript>();
-    //        if (slottedItem && slottedItem.itemData.itemType == ItemData.ItemType.STACKABLE)
-    //            gameObject.GetComponentInChildren<Text>().text = slottedItem.itemData.count.ToString();
-    //        else if ((!slottedItem || slottedItem.itemData.itemType != ItemData.ItemType.STACKABLE))
-    //            gameObject.GetComponentInChildren<Text>().text = "";
-    //    }
+       // Updates the slotted item, and shows proper text if there is a stackable item or not
+    public void UpdateItemSlot()
+    {
+        slottedItem = this.GetComponentInChildren<ItemScript>();
+        if (slottedItem && slottedItem.itemData.itemType == ItemData.ItemType.STACKABLE)
+        {
+           gameObject.GetComponentInChildren<Text>().text = slottedItem.count.ToString();
+        }
+        else
+        {
+           gameObject.GetComponentInChildren<Text>().text = "";
+        }
+    }
 
 
-    //    // Checks each item in the heldObjects list, finds what matches the slotted item, then shows it the held object
-    //    void ShowItem()
-    //    {
-    //        Debug.Log("showitem");
-    //        foreach (Transform i in gameController.heldObjects)
-    //        {
-    //            if (i.name == slottedItem.GetComponent<ItemScript>().itemData.itemName)
-    //            {
-    //                i.gameObject.SetActive(true);
-    //            }
-    //        }
-    //    }
+    // Checks each item in the heldObjects list, finds what matches the slotted item, then shows it the held object
+    void ShowItem()
+    {
+        foreach (GameObject i in itemManager.holdableItems)
+        {
+            if (i.name == slottedItem.GetComponent<ItemScript>().itemData.itemName)
+            {
+                i.gameObject.SetActive(true);
+            }
+        }
+    }
 
-    //    // Inverse of ShowItem()
-    //    void HideItem()
-    //    {
-    //        foreach (Transform i in gameController.heldObjects)
-    //        {
-    //            if (i.name == slottedItem.GetComponent<ItemScript>().itemData.itemName)
-    //            {
-    //                i.gameObject.SetActive(false);
-    //            }
-    //        }
-    //    }
+    // Inverse of ShowItem()
+    void HideItem()
+    {
+        foreach (GameObject i in itemManager.holdableItems)
+        {
+            if (i.name == slottedItem.GetComponent<ItemScript>().itemData.itemName)
+            {
+                i.gameObject.SetActive(false);
+            }
+        }
+    }
 
 
     //    // Called when player presses the key corresponding to this slot
     //    // Change color, show item, update selected item
     public void Select()
     {
-        itemManagerScript.selectedItemSlotScript = this;
+        itemManager.selectedItemSlotScript = this;
         // Shows the item slotted if there is one
-        //if (slottedItem)
-        //{
-        //    ShowItem();
-        //}
+        if (slottedItem)
+        {
+           ShowItem();
+        }
 
         // Updates the current selected item
         if (transform.childCount > 1)
         {
-            itemManagerScript.selectedItemScript = slottedItem;
+            itemManager.selectedItemScript = slottedItem;
         }
         else
         {
-            itemManagerScript.selectedItemScript = null;
+            itemManager.selectedItemScript = null;
         }
 
         // Changes color when selected
@@ -122,11 +120,12 @@ public class ItemSlotScript : MonoBehaviour, IDropHandler
     // Inverse of Select()
     public void Deselect()
     {
-        //if (slottedItem)
-        //{
-        //    HideItem();
-        //}
-
+        if (slottedItem)
+        {
+            HideItem();
+        }
+        itemManager.selectedItemScript = null;
+        itemManager.selectedItemSlotScript = null;
         GetComponent<Image>().color = Color.white;
     }
 
