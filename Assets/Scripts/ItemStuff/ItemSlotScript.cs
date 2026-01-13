@@ -6,8 +6,7 @@ using UnityEngine.UI;
 public class ItemSlotScript : MonoBehaviour, IDropHandler
 {
     // Item stuff
-    [HideInInspector] public ItemScript movingItem;
-    [HideInInspector] public ItemScript slottedItem;
+     public ItemScript slottedItem;
     [SerializeField] ItemManager itemManager;
 
     // Color vars
@@ -27,7 +26,7 @@ public class ItemSlotScript : MonoBehaviour, IDropHandler
     {
         slottedItem = this.GetComponentInChildren<ItemScript>();
         // Gets the item and updates slotted item
-        movingItem = eventData.pointerDrag.GetComponent<ItemScript>();
+        ItemScript movingItem = eventData.pointerDrag.GetComponent<ItemScript>();
         // UpdateItemSlot();
 
         // if no other item, just move the dropped item into this slot
@@ -56,11 +55,11 @@ public class ItemSlotScript : MonoBehaviour, IDropHandler
         slottedItem = this.GetComponentInChildren<ItemScript>();
         if (slottedItem && slottedItem.itemData.itemType == ItemData.ItemType.STACKABLE)
         {
-           gameObject.GetComponentInChildren<Text>().text = slottedItem.count.ToString();
+            gameObject.GetComponentInChildren<Text>().text = slottedItem.count.ToString();
         }
         else
         {
-           gameObject.GetComponentInChildren<Text>().text = "";
+            gameObject.GetComponentInChildren<Text>().text = "";
         }
     }
 

@@ -4,11 +4,12 @@ using UnityEngine.UI;
 public class PedestalScript : MonoBehaviour
 {
 
-    float itemPrice;
+    public float itemPrice;
     public ItemScript placedItemScript;
     [SerializeField] Text itemPriceText;
     [SerializeField] GameObject priceInterface;
     [SerializeField] GameObject itemContainer;
+    [SerializeField] GameObject NPCSpot;
 
     public void Interact()
     {
@@ -33,20 +34,26 @@ public class PedestalScript : MonoBehaviour
 
     public void LowerPrice()
     {
-        itemPrice -= PlayerScript.instance.priceChangePower;
         placedItemScript.itemData.price -= PlayerScript.instance.priceChangePower;
         PedestalChange();
     }
 
     public void IncreasePrice()
     {
-        itemPrice += PlayerScript.instance.priceChangePower;
         placedItemScript.itemData.price += PlayerScript.instance.priceChangePower;
         PedestalChange();
     }
 
     void PedestalChange()
     {
+        if (!placedItemScript)
+        {
+            itemPrice = 0;
+            return;
+        }
+        
+        itemPrice = placedItemScript.itemData.price;
+
         // Stops negative prices
         itemPrice = Mathf.Clamp(itemPrice, 0f, 1000000);
 
@@ -65,20 +72,29 @@ public class PedestalScript : MonoBehaviour
         selectedItem.transform.SetParent(itemContainer.transform, false);
         selectedItem.transform.position = itemContainer.transform.position;
         
-        itemPriceText.transform.parent.transform.parent.gameObject.SetActive(true);
-        itemPrice = placedItemScript.itemData.price;
+        priceInterface.SetActive(true);
+
+        PedestalChange();
         
-        //GameControllerScript.instance.pedestals.Add(this.transform.Find("NPCSpot").gameObject);
+        AiManager.instance.pedestals.Add(NPCSpot);
+
+        EventManager.pedestalChanged?.Invoke();
     }
 
-    void RemoveItem()
+    public void RemoveItem()
     {
         ItemManager.instance.AddItem(placedItemScript.gameObject);
 
+        
         placedItemScript = null;
+        
         priceInterface.SetActive(false);
 
-        //GameControllerScript.instance.pedestals.Remove(this.transform.Find("NPCSpot").gameObject);
+        PedestalChange();
+
+        AiManager.instance.pedestals.Remove(NPCSpot);
+
+        EventManager.pedestalChanged?.Invoke();
     }
 
     void SwapItem()
@@ -100,11 +116,29 @@ public class PedestalScript : MonoBehaviour
 
         // Handle old item
         ItemManager.instance.AddItem(alreadyPlacedItemScript.gameObject);
+
+        PedestalChange();
     }
 
-
-    void Start()
+    
+    public void PurchaseItem()
     {
+        Debug.Log("purchase");
+        
+        // Similar to RemoveItem() but without giving the player an item back
         priceInterface.SetActive(false);
+
+        PlayerScript.instance.gold += placedItemScript.itemData.price; 
+        EventManager.itemSale?.Invoke();
+
+        Destroy(placedItemScript.gameObject);
+
+        placedItemScript = null;
+
+        PedestalChange();
+
+        AiManager.instance.pedestals.Remove(NPCSpot);
+
+        EventManager.pedestalChanged?.Invoke();
     }
 }

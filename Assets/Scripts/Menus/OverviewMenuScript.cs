@@ -1,12 +1,31 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class OverviewMenuScript : MonoBehaviour
 {
     [SerializeField] MenuManager menuManager;
-
     [SerializeField] GameObject menu;
+    // Stats
+    [SerializeField] Text maxHealthNum;
 
-    // Update is called once per frame
+    void UpdateStats()
+    {
+        maxHealthNum.text = PlayerScript.instance.maxHealth.ToString();
+
+    }
+
+    void OnEnable()
+    {
+        EventManager.itemSale += UpdateStats;
+    }
+
+    void OnDisable()
+    {
+        EventManager.itemSale -= UpdateStats;
+    } 
+
+
+
     void Update()
     {
         if (Input.GetKeyDown("tab"))

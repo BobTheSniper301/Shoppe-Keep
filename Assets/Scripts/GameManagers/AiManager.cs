@@ -1,10 +1,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameControllerScript : MonoBehaviour
-{
-    public static GameControllerScript instance { get; private set; }
 
+public class AiManager : MonoBehaviour
+{
+    public static AiManager instance { get; private set; }
+
+    // Only pedestals with items
+    public List<GameObject> pedestals = new List<GameObject>();
+    public GameObject[] walkways;
+    
+    
     private void Awake()
     {
         if (instance != null && instance != this)

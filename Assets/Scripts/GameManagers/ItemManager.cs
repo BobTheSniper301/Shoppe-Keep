@@ -122,6 +122,7 @@ public class ItemManager : MonoBehaviour
     // If a stackable item of the same name is not in, it will treat it as a normal item and add it into the first open slot
     public void AddItem(GameObject itemToAdd)
     {
+        Debug.Log("add item");
         if (IsInventoryFull())
         {
             return;

@@ -2398,9 +2398,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d158bfb336ae90c459ac5c340a39149c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  questContainer: {fileID: 4363884625987364892, guid: 23180f8ff765a924f99aed420b9c25e0, type: 3}
-  questContainerHolder: {fileID: 104466174}
-  questContainers: []
 --- !u!1 &656190221
 GameObject:
   m_ObjectHideFlags: 0
@@ -2431,13 +2428,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c3ad255607bcc74e8376351990f7977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pedestals: []
-  walkways:
-  - {fileID: 1396250375}
-  - {fileID: 1566899208}
-  heldObjects:
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!4 &656190223
 Transform:
   m_ObjectHideFlags: 0
@@ -3045,9 +3035,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a9849e475a4f3a4e9b63538dd78a6a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  questContainer: {fileID: 615647462697764068, guid: fcb3814c73dc26042b0eb0d206526aa5, type: 3}
-  questContainerHolder: {fileID: 106533904}
-  questContainers: []
 --- !u!114 &775073400
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3714,7 +3701,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.33333334
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 23800000, guid: 988ea7da71c50f849a1f40e4091add56, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: 0a4e13912cd2e804592d295fb7310c66, type: 2}
   m_BuildHeightMesh: 0
 --- !u!1 &921336273
 GameObject:
@@ -4282,9 +4269,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b2dd397c9bdcc146ab108c1a287f4f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  questName: {fileID: 921336275}
-  questDescription: {fileID: 1775513482}
-  questObjectives: {fileID: 2006149168}
 --- !u!1 &1006172001
 GameObject:
   m_ObjectHideFlags: 0
@@ -4937,11 +4921,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1217053786}
   m_CullTransparentMesh: 1
---- !u!20 &1218840763 stripped
-Camera:
-  m_CorrespondingSourceObject: {fileID: 169961786557267079, guid: 34c0c64e134957d439575e9795c058f2, type: 3}
-  m_PrefabInstance: {fileID: 391643396}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1226013080
 GameObject:
   m_ObjectHideFlags: 0
@@ -5059,61 +5038,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6e388d0b8f6eaa418ef3851d3e7eb10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camera: {fileID: 1218840763}
-  maxHealthNum: {fileID: 2089425249}
-  healthBar: {fileID: 68135219}
-  healthBarCurrent: {fileID: 1202911312}
-  goldText: {fileID: 1006172003}
-  canOpenMenu: 1
-  canChangePrice: 0
-  inMenu: 0
-  menu: {fileID: 880175633}
-  overviewMenu: {fileID: 1616716811}
-  itemContainerPrompt: {fileID: 1333090116}
-  settingsMenu: {fileID: 1511741165}
-  craftingPrompt: {fileID: 469353765}
-  craftingMenu: {fileID: 1550726336}
-  questDetailsMenu: {fileID: 1001941111}
-  allQuestsMenu: {fileID: 775073395}
-  vendorMenu: {fileID: 774238122}
-  vendorPrompt: {fileID: 892665752}
-  vendorItemContainer: {fileID: 203327818}
-  vendorItem: {fileID: 4368839616816707145, guid: 6c94672d0d3523e45b34ef3585f770c2, type: 3}
-  vendorMenuGoldAmount: {fileID: 1832576945}
-  vendorName: {fileID: 1579036059}
-  vendorText: {fileID: 104138806}
-  vendorPortrait: {fileID: 984818113}
-  itemsData:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  items:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  itemSlots:
-  - {fileID: 1695842404}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  itemPickedUp: {fileID: 0}
-  selectedItem: {fileID: 0}
-  lastItemSlotNum: 0
-  isInventoryFull: 0
+  interactPrompt: {fileID: 0}
+  crosshair: {fileID: 0}
 --- !u!1 &1243115461
 GameObject:
   m_ObjectHideFlags: 0
@@ -6482,17 +6408,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 137cc4e21fbf723479363dc3b114bb82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  inputItems:
-  - {fileID: 0}
-  - {fileID: 0}
-  outputItem: {fileID: 8386220439716674854, guid: 78cebbaa49adb604a9e72732269e7b56, type: 3}
-  outputItemInst: {fileID: 0}
-  recipes:
-  - {fileID: 4955017473313866128, guid: 07c966e01c7478246a2727a9d3135c4d, type: 3}
-  - {fileID: 8386220439716674854, guid: 78cebbaa49adb604a9e72732269e7b56, type: 3}
-  craftableRecipe: 0
-  animScript: {fileID: 0}
-  cameraSpotObj: {fileID: 5071660350751162222}
 --- !u!1 &1553425818
 GameObject:
   m_ObjectHideFlags: 0
@@ -7583,9 +7498,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d158bfb336ae90c459ac5c340a39149c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  questContainer: {fileID: 0}
-  questContainerHolder: {fileID: 0}
-  questContainers: []
 --- !u!224 &1687852065 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 253953744716745801, guid: 78cebbaa49adb604a9e72732269e7b56, type: 3}
@@ -7841,17 +7753,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d29fdbe8d202a7b40abd900c60d9864f, type: 3}
---- !u!114 &1695842404 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8346935381870089485, guid: d29fdbe8d202a7b40abd900c60d9864f, type: 3}
-  m_PrefabInstance: {fileID: 1846542010445279782}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ae12eec9a95f04429f9dab3fafc860c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1706015225
 GameObject:
   m_ObjectHideFlags: 0
@@ -10700,11 +10601,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 159e58915d17de24b8d927e290429e7d, type: 3}
---- !u!1 &5071660350751162222 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4708324955323297340, guid: 159e58915d17de24b8d927e290429e7d, type: 3}
-  m_PrefabInstance: {fileID: 5071660350751162221}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6860915693794731629
 PrefabInstance:
   m_ObjectHideFlags: 0
