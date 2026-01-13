@@ -17,11 +17,13 @@ public class OverviewMenuScript : MonoBehaviour
     void OnEnable()
     {
         EventManager.itemSale += UpdateStats;
+        EventManager.gameStart += UpdateStats;
     }
 
     void OnDisable()
     {
         EventManager.itemSale -= UpdateStats;
+        EventManager.gameStart -= UpdateStats;
     } 
 
 

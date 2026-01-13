@@ -16,4 +16,9 @@ public class GameControllerScript : MonoBehaviour
             instance = this;
         }
     }
+
+    private void Start()
+    {
+        EventManager.gameStart?.Invoke();
+    }
 }

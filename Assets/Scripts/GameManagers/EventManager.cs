@@ -13,6 +13,9 @@ public class EventManager : MonoBehaviour
     public delegate void PedestalChanged();
     public static PedestalChanged pedestalChanged;
 
+    public delegate void GameStart();
+    public static GameStart gameStart;
+
 
     // public QuestEvents questEvents;
 

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class StatsDisplayScript : MonoBehaviour
+public class StatsDisplay : MonoBehaviour
 {
     
     [SerializeField] GameObject healthBar;
@@ -12,7 +12,7 @@ public class StatsDisplayScript : MonoBehaviour
     {
         Debug.Log("update stats");
         // Health bar
-        healthBar.transform.localScale = new Vector3(1 * (1 + (PlayerScript.instance.maxHealth-100) * 0.0025f), 1, 1);
+        healthBar.transform.localScale = new Vector3(1 + (PlayerScript.instance.maxHealth-100) * 0.0025f, 1, 1);
         healthBarCurrent.fillAmount = PlayerScript.instance.currentHealth / PlayerScript.instance.maxHealth;
 
         // Gold
@@ -27,10 +27,12 @@ public class StatsDisplayScript : MonoBehaviour
     void OnEnable()
     {
         EventManager.itemSale += UpdateStats;
+        EventManager.gameStart += UpdateStats;
     }
 
     void OnDisable()
     {
         EventManager.itemSale -= UpdateStats;
+        EventManager.gameStart -= UpdateStats;
     } 
 }
