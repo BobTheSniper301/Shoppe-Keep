@@ -5,6 +5,10 @@ public class GameControllerScript : MonoBehaviour
 {
     public static GameControllerScript instance { get; private set; }
 
+
+    public GameObject itemPrefab;
+
+
     private void Awake()
     {
         if (instance != null && instance != this)

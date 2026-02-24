@@ -125,6 +125,7 @@ public class ItemManager : MonoBehaviour
         Debug.Log("add item");
         if (IsInventoryFull())
         {
+            //TODO: Make item drop on ground
             return;
         }
 

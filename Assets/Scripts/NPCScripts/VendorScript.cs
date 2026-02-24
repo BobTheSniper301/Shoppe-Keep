@@ -1,30 +1,25 @@
-// using UnityEngine;
+using UnityEngine;
 
-// public class VendorScript : MonoBehaviour
-// {
+public class VendorScript : MonoBehaviour
+{
 
-//     public VendorData vendorData;
-
-
-//     public void UpdateVendor()
-//     {
-//         // Debug.Log("update vendor");
-//     }
+    public VendorData vendorData;
+    [SerializeField] VendorMenuScript vendorMenuScript;
 
 
-//     void OnEnable()
-//     {
-//         GameControllerScript.itemSale += UpdateVendor;
-//     }
-//     void OnDisable()
-//     {
-//         GameControllerScript.itemSale -= UpdateVendor;
-//     }
+    public void UpdateVendor()
+    {
+         Debug.Log("update vendor");
+    }
 
 
+    void OnEnable()
+    {
+        EventManager.itemSale += UpdateVendor;
+    }
+    void OnDisable()
+    {
+        EventManager.itemSale -= UpdateVendor;
+    }
 
-//     void Start()
-//     {
-        
-//     }
-// }
+}

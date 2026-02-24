@@ -14,7 +14,6 @@
 
 
 //     // PREFABS
-//     public GameObject itemPrefab;
 
 //     InventoryData _InventoryData = new InventoryData();
 //     [HideInInspector] string item;
